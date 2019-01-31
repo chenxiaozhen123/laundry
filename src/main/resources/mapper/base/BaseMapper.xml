@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.base.mapper.BaseMapper">
+
+    <resultMap id="rmBaseBean" type="com.cqnu.base.model.BaseBean">
+        <!-- property:bean里面为public的属性名称，或者取property的setter方法 -->
+        <result property="beanName" column="BEAN_NAME" javaType="String" jdbcType="VARCHAR"/>
+        <result property="beanLife" column="BEAN_life" javaType="int" jdbcType="INTEGER"/>
+        <result property="beanVersion" column="bean_version" javaType="String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="qryBaseBeanByMap" parameterType="map" resultMap="rmBaseBean">
+        select sysdate bean_VERSION, null BEAn_life, 'bean名称' beaN_Name from dual
+    </select>
+
+    <select id="qryBaseBeanByType" parameterType="map" resultType="map">
+        select sysdate bean_version, 21 BEAN_life, 'bean_name' bean_name from dual
+    </select>
+    <!-- 调用存储过程 -->
+    <select id="callProcedual" statementType="CALLABLE" parameterType="map" >
+        { call ${pkg_name}.${proc_name}(
+        <if test="proc_params != null and proc_params.size > 0">
+            <foreach item="item" index="index" collection="proc_params" open="" separator="," close="">
+                #{item,jdbcType=VARCHAR}
+            </foreach>,
+        </if>
+        #{proc_rs,mode=OUT,jdbcType=CURSOR,javaType=ResultSet,resultMap=rmMap}) }
+    </select>
+
+    <resultMap id="rmMap" type="java.util.HashMap">
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,15 @@
+#生产环境的配置
+server:
+  port: 8083
+
+spring:
+  thymeleaf:
+    cache: true
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+
+log:
+  executror:
+    corePoolSize: 4
+    maxPoolSize: 8
+    queueSize: 10000

@@ -1,37 +1,48 @@
 server:
   port: 8080
-
 spring:
-    datasource:
-        name: test
-        url: jdbc:mysql://127.0.0.1:3306/laundry
-        username: root
-        password: 123456
-        # 使用druid数据源
-        type: com.alibaba.druid.pool.DruidDataSource
-        driver-class-name: com.mysql.jdbc.Driver
-        filters: stat
-        maxActive: 20
-        initialSize: 1
-        maxWait: 60000
-        minIdle: 1
-        timeBetweenEvictionRunsMillis: 60000
-        minEvictableIdleTimeMillis: 300000
-        validationQuery: select 'x'
-        testWhileIdle: true
-        testOnBorrow: false
-        testOnReturn: false
-        poolPreparedStatements: true
-        maxOpenPreparedStatements: 20
+  profiles:
+      active: dev
+  resources:
+      static-locations: classpath:src/main/webapp
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+      username: root
+      password: 123456
+      # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000 # 配置获取连接等待超时的时间
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      minEvictableIdleTimeMillis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
 
 ## 该配置节点为独立的节点
 mybatis:
-  mapper-locations: classpath:mapping/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
-  type-aliases-package: com.cqnu.entity  # 注意：对应实体类的路径
-
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  #type-aliases-package: com.cqnu.web.entity  # 注意：对应实体类的路径
+mapper:
+  mappers: com.cqnu.web.util.WebMapper
+  not-empty: false
+  identity: MYSQL
 #pagehelper分页插件
 pagehelper:
     helperDialect: mysql
     reasonable: true
     supportMethodsArguments: true
     params: count=countSql
+log:
+  executror:
+    corePoolSize: 4
+    maxPoolSize: 8
+    queueSize: 10000

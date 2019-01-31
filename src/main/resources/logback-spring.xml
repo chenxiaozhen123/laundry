@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="true">
+    <contextName>laundry</contextName>
+    <property name="log.path" value="./logs"/>
+    <property name="app.name" value="laundry"/>
+    <property name="MY_PATTERN" value="%d{HH:mm:ss.SSS} %contextName [%thread] %-5level %logger{36} - %msg%n" />
+
+    <!--测试，开发环境需要打印日志 jvm环境变量-Dlogback.env=dev -->
+    <if condition='property("logback.env").contains("dev")'>
+        <then>
+            <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder>
+                    <pattern>${MY_PATTERN}</pattern>
+                </encoder>
+            </appender>
+            <appender name="debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${log.path}/${app.name}-debug.log</file>
+                <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+                    <level>debug</level>
+                </filter>
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>${log.path:-/data/www/java/work/logs}/${app.name}-debug.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+                    <maxHistory>7</maxHistory>
+                </rollingPolicy>
+                <encoder>
+                    <pattern>${MY_PATTERN}</pattern>
+                    <charset>UTF-8</charset>
+                </encoder>
+            </appender>
+        </then>
+    </if>
+    <appender name="info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${app.name}-info.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path:-/data/www/java/work/logs}/${app.name}-info.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${MY_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.path}/${app.name}-error.log</file>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>warn</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${log.path:-/data/www/java/work/logs}/${app.name}-error.%d{yyyy-MM-dd}.log.zip</fileNamePattern>
+            <maxHistory>7</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${MY_PATTERN}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <logger name="org.springframework.jndi.JndiPropertySource" level="WARN"/>
+    <logger name="org.springframework.jndi.JndiTemplate" level="WARN"/>
+    <logger name="org.springframework.jndi.JndiLocatorDelegate" level="WARN"/>
+
+
+    <root level="debug">
+        <!--测试，开发环境需要打印日志 jvm环境变量-Dlogback.env=dev -->
+        <if condition='property("logback.env").contains("dev")'>
+            <then>
+                <appender-ref ref="STDOUT" />
+                <appender-ref ref="debug" />
+            </then>
+        </if>
+        <appender-ref ref="info" />
+        <appender-ref ref="error" />
+    </root>
+
+</configuration>
+
