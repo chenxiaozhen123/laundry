@@ -1,7 +1,7 @@
 package com.cqnu.base.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
