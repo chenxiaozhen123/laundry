@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <!-- start: Meta -->
+    <meta charset="utf-8" />
+    <title>连锁干洗中心后台管理系统</title>
+    <meta name="description" content="SimpliQ - Flat & Responsive Bootstrap Admin Template." />
+    <meta name="author" content="Łukasz Holeczek" />
+    <!--<meta name="keyword" content="SimpliQ, Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina" />-->
+    <!-- end: Meta -->
+
+    <!-- start: Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- end: Mobile Specific -->
+
+    <!-- start: CSS -->
+
+    <link href="css/default.min.css" rel="stylesheet" />
+    <link href="../lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.min.css" rel="stylesheet" />
+    <link href="css/style-responsive.min.css" rel="stylesheet"/>
+    <link href="css/font-awesome.min.css" rel="stylesheet" />
+    <link href="../lib/bootstrap/css/bootstrap-table.min.css" rel="stylesheet"/>
+
+    <!-- end: CSS -->
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <!-- start: JavaScript-->
+    <script type="text/javascript" src="../lib/jquery/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap-table.min.js" ></script>
+    <script type="text/javascript" src="../lib/bootstrap/js/bootstrap-table-zh-CN.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <!-- end: JavaScript-->
+</head>
+
+<body>
+<!-- start: Header -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <a class="brand span2" href="index.html"><span>Laundry</span></a>
+            </div>
+            <!-- start: Header Menu -->
+            <div class="nav-no-collapse header-nav">
+                <ul class="nav pull-right">
+                    <!-- start: User Dropdown -->
+                    <li class="dropdown">
+                        <a class="btn account dropdown-toggle" data-toggle="dropdown" href="#">
+                            <div class="user">
+                                <span class="hello"> &nbsp; &nbsp;欢迎!管理员  &nbsp; &nbsp;<i class=" icon-caret-down"></i></span>
+                            </div>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-menu-title"></li>
+                            <li><a href="#"><i class="icon-cog"></i> 设置</a></li>
+                            <li><a href="#"><i class="icon-envelope"></i> 消息</a></li>
+                            <li><a href="login.html"><i class="icon-off"></i> 退出</a></li>
+                        </ul>
+                    </li>
+                    <!-- end: User Dropdown -->
+                </ul>
+            </div>
+            <!-- end: Header Menu -->
+
+        </div>
+    </div>
+</div>
+<!-- start: Header -->
+<div class="container-fluid-full">
+    <div class="row-fluid">
+        <!-- start: Main Menu -->
+        <div id="sidebar-left" class="span2">
+            <div class="nav-collapse sidebar-nav">
+                <ul class="nav nav-tabs nav-stacked main-menu">
+                    <li><a href='javascript:;' class="js-shop-panel"><i class="icon-bar-chart"></i><span class="hidden-tablet">首页</span></a></li>
+                    <li><a href='javascript:;' class="js-shop-panel"><i class="icon-eye-open"></i><span class="hidden-tablet">门店管理</span></a></li>
+                    <li><a href='javascript:;' class="js-worker-panel"><i class="icon-user"></i><span class="hidden-tablet">员工管理</span></a></li>
+                    <li><a href='javascript:;' class="js-order-panel"><i class="icon-edit"></i><span class="hidden-tablet">订单管理</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- end: Main Menu -->
+
+        <!-- start: Content -->
+        <div id="content" class="span10">
+            <!--门店管理开始-->
+            <div class="panel panel-default js-laundry-shop">
+                <div class="panel-heading clearfix">
+                    <span class="pull-left">门店管理</span>
+                    <div class="col-sm-1 pull-right">
+                        <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                            <i class="icon-plus"></i>&nbsp;&nbsp;添加
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">姓名</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">所属区域</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-area">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                                <i class="icon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                        </div>
+                    </div>
+                    <table class="js-laundry-shop-tab"></table>
+                </div>
+            </div>
+            <!--门店管理结束-->
+            <!--员工管理开始-->
+            <div class="panel panel-default js-laundry-worker" style="display: none;">
+                <div class="panel-heading clearfix">
+                    <span class="pull-left">员工管理</span>
+                    <div class="col-sm-1 pull-right">
+                        <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                            <i class="icon-plus"></i>&nbsp;&nbsp;添加
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">姓名</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">所属门店</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-area">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                                <i class="icon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                        </div>
+                    </div>
+                    <table class="js-laundry-worker-tab"></table>
+                </div>
+            </div>
+            <!--员工管理结束-->
+            <!--订单管理开始-->
+            <div class="panel panel-default js-laundry-order" style="display: none;">
+                <div class="panel-heading clearfix">
+                    <span class="pull-left">订单管理</span>
+                    <div class="col-sm-1 pull-right">
+                        <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                            <i class="icon-plus"></i>&nbsp;&nbsp;添加
+                        </button>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">姓名</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">所属门店</label>
+                                <div class="input-group col-sm-6" >
+                                    <input class="form-control js-area">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-primary btn-min-width js-search-btn" type="button">
+                                <i class="icon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                        </div>
+                    </div>
+                    <table class="js-laundry-order-tab"></table>
+                </div>
+            </div>
+            <!--订单管理结束-->
+        </div>
+        <!-- end: Content -->
+    </div>
+    <footer>
+        <p>
+        </p>
+    </footer>
+</div>
+
+</body>
+
+</html>
