@@ -5,6 +5,10 @@ $(function(){
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
     });
+    $('.js-shop-add-btn').click(function(){
+        alert(11);
+        location.href="pop/addShopPop.html";
+    });
     /**
      * 初始化门店管理表格
      */
@@ -47,6 +51,8 @@ $(function(){
         return result;
 
     };
+
+
     //////////////////////////////////////////////////////////////////
     ///////////////////////员工管理开始//////////////////////////////
     /////////////////////////////////////////////////////////////////

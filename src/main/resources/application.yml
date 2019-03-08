@@ -31,6 +31,21 @@ spring:
       testOnReturn: false
       poolPreparedStatements: true
       maxOpenPreparedStatements: 20
+  #邮件配置 qq邮箱
+  mail:
+    host: smtp.qq.com
+    username: 1451929954@qq.com
+    password: qnnshbqpedptfgih
+    protocol: smtp #发送邮件协议
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.port: 465 #端口号465或587
+    properties.mail.display.sendmail: Javen #可以任意
+    properties.mail.display.sendname: Spring Boot Guide Email #可以任意
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+
 
 ## 该配置节点为独立的节点
 mybatis:
@@ -52,3 +67,6 @@ log:
     corePoolSize: 4
     maxPoolSize: 8
     queueSize: 10000
+
+
+
