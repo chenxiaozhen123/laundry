@@ -1,38 +1,30 @@
-$(function(){
-    var gridHeight = $(window).height() - $('.js-laundry-shop-tab').offset().top - $('.navbar').height()-$('footer').height()-80;
+// $(function () {
     $('.js-shop-panel').click(function(){
         $('.js-laundry-worker').css("display", 'none');
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
     });
-    $('.js-shop-add-btn').click(function(){
-        alert(11);
-        location.href="pop/addShopPop.html";
-    });
-    /**
-     * 初始化门店管理表格
-     */
     $('.js-laundry-shop-tab').bootstrapTable({
-        data:[{id:1},{id:2},{id:1},{id:2}],
+        data:[{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2}],
 //			    url: 'data1.json',
-        height: gridHeight,
+        height: 300,
         columns: [{
             field: 'id',
             title: '门店编号'
         },{
-            field: 'price',
+            field: 'area',
             title: '所属区域'
         },{
             field: 'name',
             title: '负责人姓名'
         }, {
-            field: 'price',
+            field: 'telNum',
             title: '手机号码'
         },{
-            field: 'price',
+            field: 'address',
             title: '地址'
         },{
-            field: 'price',
+            field: 'action',
             title: '操作',
             formatter:actionFormatter
         }],
@@ -41,33 +33,24 @@ $(function(){
         pagination: true,
         pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
         pageSize: 3,                     //每页的记录行数（*）
-        pageList: [2, 5],  //可供选择的每页的行数（*）
-        showHeader: true
+        pageList: [2,5,10],  //可供选择的每页的行数（*）
     });
     function actionFormatter(value, row, index){
         var result = "";
-        result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editById('" + row.id + "')\" title='编辑'><span class='icon-edit'></span></a>";
-        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteById('" + row.id + "')\" title='删除'><span class=' icon-remove'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editById('" + row.id + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
+        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteById('" + row.id + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
         return result;
 
     };
-
-
-    //////////////////////////////////////////////////////////////////
-    ///////////////////////员工管理开始//////////////////////////////
-    /////////////////////////////////////////////////////////////////
     $('.js-worker-panel').click(function(){
         $('.js-laundry-worker').css("display", '');
         $('.js-laundry-shop').css("display", 'none');
         $('.js-laundry-order').css("display", 'none');
     });
-    /**
-     * 初始化员工管理表格
-     */
     $('.js-laundry-worker-tab').bootstrapTable({
         data:[{id:1},{id:2},{id:1},{id:2}],
 //			    url: 'data1.json',
-        height: gridHeight,
+        height: 300,
         columns: [{
             field: 'id',
             title: '员工编号'
@@ -93,17 +76,6 @@ $(function(){
         pageList: [2, 5],  //可供选择的每页的行数（*）
         showHeader: true
     });
-    function actionFormatter(value, row, index){
-        var result = "";
-        result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editById('" + row.id + "')\" title='编辑'><span class='icon-edit'></span></a>";
-        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteById('" + row.id + "')\" title='删除'><span class=' icon-remove'></span></a>";
-        return result;
-
-    };
-
-    //////////////////////////////////////////////////////////////////
-    ///////////////////////订单管理开始//////////////////////////////
-    /////////////////////////////////////////////////////////////////
     $('.js-order-panel').click(function(){
         $('.js-laundry-worker').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
@@ -112,22 +84,27 @@ $(function(){
     $('.js-laundry-order-tab').bootstrapTable({
         data:[{id:1},{id:2},{id:1},{id:2}],
 //			    url: 'data1.json',
-        height: gridHeight,
+        height: 300,
         columns: [{
             field: 'id',
-            title: '订单编号'
+            title: '订单编号',
+            width:150
         },{
             field: 'price',
-            title: '姓名'
+            title: '姓名',
+            width:150
         },{
             field: 'name',
-            title: '手机号码'
+            title: '手机号码',
+            width:150
         }, {
             field: 'price',
-            title: '所属门店'
+            title: '所属门店',
+            width:150
         },{
             field: 'price',
             title: '操作',
+            width:150,
             formatter:actionFormatter
         }],
         cache: false,
@@ -138,19 +115,11 @@ $(function(){
         pageList: [2, 5],  //可供选择的每页的行数（*）
         showHeader: true
     });
-    function actionFormatter(value, row, index){
-        var result = "";
-        result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editById('" + row.id + "')\" title='编辑'><span class='icon-edit'></span></a>";
-        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteById('" + row.id + "')\" title='删除'><span class=' icon-remove'></span></a>";
-        return result;
 
-    };
-
-});
-function editById(val){
-    alert(val)
+// });
+function editById() {
+    alert(111)
 }
-function deleteById(val){
-    alert(val)
-    console.log(JSON.stringify(val));
-};
+function deleteById() {
+
+}
