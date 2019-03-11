@@ -24,38 +24,38 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cust")
 public class CustController {
-    private Logger logger = LoggerFactory.getLogger(CustController.class);
-    @Autowired
-    ICustService custService;
-    @Autowired
-    MailUtil mailUtil;
-    /**
-     * 用户查询: 本网3张表 + 它网用户
-     * 客户ID，房间号
-     *
-     * @param request
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/login")
-    public void login(HttpServletRequest request) {
-
-        String to = "a569876412@qq.com";
-        String su = "账号信息";
-        String content = "测试邮件";
-
-//        mailUtil.sendMail(to,su,content);
-        Message message = new Message();
-        message.setUsername("陈");
-        message.setGender(LaundryConsts.GENTLEMAN);
-        message.setInitalPassword(LaundryConsts.INITIAL_PASSWORD);
-        message.setJobNumber("00270000001");
-        mailUtil.sendMailAccountMsg(message,to,su,"accountMsg.ftl");
-        Map<String, Object> reqMap = new HashMap<>();
-        reqMap.put("mobile","13368342442");
-        reqMap.put("password","123456");
-        Map<String, Object> resMap = custService.login(reqMap);
-        logger.debug(resMap.toString());
-    }
+//    private Logger logger = LoggerFactory.getLogger(CustController.class);
+//    @Autowired
+//    ICustService custService;
+//    @Autowired
+//    MailUtil mailUtil;
+//    /**
+//     * 用户查询: 本网3张表 + 它网用户
+//     * 客户ID，房间号
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @ResponseBody
+//    @RequestMapping(value = "/login")
+//    public void login(HttpServletRequest request) {
+//
+//        String to = "763268418@qq.com";
+//        String su = "账号信息";
+//        String content = "测试邮件";
+//
+////        mailUtil.sendMail(to,su,content);
+//        Message message = new Message();
+//        message.setUsername("陈");
+//        message.setGender(LaundryConsts.GENTLEMAN);
+//        message.setInitalPassword(LaundryConsts.INITIAL_PASSWORD);
+//        message.setJobNumber("00270000001");
+//        mailUtil.sendMailAccountMsg(message,to,su,"accountMsg.ftl");
+//        Map<String, Object> reqMap = new HashMap<>();
+//        reqMap.put("mobile","13368342442");
+//        reqMap.put("password","123456");
+//        Map<String, Object> resMap = custService.login(reqMap);
+//        logger.debug(resMap.toString());
+//    }
 
 }

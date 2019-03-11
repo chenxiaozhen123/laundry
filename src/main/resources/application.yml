@@ -8,9 +8,9 @@ spring:
   profiles:
   #多环境配置 dev：开发环境 pro：生产环境
       active: dev
-  resources:
-  #html、jsp等静态页面存放的位置
-      static-locations: classpath:src/main/webapp
+  mvc:
+    view:
+      suffix: .html
   datasource:
       url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
       username: root
