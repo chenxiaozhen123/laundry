@@ -3,16 +3,18 @@ package com.cqnu.web.controller;
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.model.Message;
 import com.cqnu.base.util.MailUtil;
+import com.cqnu.web.entity.Customer;
 import com.cqnu.web.service.ICustService;
+import com.cqnu.web.service.impl.CustServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,11 +24,62 @@ import java.util.Map;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/cust")
+//@RequestMapping("/cust")
 public class CustController {
+
+    //模拟用户登录验证
+    @RequestMapping(value = "/login/{username}/{password}",method = RequestMethod.GET)
+    public Object login(@PathVariable String username,@PathVariable String password){
+        System.out.println(username);
+        System.out.println(password);
+        return "success";
+    }
+
+    //模拟现实用户信息
+    @RequestMapping(value = "/list")
+    public Object list(){
+        String username = "root";
+        String password = "123456";
+        HashMap<Object, Object> objectObjectHashMap = new HashMap<>(1);
+        objectObjectHashMap.put("username",username);
+        objectObjectHashMap.put("password",password);
+        return objectObjectHashMap;
+    }
+
+
+
+
+
 //    private Logger logger = LoggerFactory.getLogger(CustController.class);
+//
 //    @Autowired
 //    ICustService custService;
+//    @RequestMapping("/login/{password}")
+//    public String Login(HttpServletRequest request,@PathVariable Integer password){
+//        Map<String, Object> reqMap = new HashMap<>();
+//        reqMap.put("mobile","13368342442");
+//        reqMap.put("password",password);
+//        Map<String, Object> resMap = custService.login(reqMap);
+//        logger.debug(resMap.toString());
+//        return "/index";
+//    }
+
+
+//    @Autowired
+//    ICustService custService;
+//
+//    @RequestMapping("/find")
+//    public List<Customer> find(){
+//        return custService.find();
+//    }
+//
+//    @RequestMapping("/get/{id}")
+//    public Customer get(@PathVariable Integer id){
+//        return custService.get(id);
+//    }
+
+
+
 //    @Autowired
 //    MailUtil mailUtil;
 //    /**

@@ -10,15 +10,15 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class LoginController {
 
-    /**
-     * 登陆
-     */
-    @GetMapping("/login")
-    public String login() { return "/admin/login";}
-
-    /**
-     * 首页
-     */
-    @GetMapping("/index")
-    public String index() { return "/admin/index";}
+//    /**
+//     * 登陆
+//     */
+//    @GetMapping("/login")
+//    public String login() { return "/admin/login";}
+//
+//    /**
+//     * 首页
+//     */
+//    @GetMapping("/index")
+//    public String index() { return "/admin/index";}
 }

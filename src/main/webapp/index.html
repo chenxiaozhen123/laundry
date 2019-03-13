@@ -1,15 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="renderer" content="webkit">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>laundry</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
-
 <body>
-<h1>welcome to 连锁干洗中心</h1>
+<h1>连锁</h1>
+<input id="username" readonly="readonly">
+<input id="password" readonly="readonly">
 </body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+<script type="text/javascript">
+    //获取basePath，测试的话就能用就完了
+    var obj = window.document.location;
+    var BASE_PATH = obj.href.substring(0, obj.href.indexOf(obj.pathname));
+    //请求渲染模拟
+    $.ajax({
+        url: BASE_PATH + "/laundry/list",
+        type: "get",
+        success: function f(data) {
+            $("#username").val(data.username);
+            $("#password").val(data.password);
+        }
+    })
+</script>
 </html>

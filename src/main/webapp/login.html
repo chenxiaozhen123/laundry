@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,8 +6,28 @@
     <title>Title</title>
 </head>
 <body>
-<form id="login.action" name="/login.action" action="cust/login" method="post">
-    <input type="submit" id="User_login_action_0" value="立即登录"/>
-</form>
+<button type="button">提交</button>
 </body>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"
+integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+crossorigin="anonymous"></script>
+<script type="text/javascript">
+    //获取basePath，测试的话就能用就完了
+    var obj = window.document.location;
+    var BASE_PATH = obj.href.substring(0, obj.href.indexOf(obj.pathname));
+    //请求传参模拟
+    var username = "root";
+    var password = "123456";
+    $("button").on("click", function () {
+        $.ajax({
+            url: BASE_PATH + "/laundry/login/" + username + "/" + password,
+            type: "get",
+            success: function f(data) {
+                console.log(data);
+                debugger;
+                window.location.href = BASE_PATH + "/laundry/index.html";
+            }
+        })
+    });
+</script>
 </html>
