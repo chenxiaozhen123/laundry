@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cqnu.web.mapper.AdminMapper" >
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Admin" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="admin_id" property="adminId" jdbcType="INTEGER" />
+    <result column="admin_no" property="adminNo" jdbcType="VARCHAR" />
+    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
+    <result column="amdin_password" property="amdinPassword" jdbcType="VARCHAR" />
+    <result column="admin_tel_num" property="adminTelNum" jdbcType="VARCHAR" />
+    <result column="admin_email" property="adminEmail" jdbcType="VARCHAR" />
+    <result column="role_id" property="roleId" jdbcType="INTEGER" />
+    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getAdmin" resultType="map" parameterType="map">
+    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_id ,a.state from admin a
+    where a.state = '00A'
+    <if test="null != admin_no and '' != admin_no">
+      and a.admin_no = #{admin_no}
+    </if>
+    <if test="null != password and '' != password">
+      and a.amdin_password = #{password}
+    </if>
+  </select>
+</mapper>

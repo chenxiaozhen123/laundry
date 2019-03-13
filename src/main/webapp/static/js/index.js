@@ -1,9 +1,33 @@
-// $(function () {
+$(function() {
+    $.ajax({
+        url:"sys/status",
+        data:"",
+        dataType:"json",
+        type:"get",
+        success:function(data){
+            initPage(data);
+        },
+        error:function (data) {
+
+        }
+    })
+});
+function initPage(data){
+    //门店管理员
+    if( 4 == data.rolePriority ){
+        $('.js-shop-panel').css("display", 'none');
+    }else if( 3 == data.rolePriority ){ //门店/干洗中心员工
+        $('.js-shop-panel').css("display", 'none');
+        $('.js-worker-panel').css("display", 'none');
+    }
     $('.js-shop-panel').click(function(){
         $('.js-laundry-worker').css("display", 'none');
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
     });
+    $('.js-admin-name').text(data.name);
+    $('.js-role-name').text(data.roleName);
+
     $('.js-laundry-shop-tab').bootstrapTable({
         data:[{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2},{id:1},{id:2}],
 //			    url: 'data1.json',
@@ -115,11 +139,11 @@
         pageList: [2, 5],  //可供选择的每页的行数（*）
         showHeader: true
     });
-
-// });
+}
 function editById() {
     alert(111)
 }
 function deleteById() {
 
 }
+
