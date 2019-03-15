@@ -68,6 +68,7 @@ public class SysLoginController extends BaseController{
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("role_id",admin.getRoleId());
             Map<String, Object> resMap = roleService.getRole(reqMap);
+            adminLoginInfo.setShopNo(admin.getShopNo());
             adminLoginInfo.setRoleId(admin.getRoleId());
             adminLoginInfo.setRolePriority(Integer.valueOf(resMap.get("role_priority").toString()));
             adminLoginInfo.setRoleName(resMap.get("role_name").toString());
@@ -99,7 +100,7 @@ public class SysLoginController extends BaseController{
         admin.setAdminName(map.get("admin_name").toString());
         admin.setAdminTelNum(map.get("admin_tel_num").toString());
         admin.setRoleId(Integer.valueOf(map.get("role_id").toString()));
-        admin.setShopId(Integer.valueOf(map.get("shop_id").toString()));
+        admin.setShopNo(Integer.valueOf(map.get("shop_no").toString()));
         admin.setState(map.get("state").toString());
         return admin;
     }

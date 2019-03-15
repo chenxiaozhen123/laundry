@@ -39,7 +39,7 @@ public class AdminLoginInfo {
     /**
      * 所属门店
      */
-    private Integer shopId;
+    private int shopNo;
     /**
      * 所属门店
      */
@@ -105,12 +105,12 @@ public class AdminLoginInfo {
         this.rolePriority = rolePriority;
     }
 
-    public Integer getShopId() {
-        return shopId;
+    public int getShopNo() {
+        return shopNo;
     }
 
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
+    public void setShopNo(int shopNo) {
+        this.shopNo = shopNo;
     }
 
     public Integer getShopName() {

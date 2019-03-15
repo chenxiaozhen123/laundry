@@ -7,6 +7,7 @@ import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.Map;
  * @Date 2019/1/31 10:20
  * @Version 1.0
  **/
+@Service("baseService")
 public class BaseServiceImpl implements BaseService{
     @Autowired
     protected SqlSessionTemplate session;
@@ -45,7 +47,7 @@ public class BaseServiceImpl implements BaseService{
     public Map<String, Object> queryForPage(String key, Map<String, Object> param) {
         Map<String, Object> retmap = new HashMap<String, Object>();
         boolean pagination = false;
-        if (param.containsKey("page") && param.containsKey("rows")) {
+        if (param.containsKey("pageNum") && param.containsKey("pageSize")) {
             pagination = true;
         }
         if (pagination) {

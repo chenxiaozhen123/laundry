@@ -34,6 +34,7 @@ public class InterceptorConfig  implements WebMvcConfigurer {
         loginRegistry.excludePathPatterns("/index.html"); //启动欢迎页
         loginRegistry.excludePathPatterns("/admin/login.html"); //后台登录页
         loginRegistry.excludePathPatterns("/admin/sys/login"); //后台登录页请求地址
+        loginRegistry.excludePathPatterns("/login.html"); //前台登录页请求地址
         // 排除资源请求
         loginRegistry.excludePathPatterns("/static/css/*.css");
         loginRegistry.excludePathPatterns("/static/bootstrap/css/*.css");

@@ -42,6 +42,12 @@ public class Admin {
     private String adminEmail;
 
     /**
+     * 性别
+     */
+    @Column(name = "admin_sex")
+    private String adminSex;
+
+    /**
      * 角色id
      */
     @Column(name = "role_id")
@@ -50,8 +56,8 @@ public class Admin {
     /**
      * 所属门店
      */
-    @Column(name = "shop_id")
-    private Integer shopId;
+    @Column(name = "shop_no")
+    private Integer shopNo;
 
     /**
      * 状态
@@ -167,6 +173,24 @@ public class Admin {
     }
 
     /**
+     * 获取性别
+     *
+     * @return admin_sex - 性别
+     */
+    public String getAdminSex() {
+        return adminSex;
+    }
+
+    /**
+     * 设置性别
+     *
+     * @param adminSex 性别
+     */
+    public void setAdminSex(String adminSex) {
+        this.adminSex = adminSex;
+    }
+
+    /**
      * 获取角色id
      *
      * @return role_id - 角色id
@@ -187,19 +211,19 @@ public class Admin {
     /**
      * 获取所属门店
      *
-     * @return shop_id - 所属门店
+     * @return shop_no - 所属门店
      */
-    public Integer getShopId() {
-        return shopId;
+    public Integer getShopNo() {
+        return shopNo;
     }
 
     /**
      * 设置所属门店
      *
-     * @param shopId 所属门店
+     * @param shopNo 所属门店
      */
-    public void setShopId(Integer shopId) {
-        this.shopId = shopId;
+    public void setShopNo(Integer shopNo) {
+        this.shopNo = shopNo;
     }
 
     /**

@@ -1,28 +1,76 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.cqnu.web.mapper.AdminMapper" >
-  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Admin" >
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.AdminMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Admin">
     <!--
       WARNING - @mbg.generated
     -->
-    <id column="admin_id" property="adminId" jdbcType="INTEGER" />
-    <result column="admin_no" property="adminNo" jdbcType="VARCHAR" />
-    <result column="admin_name" property="adminName" jdbcType="VARCHAR" />
-    <result column="amdin_password" property="amdinPassword" jdbcType="VARCHAR" />
-    <result column="admin_tel_num" property="adminTelNum" jdbcType="VARCHAR" />
-    <result column="admin_email" property="adminEmail" jdbcType="VARCHAR" />
-    <result column="role_id" property="roleId" jdbcType="INTEGER" />
-    <result column="shop_id" property="shopId" jdbcType="INTEGER" />
-    <result column="state" property="state" jdbcType="VARCHAR" />
+    <id column="admin_id" jdbcType="INTEGER" property="adminId" />
+    <result column="admin_no" jdbcType="VARCHAR" property="adminNo" />
+    <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
+    <result column="amdin_password" jdbcType="VARCHAR" property="amdinPassword" />
+    <result column="admin_tel_num" jdbcType="VARCHAR" property="adminTelNum" />
+    <result column="admin_email" jdbcType="VARCHAR" property="adminEmail" />
+    <result column="admin_sex" jdbcType="VARCHAR" property="adminSex" />
+    <result column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="shop_no" jdbcType="INTEGER" property="shopNo" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
-  <select id="getAdmin" resultType="map" parameterType="map">
-    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_id ,a.state from admin a
+
+  <select id="getAdmin" parameterType="map" resultType="map">
+    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_no, a.admin_sex,a.state from admin a
     where a.state = '00A'
     <if test="null != admin_no and '' != admin_no">
       and a.admin_no = #{admin_no}
     </if>
     <if test="null != password and '' != password">
       and a.amdin_password = #{password}
+    </if>
+    <if test="null != roleIds">
+      and a.role_id in
+        <foreach close=")" collection="roleIds" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </if>
+    <if test="null != admin_name and '' != admin_name">
+      and a.admin_name like concat(concat('%', #{admin_name}), '%')
+    </if>
+    <if test="null != shop_no and '' != shop_no">
+      and a.shop_no = #{shop_no}
+    </if>
+  </select>
+
+  <insert id="addAdmin" parameterType="map">
+    insert into admin (admin_no,admin_name,amdin_password,admin_tel_num,admin_email,admin_sex,role_id,shop_no,state)
+    VALUES (
+      #{admin_no},#{admin_name},'123456',#{admin_tel_num},#{admin_email},#{admin_sex},#{role_id},#{shop_no},'00A'
+    )
+  </insert>
+  <select id="getAdminNoByRoleID" parameterType="map" resultType="map">
+    select max(admin_no)+1 as admin_no from admin where role_id = #{role_id}
+  </select>
+
+  <update id="updateShopIdByAdminNo">
+    update admin set shop_no = #{shop_no} where admin_no = #{admin_no}
+  </update>
+  <select id="getAdminList" parameterType="map" resultType="map">
+    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,
+    a.shop_no, a.admin_sex,a.state ,r.role_name ,s.shop_name from admin a ,role r,laundry_shop s
+    where a.state = '00A' and r.role_id = a.role_id and a.shop_no = s.shop_no
+    <if test="null != roleIds">
+      and a.role_id in
+      <foreach close=")" collection="roleIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
+    <if test="null != admin_name and '' != admin_name">
+      and a.admin_name like concat(concat('%', #{admin_name}), '%')
+    </if>
+    <if test="null != shop_name and '' != shop_name">
+      and s.shop_name like concat(concat('%', #{shop_name}), '%')
+    </if>
+    <if test="null != shop_no and '' != shop_no">
+      and a.shop_no = #{shop_no}
     </if>
   </select>
 </mapper>
