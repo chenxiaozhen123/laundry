@@ -18,6 +18,8 @@ public interface LaundryConsts {
 
     String GENTLEMAN = "先生";
     String MADAM = "女士";
+    String MAN = "男";
+    String WOMAN = "女";
     /**
      * 门店管理员初始工号
      */
@@ -54,5 +56,13 @@ public interface LaundryConsts {
      * 干洗中心门店编号+1
      */
     String LAUNDRY_NO_INID="0";
+    /**
+     * 入职邮件主题
+     */
+    String ENTRY_SUBJECT = "入职通知";
+    /**
+     * 入职邮件模板
+     */
+    String ENTRY_TEMPLATE="accountMsg.ftl";
 
 }

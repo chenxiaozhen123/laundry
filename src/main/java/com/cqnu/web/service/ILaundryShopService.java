@@ -35,4 +35,12 @@ public interface ILaundryShopService {
      * @return
      */
     int updateLaundryShop(Map<String, Object> params);
+
+    /**
+     * 根据门店编号得到门店信息
+     * @param params
+     * @return
+     */
+    Map<String, Object> getShopByShopNo(Map<String, Object> params);
+
 }

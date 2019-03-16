@@ -18,7 +18,7 @@
   </resultMap>
 
   <select id="getAdmin" parameterType="map" resultType="map">
-    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_no, a.admin_sex,a.state from admin a
+    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_no,a.admin_sex,a.state from admin a
     where a.state = '00A'
     <if test="null != admin_no and '' != admin_no">
       and a.admin_no = #{admin_no}
@@ -69,8 +69,21 @@
     <if test="null != shop_name and '' != shop_name">
       and s.shop_name like concat(concat('%', #{shop_name}), '%')
     </if>
-    <if test="null != shop_no and '' != shop_no">
-      and a.shop_no = #{shop_no}
+    <if test="null != role_name and '' != role_name">
+      and r.role_name like concat(concat('%', #{role_name}), '%')
     </if>
+
   </select>
+  <update id="deleteAdminByAdminNo">
+    update admin set state = '00X' where admin_no = #{admin_no}
+  </update>
+  <update id="updateAdminInfo">
+    update admin set admin_name = #{admin_name},admin_tel_num = #{admin_tel_num},
+    admin_email = #{admin_email},admin_sex = #{admin_sex}
+    where state = '00A' and admin_no = #{admin_no}
+  </update>
+  <update id="updateAdminRoleAndShopInfo">
+    update admin set role_id = #{role_id},shop_no = #{shop_no}
+    where state = '00A' and admin_no = #{admin_no}
+  </update>
 </mapper>

@@ -28,4 +28,24 @@ public interface IAdminService {
      */
     int updateShopIdByAdminNo(Map<String, Object> param);
 
+    /**
+     * 根据工号删除员工
+     * @param param
+     * @return
+     */
+    int deleteAdminByAdminNo(Map<String, Object> param);
+
+    /**
+     * 更改员工个人信息
+     * @param param
+     * @return
+     */
+    int updateAdminInfo(Map<String, Object> param);
+
+    /**
+     * 管理员更改员工信息
+     * @param param
+     * @return
+     */
+    int updateAdminRoleAndShopInfo(Map<String, Object> param);
 }

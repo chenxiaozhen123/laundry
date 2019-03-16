@@ -43,4 +43,9 @@
     shop_address = #{shop_address},principal_no = #{principal_no}
     where state = '00A' and shop_no = #{shop_no}
   </update>
+  <select id="getShopByShopNo" parameterType="map" resultType="map">
+    select s.shop_id,s.shop_no,s.shop_name ,s.shop_area ,s.shop_address,s.principal_no from laundry_shop s
+    where s.state = '00A'
+    and s.shop_no = #{shop_no}
+  </select>
 </mapper>

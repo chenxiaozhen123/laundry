@@ -43,7 +43,8 @@ public class AdminLoginInfo {
     /**
      * 所属门店
      */
-    private Integer shopName;
+    private String shopName;
+    private String sex;
     /**
      * 状态
      */
@@ -113,13 +114,7 @@ public class AdminLoginInfo {
         this.shopNo = shopNo;
     }
 
-    public Integer getShopName() {
-        return shopName;
-    }
 
-    public void setShopName(Integer shopName) {
-        this.shopName = shopName;
-    }
 
     public String getState() {
         return state;
@@ -135,5 +130,21 @@ public class AdminLoginInfo {
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }

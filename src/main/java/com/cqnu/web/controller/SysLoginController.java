@@ -5,6 +5,7 @@ import com.cqnu.base.controller.BaseController;
 import com.cqnu.web.entity.Admin;
 
 import com.cqnu.web.model.AdminLoginInfo;
+import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.service.IRoleService;
 import com.cqnu.web.service.ISysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,8 @@ public class SysLoginController extends BaseController{
     ISysLoginService sysLoginService;
     @Autowired
     IRoleService roleService;
+    @Autowired
+    ILaundryShopService laundryShopService;
     /**
      * 登陆
      */
@@ -68,11 +71,17 @@ public class SysLoginController extends BaseController{
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("role_id",admin.getRoleId());
             Map<String, Object> resMap = roleService.getRole(reqMap);
+            reqMap = new HashMap<>();
+            reqMap.put("shop_no",admin.getShopNo());
+            Map<String, Object> resShopMap = laundryShopService.getShopByShopNo(reqMap);
             adminLoginInfo.setShopNo(admin.getShopNo());
             adminLoginInfo.setRoleId(admin.getRoleId());
             adminLoginInfo.setRolePriority(Integer.valueOf(resMap.get("role_priority").toString()));
             adminLoginInfo.setRoleName(resMap.get("role_name").toString());
             adminLoginInfo.setName(admin.getAdminName());
+            adminLoginInfo.setSex(admin.getAdminSex());
+            adminLoginInfo.setShopName(resShopMap.get("shop_name").toString());
+            adminLoginInfo.setTelNum(admin.getAdminTelNum());
         }
         return adminLoginInfo;
     }
@@ -97,6 +106,7 @@ public class SysLoginController extends BaseController{
         admin.setAmdinPassword(map.get("amdin_password").toString());
         admin.setAdminId(Integer.valueOf(map.get("admin_id").toString()));
         admin.setAdminEmail(map.get("admin_email").toString());
+        admin.setAdminSex(map.get("admin_sex").toString());
         admin.setAdminName(map.get("admin_name").toString());
         admin.setAdminTelNum(map.get("admin_tel_num").toString());
         admin.setRoleId(Integer.valueOf(map.get("role_id").toString()));

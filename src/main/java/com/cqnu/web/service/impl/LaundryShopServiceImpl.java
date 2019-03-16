@@ -34,4 +34,9 @@ public class LaundryShopServiceImpl extends BaseServiceImpl implements ILaundryS
     public int updateLaundryShop(Map<String, Object> params) {
         return session.update("com.cqnu.web.mapper.LaundryShopMapper.updateLaundryShop",params);
     }
+
+    @Override
+    public Map<String, Object> getShopByShopNo(Map<String, Object> params) {
+        return session.selectOne("com.cqnu.web.mapper.LaundryShopMapper.getShopByShopNo",params);
+    }
 }
