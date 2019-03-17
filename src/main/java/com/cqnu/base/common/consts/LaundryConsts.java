@@ -64,5 +64,25 @@ public interface LaundryConsts {
      * 入职邮件模板
      */
     String ENTRY_TEMPLATE="accountMsg.ftl";
+    /**
+     *
+     */
+    String TAKE_ACTION="取衣";
+    String SEND_ACTION="送洗";
+    String WASH_ACTION="清洗";
+    String HANG_ACTION="上挂";
+    String RECEIVE_ACTION="领取";
+    String TAKE_BACK_ACTION="取回";
+    String DELIVER_ACTION = "门店送衣/顾客取衣";
+
+    String WAIT_TAKE_STATUS="待取衣";
+    String TAKE_STATUS="已取衣";
+    String SEND_STATUS="正在送洗";
+    String WASH_STATUS="正在清洗";
+    String HANG_STATUS="上挂";
+    String RECEIVE_STATUS="领取";
+    String TAKE_BACK_STATUS="取回";
+    String WAIT_CONFIRM_STATUS="待确认收衣";
+    String WAIT_REVIEW_STATUS="待评价";
 
 }

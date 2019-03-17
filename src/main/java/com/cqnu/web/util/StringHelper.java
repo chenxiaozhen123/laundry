@@ -51,14 +51,15 @@ public class StringHelper {
         Object objs[] = set.toArray(new String[0]);
         return (String[]) objs;
     }
+
     /**
      * 将string类型封装成List
-     * @param roleIds
+     * @param data
      * @return
      */
-    public static List<String> stringToList(String roleIds){
-        String roleIdStr = delRepeatData(roleIds);
-        String str[] = roleIdStr.split(",");
+    public static List<String> stringToList(String data){
+        String dataStr = delRepeatData(data);
+        String str[] = dataStr.split(",");
         return Arrays.asList(str);
 
     }

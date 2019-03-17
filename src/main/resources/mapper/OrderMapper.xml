@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Order">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="order_id" jdbcType="VARCHAR" property="orderId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="payDate" jdbcType="TIMESTAMP" property="paydate" />
+    <result column="takeDate" jdbcType="TIMESTAMP" property="takedate" />
+    <result column="sendDate" jdbcType="TIMESTAMP" property="senddate" />
+    <result column="washDate" jdbcType="TIMESTAMP" property="washdate" />
+    <result column="hangDate" jdbcType="TIMESTAMP" property="hangdate" />
+    <result column="receiveDate" jdbcType="TIMESTAMP" property="receivedate" />
+    <result column="takeBackDate" jdbcType="TIMESTAMP" property="takebackdate" />
+    <result column="deliverDate" jdbcType="TIMESTAMP" property="deliverdate" />
+    <result column="confirmDate" jdbcType="TIMESTAMP" property="confirmdate" />
+    <result column="reviewDate" jdbcType="TIMESTAMP" property="reviewdate" />
+  </resultMap>
+  <update id="handleOrder" parameterType="map">
+    update `order`
+    <set>
+      <if test="null != payDesc and '' != payDesc">
+        `status` = #{payDesc},payDate = now(),
+      </if>
+      <if test="null != takeDesc and '' != takeDesc">
+        `status` = #{takeDesc},takeDate = now(),
+      </if>
+      <if test="null != sendDesc and '' != sendDesc">
+        `status` = #{sendDesc},sendDate = now(),
+      </if>
+      <if test="null != washDesc and '' != washDesc">
+        `status` = #{washDesc},washDate = now(),
+      </if>
+      <if test="null != hangDesc and '' != hangDesc">
+        `status` = #{hangDesc},hangDate = now(),
+      </if>
+      <if test="null != receiveDesc and '' != receiveDesc">
+        `status` = #{receiveDesc},receiveDate = now(),
+      </if>
+      <if test="null != takeBackDesc and '' != takeBackDesc">
+        `status` = #{takeBackDesc},takeBackDate = now(),
+      </if>
+      <if test="null != deliverDesc and '' != deliverDesc">
+        `status` = #{deliverDesc},deliverDate = now(),
+      </if>
+    </set>
+    where order_id = #{orderId}
+  </update>
+  <select id="getOrderList" parameterType="map" resultType="map">
+    select o.order_id,o.address,o.status,
+    DATE_FORMAT(o.createDate,'%Y-%m-%d %H:%i:%S') createDate,
+    DATE_FORMAT(o.payDate,'%Y-%m-%d %H:%i:%S') payDate,
+    DATE_FORMAT(o.takeDate,'%Y-%m-%d %H:%i:%S') takeDate,
+    DATE_FORMAT(o.sendDate,'%Y-%m-%d %H:%i:%S') sendDate,
+    DATE_FORMAT(o.washDate,'%Y-%m-%d %H:%i:%S') washDate,
+    DATE_FORMAT(o.hangDate,'%Y-%m-%d %H:%i:%S') hangDate,
+    DATE_FORMAT(o.receiveDate,'%Y-%m-%d %H:%i:%S') receiveDate,
+    DATE_FORMAT(o.takeBackDate,'%Y-%m-%d %H:%i:%S') takeBackDate,
+    DATE_FORMAT(o.deliverDate,'%Y-%m-%d %H:%i:%S') deliverDate,
+    DATE_FORMAT(o.confirmDate,'%Y-%m-%d %H:%i:%S') confirmDate,
+    DATE_FORMAT(o.reviewDate,'%Y-%m-%d %H:%i:%S') reviewDate
+    from `order` o where 1 = 1
+    <if test="null != status and '' != status">
+      and o.status like concat(concat('%', #{status}), '%')
+    </if>
+    <if test="null != orderId and '' != orderId">
+      and o.order_id like concat(concat('%', #{orderId}), '%')
+    </if>
+
+  </select>
+</mapper>

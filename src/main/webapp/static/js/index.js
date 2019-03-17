@@ -14,6 +14,19 @@ $(function() {
 });
 var action = "Edit";
 var roleIDs = '2,3,4';
+//门店能操作的订单的状态
+var shopOrderList = new Array();
+shopOrderList[0] = '待取衣';
+shopOrderList[1] = '已取衣';
+shopOrderList[2] = '上挂';
+shopOrderList[3] = '领取';
+shopOrderList[4] = '取回';
+//干洗中心能操作的订单的状态
+var centerOrderList = new Array();
+centerOrderList[0] = '正在送洗';
+centerOrderList[1] = '正在清洗';
+
+
 /**
  * 初始化页面
  * @param data
@@ -32,10 +45,12 @@ function initPage(data){
         roleIDs = '3';
     }else if( 3 == data.rolePriority ){ //门店/干洗中心员工
         $('.js-shop-panel').css("display", 'none');
+        $('.js-laundry-shop').css("display", 'none');
         $('.js-worker-panel').css("display", 'none');
-        $('.js-laundry-order').css("display", 'none');
+        $('.js-laundry-order').css("display", '');
 
     }
+
 
 
      ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,20 +349,6 @@ function initPage(data){
             }
         }
     );
-    /**
-     * 操作单元格格式化
-     * @param value
-     * @param row
-     * @param index
-     * @returns {string}
-     */
-    function actionFormatter(value, row, index){
-        var result = "";
-        result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editById('" + row + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
-        result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteById('" + row.shop_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
-        return result;
-
-    };
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////门店管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -363,6 +364,7 @@ function initPage(data){
             $('.js-laundry-order').css("display", 'none');
         }
     );
+    var name = $('.js-worker-name').val();
     var shopName = $('.js-worker-shop').val();
     var roleName = $('.js-worker-role').val();
     /**
@@ -446,7 +448,7 @@ function initPage(data){
                 roleName:roleName
             }
             return param
-        },
+        }
     });
 
     /**
@@ -454,7 +456,7 @@ function initPage(data){
      */
     $('.js-worker-search-btn').on(
         "click",function () {
-            var name = $('.js-worker-name').val();
+            name = $('.js-worker-name').val();
             shopName = $('.js-worker-shop').val();
             roleName = $('.js-worker-role').val();
             var opt = {
@@ -670,6 +672,8 @@ function initPage(data){
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////订单管理开始////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    var orderId = $('.js-order-id').val();
+    var status = $('.js-order-status').val();
     $('.js-order-panel').on(
         "click",function () {
             $('.js-laundry-worker').css("display", 'none');
@@ -681,39 +685,145 @@ function initPage(data){
      * 初始化订单管理表格
      */
     $('.js-laundry-order-tab').bootstrapTable({
-        data:[{id:1},{id:2},{id:1},{id:2}],
-//			    url: 'data1.json',
+        url: 'order/getOrderList',
         height: 300,
         columns: [{
-            field: 'id',
+            field: 'action',
+            width:120,
+            visible: false
+        },{
+            field: 'order_id',
             title: '订单编号',
-            width:150
+            width:120
         },{
-            field: 'price',
-            title: '姓名',
-            width:150
+            field: 'status',
+            title: '洗衣单状态',
+            width:120
         },{
-            field: 'name',
-            title: '手机号码',
-            width:150
+            field: 'createDate',
+            title: '创建时间',
+            width:120
+        },{
+            field: 'payDate',
+            title: '支付时间',
+            width:120
         }, {
-            field: 'price',
-            title: '所属门店',
-            width:150
+            field: 'takeDate',
+            title: '取衣时间',
+            width:120
         },{
-            field: 'price',
+            field: 'sendDate',
+            title: '送洗时间',
+            width:120
+        },{
+            field: 'washDate',
+            title: '清洗时间',
+            width:120
+        },{
+            field: 'hangDate',
+            title: '上挂时间',
+            width:120
+        },{
+            field: 'receiveDate',
+            title: '领取时间',
+            width:120
+        },{
+            field: 'takeBackDate',
+            title: '领回时间',
+            width:120
+        },{
+            field: 'deliverDate',
+            title: '门店送衣时间',
+            width:120
+        },{
+            field: 'confirmDate',
+            title: '顾客确认时间',
+            width:120
+        }
+        ,{
+            field: 'act',
             title: '操作',
-            width:150,
-            formatter:actionFormatter
+            width:120,
+            formatter:function(value,row,index){
+                var result = "";
+                var obj = new Array();
+                obj[0] = row.order_id;
+                obj[1] = row.action;
+                obj[2] = data.roleId;
+                obj.join(",");
+                if(2 == data.roleId || 4 == data.orderId){
+                    for(var j = 0,len = shopOrderList.length; j < len; j++){
+                        if(row.status == shopOrderList[j]){
+                            result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
+                                row.action
+                                +"</button>"
+                        }
+                    }
+                }else if( 3 == data.roleId){
+                    for(var j = 0,len = centerOrderList.length; j < len; j++){
+                        if(row.status == centerOrderList[j]){
+                            result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
+                                row.action
+                                +"</button>"
+                        }
+                    }
+                }else {
+                    for(var j = 0,len = shopOrderList.length; j < len; j++){
+                        if(row.status == shopOrderList[j]){
+                            result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
+                                row.action
+                                +"</button>"
+                        }
+                    }
+                    for(var j = 0,len = centerOrderList.length; j < len; j++){
+                        if(row.status == centerOrderList[j]){
+                            result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
+                                row.action
+                                +"</button>"
+                        }
+                    }
+                }
+                return result;
+            }
         }],
         cache: false,
-//			    sidePagination: "server",
+        sidePagination: "server",
         pagination: true,
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 3,                     //每页的记录行数（*）
-        pageList: [2, 5],  //可供选择的每页的行数（*）
-        showHeader: true
+        queryParamsType:'',
+        pageNumber: 1,//初始化加载第一页，默认第一页,并记录
+        pageSize: 5, //每页的记录行数（*）
+        pageList: [5, 10,20], //可供选择的每页的行数（*）
+        showHeader: true,
+        queryParams:function (params) {
+            var param = {
+                pageSize:params.pageSize,
+                pageNumber:params.pageNumber,
+                orderId:orderId,
+                status:status
+            }
+            return param
+        }
     });
+    /**
+     * 查询订单
+     */
+    $('.js-order-search-btn').on(
+        "click",function () {
+            orderId = $('.js-order-id').val();
+            status = $('.js-order-status').val();
+            var opt = {
+                url: "order/getOrderList",
+                silent: true,
+                query:{
+                    orderId:orderId,
+                    status:status
+                }
+            };
+            //带参数 刷新
+            $(".js-laundry-order-tab").bootstrapTable('refresh', opt);
+        }
+    )
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////订单管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1001,7 +1111,29 @@ function selectOnchang(obj) {
         $('.js-worker-shop-div').css('display','none');
     }
 }
+/**
+ * 处理订单
+ */
+function handleOrder(data) {
+    var datas = data.split(',');
+    var orderId = datas[0];
+    var action = datas[1];
+    $.ajax({
+        url:"order/handle",
+        data:{"orderId":orderId, "action":action},
+        dataType:"json",
+        type:"post",
+        success:function(data){
+            if( 0 <data){
+                alert('操作成功')
+            }
+        },
+        error:function (data) {
+            alert("操作失败");
+        }
+    })
 
+};
 /**
  * 退出登录
  */
