@@ -38,7 +38,9 @@ function initPage(data){
     if( 4 == data.rolePriority ){
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
+        $('.js-goods-panel').css("display", 'none');
         $('.js-laundry-worker').css("display", '');
+
         //登录用户为门店管理员的时候，员工类型只能是门店员工
         $('.js-shop-admin').css("display", 'none');
         $('.js-center-worker').css("display", 'none');
@@ -47,6 +49,7 @@ function initPage(data){
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
         $('.js-worker-panel').css("display", 'none');
+        $('.js-goods-panel').css("display", 'none');
         $('.js-laundry-order').css("display", '');
 
     }
@@ -474,11 +477,12 @@ function initPage(data){
     }
     );
     /**
-     * 添加/修改员工
+     * 添加/员工
      */
     $('.js-worker-add-btn').on(
         "click",function () {
             action = 'Add';
+            showWorkerModal();
             $('.js-shop-no-modal-worker').val(data.shopNo);
         }
     );
@@ -503,7 +507,7 @@ function initPage(data){
                 $('#selectShop').modal('hide');
                 $('.js-shop-tab').bootstrapTable('destroy');
                 //清空选择员工模态框的数据
-                //$('.s-worker-shop').val(''); //员工名
+                $('.js-worker-shop').val(''); //员工名
             }
         }
     );
@@ -663,6 +667,15 @@ function initPage(data){
             }
             $('#worker').modal('hide');
             clearModal();
+        }
+    );
+    /**
+     * 门店管理员/门店员工选择门店
+     */
+    $('.js-username-modal-worker').on(
+        "click",function () {
+            var val = $('.js-worker-cate-sel').val();
+            showWorkerForShop(val);
         }
     )
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -830,6 +843,21 @@ function initPage(data){
 
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////物品管理开始////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('.js-goods-panel').on(
+        "click",function () {
+            $('.js-laundry-shop').css("display",'none');
+            $('.js-laundry-worker').css("display",'none');
+            $('.js-laundry-order').css("display",'none');
+            $('.js-laundry-goods').css("display",'');
+        }
+    )
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////物品管理结束////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////个人信息开始////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
     $('.js-person-info-panel').on(
@@ -869,12 +897,6 @@ function initPage(data){
             action = "personEdit";
         }
     )
-}
-function editById() {
-    alert(111)
-}
-function deleteById(data) {
-    alert(data)
 }
 
 /**
@@ -1013,36 +1035,62 @@ function deleteAdmin(datas) {
  * 修改员工信息
  */
 function editAdmin(obj) {
-    var datas = obj.split(',');
-    $('.js-title-worker').text('修改员工信息');
-    $('.js-worker-no-modal-div').css("display", '');
-    $('.js-admin-no-modal').text(datas[1]); //门店编号js-shop-no-modal-worker
-    // 姓名
-    $('.js-name-worker-div').css('display','none');
-    $('.js-name-worker-lab').css('display','');
-    $('.js-name-worker-lab').text(datas[3]);
-    // 手机号码
-    $('.js-tel-num-worker-div').css('display','none');
-    $('.js-tel-num-worker-lab').css('display','');
-    $('.js-tel-num-worker-lab').text(datas[2]);
-    //性别
-    $('.js-worker-sex-div').css('display','none');
-    $('.js-worker-sex-lab').css('display','');
-    $('.js-worker-sex-lab').text(datas[7]);
-    //分类
-    $('.js-worker-cate-sel').val(datas[5]);
-    //邮箱
-    $('.js-worker-email-div').css('display','none');
-    $('.js-worker-email-lab').css('display','');
-    $('.js-worker-email-lab').text(datas[4]);
-    $('.js-shop-no-modal-worker').val(datas[0]); //所属门店
-    if( 3 == datas[5]){
-        $('.js-worker-shop-div').css('display','');
-        $('.js-worker-shop-name').val(datas[6]); //所属门店名
-    }
-    $('#worker').modal('show');
     action = 'Edit';
+    showWorkerModal(obj);
+    $('#worker').modal('show');
+}
 
+/**
+ * 显示修改/添加员工模态框
+ * @param data
+ */
+function showWorkerModal(data) {
+    if("Edit" == action){
+        var datas = data.split(',');
+        $('.js-title-worker').text('修改员工信息');
+        $('.js-worker-no-modal-div').css("display", '');
+        $('.js-admin-no-modal').text(datas[1]); //门店编号js-shop-no-modal-worker
+        // 姓名
+        $('.js-name-worker-div').css('display','none');
+        $('.js-name-worker-lab').css('display','');
+        $('.js-name-worker-lab').text(datas[3]);
+        // 手机号码
+        $('.js-tel-num-worker-div').css('display','none');
+        $('.js-tel-num-worker-lab').css('display','');
+        $('.js-tel-num-worker-lab').text(datas[2]);
+        //性别
+        $('.js-worker-sex-div').css('display','none');
+        $('.js-worker-sex-lab').css('display','');
+        $('.js-worker-sex-lab').text(datas[7]);
+        //分类
+        $('.js-worker-cate-sel').val(datas[5]);
+        //邮箱
+        $('.js-worker-email-div').css('display','none');
+        $('.js-worker-email-lab').css('display','');
+        $('.js-worker-email-lab').text(datas[4]);
+        $('.js-shop-no-modal-worker').val(datas[0]); //所属门店
+        if( 2 == datas[5] || 3 == datas[5]){
+            $('.js-worker-shop-div').css('display','');
+            $('.js-worker-shop-name').val(datas[6]); //所属门店名
+        }
+    }else {
+        $('.js-title-worker').text('添加员工');
+        $('.js-worker-no-modal-div').css("display", 'none');
+        // 姓名
+        $('.js-name-worker-div').css('display','');
+        $('.js-name-worker-lab').css('display','none');
+        // 手机号码
+        $('.js-tel-num-worker-div').css('display','');
+        $('.js-tel-num-worker-lab').css('display','none');
+        //性别
+        $('.js-worker-sex-div').css('display','');
+        $('.js-worker-sex-lab').css('display','none');
+        //邮箱
+        $('.js-worker-email-div').css('display','');
+        $('.js-worker-email-lab').css('display','none');
+        //所属门店
+        $('.js-worker-shop-div').css('display','none');
+    }
 }
 /**
  * 清空模态框信息
@@ -1064,9 +1112,22 @@ function clearModal() {
     $('.js-worker-shop-name').val(''); //所属门店名
 
 }
+
+/**
+ * 选择员工类型
+ * @param obj
+ */
 function selectOnchang(obj) {
     var value = obj.options[obj.selectedIndex].value;
-    if( 3 == value){
+    showWorkerForShop(value);
+}
+
+/**
+ * 显示员工可选的门店
+ * @param value
+ */
+function showWorkerForShop(value) {
+    if("Edit" == action && (3 == value || 2== value) ){
         $('.js-worker-shop-div').css('display','');
         $('.js-shop-tab').bootstrapTable({
             url: 'shop/getLaundryShopList',

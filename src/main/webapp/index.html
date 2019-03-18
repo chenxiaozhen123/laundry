@@ -5,25 +5,8 @@
     <title>Title</title>
 </head>
 <body>
-<h1>连锁</h1>
-<input id="username" readonly="readonly">
-<input id="password" readonly="readonly">
+<h1>有赞连锁干洗中心</h1>
+
 </body>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"
-        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-        crossorigin="anonymous"></script>
-<script type="text/javascript">
-    //获取basePath，测试的话就能用就完了
-    var obj = window.document.location;
-    var BASE_PATH = obj.href.substring(0, obj.href.indexOf(obj.pathname));
-    //请求渲染模拟
-    $.ajax({
-        url: BASE_PATH + "/laundry/list",
-        type: "get",
-        success: function f(data) {
-            $("#username").val(data.username);
-            $("#password").val(data.password);
-        }
-    })
-</script>
+
 </html>
