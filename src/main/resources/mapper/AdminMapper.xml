@@ -72,6 +72,9 @@
     <if test="null != role_name and '' != role_name">
       and r.role_name like concat(concat('%', #{role_name}), '%')
     </if>
+    <if test="null != shop_no and '' != shop_no">
+      and a.shop_no #{shop_no}
+    </if>
 
   </select>
   <update id="deleteAdminByAdminNo">

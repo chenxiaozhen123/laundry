@@ -27,7 +27,13 @@
     select s.shop_id,s.shop_no,s.shop_name ,s.shop_area ,s.shop_address,s.principal_no,
     a.admin_name,a.admin_tel_num,a.admin_email,a.admin_sex
     from laundry_shop s ,admin a
-    where s.state = '00A' and s.principal_no = a.admin_no and a.role_id = #{role_id}
+    where s.state = '00A' and s.principal_no = a.admin_no
+    <if test="null != roleIds">
+      and a.role_id in
+      <foreach close=")" collection="roleIds" index="index" item="item" open="(" separator=",">
+        #{item}
+      </foreach>
+    </if>
     <if test="null != name and '' != name">
       and a.admin_name like concat(concat('%', #{name}), '%')
     </if>

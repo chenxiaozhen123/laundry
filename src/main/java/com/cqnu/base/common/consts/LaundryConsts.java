@@ -23,15 +23,19 @@ public interface LaundryConsts {
     /**
      * 门店管理员初始工号
      */
-    String ADMIN_NO_LAUNDRY_SHOP = "1027000001";
+    String ADMIN_NO_LAUNDRY_SHOP = "2027000001";
     /**
      * 门店员工初始工号
      */
     String ADMIN_NO_LAUNDRY = "6027000001";
     /**
+     * 干洗中心管理员初始工号
+     */
+    String ADMIN_NO_ADMIN = "1027000001";
+    /**
      * 干洗中心员工初始工号
      */
-    String ADMIN_NO_WORKER = "3027000001";
+    String ADMIN_NO_WORKER = "5027000001";
     /**
      * 角色为门店员工
      */
@@ -48,6 +52,10 @@ public interface LaundryConsts {
      * 超级管理员
      */
     String ROLE_ID_ADMIN = "1";
+    /**
+     * 角色为干洗中心管理员
+     */
+    String ROLE_ID_CENTER_ADMIN = "5";
     /**
      * 初始门店编号
      */

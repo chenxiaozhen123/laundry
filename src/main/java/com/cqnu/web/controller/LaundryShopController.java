@@ -5,6 +5,7 @@ import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.service.ILaundryShopService;
+import com.cqnu.web.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -82,12 +83,12 @@ public class LaundryShopController {
             String pageSize =  request.getParameter("pageSize");
             String name =  request.getParameter("name");
             String area =  request.getParameter("area");
-            String roleId =  request.getParameter("roleId");
+            String roleIds =  request.getParameter("roleIds");
+            reqMap.put("roleIds", StringHelper.stringToList(roleIds));
             reqMap.put("pageNum",pageNumber);
             reqMap.put("pageSize",pageSize);
             reqMap.put("name",name);
             reqMap.put("area",area);
-            reqMap.put("role_id",roleId);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getLaundryShopList",reqMap);
         }catch (Exception e){
             throw new LaundryException(e.getMessage());

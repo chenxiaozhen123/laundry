@@ -59,13 +59,16 @@ public class AdminController {
             //取到员工工号
             Map<String, Object> resMap = adminService.getAdminNO(reqAdminMap);
             if(null == resMap){
-                if(LaundryConsts.ROLE_ID_LAUNDRY_SHOP.equals( roleId )){ //门店管理员的工号
+                if(LaundryConsts.ROLE_ID_CENTER_ADMIN.equals(roleId )){ //干洗中心管理员
+                    reqAdminMap.put("admin_no", LaundryConsts.ADMIN_NO_ADMIN);
+                    jobNumber = LaundryConsts.ADMIN_NO_ADMIN;
+                }else if(LaundryConsts.ROLE_ID_LAUNDRY_SHOP.equals( roleId )){ //门店管理员的工号
                     reqAdminMap.put("admin_no", LaundryConsts.ADMIN_NO_LAUNDRY_SHOP);
                     jobNumber = LaundryConsts.ADMIN_NO_LAUNDRY_SHOP;
                 }else if(LaundryConsts.ROLE_ID_LAUNDRY.equals( roleId )){  //门店员工的工号
                     reqAdminMap.put("admin_no", LaundryConsts.ADMIN_NO_LAUNDRY);
                     jobNumber = LaundryConsts.ADMIN_NO_LAUNDRY;
-                }else { //干洗中心工号
+                }else { //干洗中心员工工号
                     reqAdminMap.put("admin_no", LaundryConsts.ADMIN_NO_WORKER);
                     jobNumber = LaundryConsts.ADMIN_NO_WORKER;
                 }
@@ -116,6 +119,7 @@ public class AdminController {
         reqMap.put("admin_name",name);
         reqMap.put("role_name",roleName);
         reqMap.put("shop_name",shopName);
+        reqMap.put("shop_no",shop_no);
         resMap = baseService.queryForPage("com.cqnu.web.mapper.AdminMapper.getAdminList",reqMap);
         return resMap;
     }

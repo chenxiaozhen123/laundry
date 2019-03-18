@@ -76,8 +76,8 @@
                     </a>
                 </li>
                 <li class="active">
-                    <a href='javascript:;' class="js-goods-panel">
-                        <i class="glyphicon glyphicon-th-large"></i> <span>物品管理</span>
+                    <a href='javascript:;' class="js-category-panel">
+                        <i class="glyphicon glyphicon-th-large"></i> <span>分类管理</span>
                     </a>
                 </li>
             </ul>
@@ -206,35 +206,32 @@
             </div>
             <!--订单管理结束-->
             <!--物品管理开始-->
-            <div class="panel panel-default js-laundry-goods" style="display: none;">
+            <div class="panel panel-default js-laundry-category" style="display: none;">
                 <div class="panel-heading clearfix">
-                    <span class="pull-left">物品管理</span>
+                    <span class="pull-left">分类管理</span>
+                    <div class="col-sm-1 pull-right">
+                        <button class="btn btn-primary btn-min-width js-category-add-btn" data-toggle="modal" data-target="#worker" type="button">
+                            <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;添加
+                        </button>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="col-sm-5 control-label">物品分类</label>
+                                <label class="col-sm-5 control-label">分类名称</label>
                                 <div class="input-group col-sm-6 input-group-sm" >
-                                    <input class="form-control js-order-id" autocomplete="off">
+                                    <input class="form-control js-category-name" autocomplete="off">
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-sm-4 control-label">物品名称</label>
-                                <div class="input-group col-sm-6 input-group-sm" >
-                                    <input class="form-control js-order-status" autocomplete="off">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-primary btn-min-width js-order-search-btn" type="button">
+                            <button class="btn btn-primary btn-min-width pull-right js-category-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
                             </button>
                         </div>
                     </div>
-                    <table class="js-laundry-goods-tab"></table>
+                    <table class="js-laundry-category-tab"></table>
                 </div>
             </div>
             <!--物品管理结束-->
@@ -314,7 +311,7 @@
                     </div>
                 </div>
             </div>
-            <!--个人信息结束->
+            <!--个人信息结束-->
         </section>
     </aside>
 </div>
@@ -439,9 +436,10 @@
                         <label class="col-sm-5 control-label js-worker-cate-sel-lab" style="display: none"></label>
                         <div class="input-group input-group-sm col-sm-6 js-worker-cate-sel-div" >
                             <select class="combobox form-control js-worker-cate-sel" onchange="selectOnchang(this)">
+                                <option value="5" class="js-center-admin">干洗中心管理员</option>
+                                <option value="4" class="js-center-worker">干洗中心员工</option>
                                 <option value="2" class="js-shop-admin">门店管理员</option>
                                 <option value="3" class="js-shop-worker">门店员工</option>
-                                <option value="4" class="js-center-worker">干洗中心员工</option>
                             </select>
                         </div>
                     </div>
