@@ -4,6 +4,7 @@ import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.model.Message;
 import com.cqnu.base.service.BaseService;
+import com.cqnu.base.util.AESUtil;
 import com.cqnu.base.util.MailUtil;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.util.StringHelper;
@@ -56,6 +57,7 @@ public class AdminController {
             reqAdminMap.put("admin_email",email);
             reqAdminMap.put("admin_tel_num",telNum);
             reqAdminMap.put("shop_no",shopNo);
+            reqAdminMap.put("password", AESUtil.aesEncrypt(LaundryConsts.INITIAL_PASSWORD,LaundryConsts.WORKER_KEY));
             //取到员工工号
             Map<String, Object> resMap = adminService.getAdminNO(reqAdminMap);
             if(null == resMap){

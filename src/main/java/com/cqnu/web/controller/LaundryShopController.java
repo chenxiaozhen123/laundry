@@ -61,6 +61,11 @@ public class LaundryShopController {
                 reqAdminMap.put("shop_no",shopNOMap.get("shop_no"));
             }
             reqAdminMap.put("admin_no",principalNo);
+            Map<String, Object> resMap = adminService.getShopCategory(reqAdminMap);
+            if(null != resMap){
+                String shopCategory = resMap.get("shop_category").toString();
+                reqMap.put("shop_category",shopCategory);
+            }
             result= laundryShopService.addLaundryShop(reqMap);
             if( 0 < result){ //门店负责人添加成功则去admin表更改该员工的所属门店
                 result = adminService.updateShopIdByAdminNo(reqAdminMap);

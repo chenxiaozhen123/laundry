@@ -7,6 +7,7 @@
     -->
     <id column="shop_id" jdbcType="INTEGER" property="shopId" />
     <result column="shop_no" jdbcType="INTEGER" property="shopNo" />
+    <result column="shop_category" jdbcType="VARCHAR" property="shopCategory" />
     <result column="shop_name" jdbcType="VARCHAR" property="shopName" />
     <result column="shop_area" jdbcType="VARCHAR" property="shopArea" />
     <result column="shop_address" jdbcType="VARCHAR" property="shopAddress" />
@@ -15,16 +16,16 @@
   </resultMap>
 
   <insert id="addLaundryShop" parameterType="map">
-    insert into laundry_shop (shop_no,shop_name,shop_area,shop_address,principal_no,state)
+    insert into laundry_shop (shop_no,shop_category,shop_name,shop_area,shop_address,principal_no,state)
     values(
-    #{shop_no},#{shop_name},#{shop_area},#{shop_address},#{principal_no},'00A'
+    #{shop_no},#{shop_category},#{shop_name},#{shop_area},#{shop_address},#{principal_no},'00A'
     )
   </insert>
   <select id="getShopNo" parameterType="map" resultType="map">
     select max(shop_no)+1 as shop_no from laundry_shop
   </select>
   <select id="getLaundryShopList" parameterType="map" resultType="map">
-    select s.shop_id,s.shop_no,s.shop_name ,s.shop_area ,s.shop_address,s.principal_no,
+    select s.shop_id,s.shop_no,s.shop_category,s.shop_name ,s.shop_area ,s.shop_address,s.principal_no,
     a.admin_name,a.admin_tel_num,a.admin_email,a.admin_sex
     from laundry_shop s ,admin a
     where s.state = '00A' and s.principal_no = a.admin_no

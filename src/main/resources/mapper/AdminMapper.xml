@@ -43,7 +43,7 @@
   <insert id="addAdmin" parameterType="map">
     insert into admin (admin_no,admin_name,amdin_password,admin_tel_num,admin_email,admin_sex,role_id,shop_no,state)
     VALUES (
-      #{admin_no},#{admin_name},'123456',#{admin_tel_num},#{admin_email},#{admin_sex},#{role_id},#{shop_no},'00A'
+      #{admin_no},#{admin_name},#{password},#{admin_tel_num},#{admin_email},#{admin_sex},#{role_id},#{shop_no},'00A'
     )
   </insert>
   <select id="getAdminNoByRoleID" parameterType="map" resultType="map">
@@ -73,7 +73,7 @@
       and r.role_name like concat(concat('%', #{role_name}), '%')
     </if>
     <if test="null != shop_no and '' != shop_no">
-      and a.shop_no #{shop_no}
+      and a.shop_no = #{shop_no}
     </if>
 
   </select>
@@ -89,4 +89,8 @@
     update admin set role_id = #{role_id},shop_no = #{shop_no}
     where state = '00A' and admin_no = #{admin_no}
   </update>
+  <select id="getShopCategory" parameterType="map" resultType="map">
+    select  r.shop_category from role r ,admin a
+    where a.role_id = r.role_id and a.admin_no = #{admin_no}
+  </select>
 </mapper>

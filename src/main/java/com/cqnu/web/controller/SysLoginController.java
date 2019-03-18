@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.controller.BaseController;
+import com.cqnu.base.util.AESUtil;
 import com.cqnu.web.entity.Admin;
 
 import com.cqnu.web.model.AdminLoginInfo;
@@ -41,16 +42,21 @@ public class SysLoginController extends BaseController{
     @RequestMapping(value = "/login")
     public boolean login(HttpServletRequest request) {
         boolean flag = false;
-        String username =  request.getParameter("username");
-        String password =  request.getParameter("password");
-        Map<String, Object> reqMap = new HashMap<>();
-        reqMap.put("admin_no",username);
-        reqMap.put("password",password);
-        Map<String, Object> resMap = sysLoginService.getAdmin(reqMap);
-        if(null != resMap){
-            flag = true;
-            request.getSession().setAttribute(LaundryConsts.SESSION_USER_KEY,this.getAdmin(resMap));
+        try{
+            String username =  request.getParameter("username");
+            String password =  request.getParameter("password");
+            Map<String, Object> reqMap = new HashMap<>();
+            reqMap.put("admin_no",username);
+            reqMap.put("password",AESUtil.aesEncrypt(password,LaundryConsts.WORKER_KEY));
+            Map<String, Object> resMap = sysLoginService.getAdmin(reqMap);
+            if(null != resMap){
+                flag = true;
+                request.getSession().setAttribute(LaundryConsts.SESSION_USER_KEY,this.getAdmin(resMap));
+            }
+        }catch (Exception e){
+
         }
+
         return flag;
     }
     /**

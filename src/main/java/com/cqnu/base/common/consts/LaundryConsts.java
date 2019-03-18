@@ -12,9 +12,13 @@ public interface LaundryConsts {
      */
     String SESSION_USER_KEY = "LOGIN_USER";
     /**
-     * 初始密码
+     * 员工初始密码
      */
     String INITIAL_PASSWORD= "123456";
+    /**
+     * 员工加/解密的密钥
+     */
+    String WORKER_KEY="worker";
 
     String GENTLEMAN = "先生";
     String MADAM = "女士";

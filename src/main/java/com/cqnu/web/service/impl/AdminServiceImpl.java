@@ -43,4 +43,9 @@ public class AdminServiceImpl extends BaseServiceImpl implements IAdminService{
     public int updateAdminRoleAndShopInfo(Map<String, Object> param) {
         return session.update("com.cqnu.web.mapper.AdminMapper.updateAdminRoleAndShopInfo",param);
     }
+
+    @Override
+    public Map<String, Object> getShopCategory(Map<String, Object> param) {
+        return session.selectOne("com.cqnu.web.mapper.AdminMapper.getShopCategory",param);
+    }
 }

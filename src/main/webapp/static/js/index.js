@@ -12,19 +12,7 @@ $(function() {
         }
     })
 });
-var action = "Edit";
-var roleIDs = '2,3,4,5';
-//门店能操作的订单的状态
-var shopOrderList = new Array();
-shopOrderList[0] = '待取衣';
-shopOrderList[1] = '已取衣';
-shopOrderList[2] = '上挂';
-shopOrderList[3] = '领取';
-shopOrderList[4] = '取回';
-//干洗中心能操作的订单的状态
-var centerOrderList = new Array();
-centerOrderList[0] = '正在送洗';
-centerOrderList[1] = '正在清洗';
+
 
 
 /**
@@ -35,31 +23,31 @@ function initPage(data){
     $('.js-admin-name').text(data.name);//登录用户姓名
     $('.js-role-name').text(data.roleName);//登录用户角色名
     //超级管理员
-    if( 1 == data.roleId ){
+    if( admin_root_priority == data.rolePriority ){
         $('.js-center-worker').css("display", 'none');
         $('.js-shop-worker').css("display", 'none');
-        roleIDs = '2,5';
-    }else if( 5 == data.roleId ){ //干洗中心管理员
+        //登录用户为超级管理员的时候，员工类型只能是干洗中心管理员/门店管理员
+        roleIDs = shop_admin_role_id +','+ center_admin_role_id;
+    }else if( admin_priority == data.rolePriority ){ //门店管理员/干洗中心管理员
+        //显示菜单
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
         $('.js-category-panel').css("display", 'none');
         $('.js-laundry-worker').css("display", '');
-        //登录用户为干洗中心管理员的时候，员工类型只能是干洗中心员工
-        $('.js-shop-admin').css("display", 'none');
-        $('.js-center-admin').css("display", 'none');
-        $('.js-center-worker').css("display", 'none');
-        roleIDs = '4';
-    }else if( 2 == data.roleId ){ //门店管理员
-        $('.js-shop-panel').css("display", 'none');
-        $('.js-laundry-shop').css("display", 'none');
-        $('.js-category-panel').css("display", 'none');
-        $('.js-laundry-worker').css("display", '');
-        //登录用户为门店管理员的时候，员工类型只能是门店员工
-        $('.js-shop-admin').css("display", 'none');
-        $('.js-center-admin').css("display", 'none');
-        $('.js-center-worker').css("display", 'none');
-        roleIDs = '3';
-    }else if( 3 == data.rolePriority ){ //门店/干洗中心员工
+        $('.js-center-admin').css("display", 'none');//不显示 员工类型为干洗中心管理员
+        $('.js-shop-admin').css("display", 'none');//不显示 员工类型为门店管理员
+        if(shop_admin_role_id == data.roleId){
+            //登录用户为门店管理员的时候，员工类型只能是门店员工
+            $('.js-center-worker').css("display", 'none');
+            roleIDs = shop_worker_role_id;
+            $('.js-worker-cate-sel').val(shop_worker_role_id);
+        }else {
+            //登录用户为干洗中心管理员的时候，员工类型只能是干洗中心员工
+            $('.js-shop-worker').css("display", 'none');
+            $('.js-worker-cate-sel').val(center_worker_role_id);
+            roleIDs = center_worker_role_id;
+        }
+    }else if( worker_priority == data.rolePriority ){ //门店/干洗中心员工
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
         $('.js-worker-panel').css("display", 'none');
@@ -93,6 +81,10 @@ function initPage(data){
         }, {
             field: 'shop_no',
             title: '门店编号',
+            width:100
+        }, {
+            field: 'shop_category',
+            title: '门店分类',
             width:100
         },{
             field: 'shop_area',
@@ -186,6 +178,7 @@ function initPage(data){
     $(".js-username-modal-shop").on(
         "click",function () {
             $('#selectWorker').modal('show');
+            var roleId = $('.js-shop-cate-sel').val();
             /**
              * 选择员工
              */
@@ -209,12 +202,11 @@ function initPage(data){
                 sidePagination: 'server',//指定服务器端分页
                 queryParamsType:'',
                 queryParams:function (params) {
-                    alert(roleIDs);
                     var param = {
                         pageSize:params.pageSize,
                         pageNumber:params.pageNumber,
-                        shopNo:'-1',
-                        roleIds:roleIDs
+                        shopNo:cannot_shop_no,
+                        roleIds:roleId
                     }
                     return param
                 },
@@ -497,8 +489,9 @@ function initPage(data){
     $('.js-worker-add-btn').on(
         "click",function () {
             action = 'Add';
-            showWorkerModal();
             $('.js-shop-no-modal-worker').val(data.shopNo);
+            showWorkerModal();
+            alert($('.js-shop-no-modal-worker').val());
         }
     );
     /**
@@ -526,24 +519,24 @@ function initPage(data){
             }
         }
     );
-    /**
-     * 根据门店所属区域查询门店
-     */
-    $('.js-select-shop-search-btn').on(
-        "click",function () {
-            var area = $('.js-area-shop-worker-modal').val();
-            var opt = {
-                url: "shop/getLaundryShopList",
-                silent: true,
-                query:{
-                    area:area,
-                    roleId:roleIDs
-                }
-            };
-            //带参数 刷新
-            $(".js-shop-tab").bootstrapTable('refresh', opt);
-        }
-    )
+    // /**
+    //  * 根据门店所属区域查询门店
+    //  */
+    // $('.js-select-shop-search-btn').on(
+    //     "click",function () {
+    //         var area = $('.js-area-shop-worker-modal').val();
+    //         var opt = {
+    //             url: "shop/getLaundryShopList",
+    //             silent: true,
+    //             query:{
+    //                 area:area,
+    //                 roleId:roleIDs
+    //             }
+    //         };
+    //         //带参数 刷新
+    //         $(".js-shop-tab").bootstrapTable('refresh', opt);
+    //     }
+    // )
     /**
      * 添加/修改员工
      */
@@ -595,7 +588,7 @@ function initPage(data){
                     error:function (data) {
                         BootstrapDialog.alert({
                             title: '提示',
-                            message: '添加失败！'+data.msg,
+                            message: '添加失败！',
                             type: BootstrapDialog.TYPE_WARNING,
                             closable: true,
                             draggable: true,
@@ -684,15 +677,15 @@ function initPage(data){
             clearModal();
         }
     );
-    /**
-     * 门店管理员/门店员工选择门店
-     */
-    $('.js-username-modal-worker').on(
-        "click",function () {
-            var val = $('.js-worker-cate-sel').val();
-            showWorkerForShop(val);
-        }
-    )
+    // /**
+    //  * 门店管理员/门店员工选择门店
+    //  */
+    // $('.js-username-modal-worker').on(
+    //     "click",function () {
+    //         var val = $('.js-worker-cate-sel').val();
+    //         showWorkerForShop(val);
+    //     }
+    // )
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////员工管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -783,7 +776,7 @@ function initPage(data){
                 obj[1] = row.action;
                 obj[2] = data.roleId;
                 obj.join(",");
-                if(2 == data.roleId || 3 == data.orderId){
+                if(shop_admin_role_id == data.roleId || shop_worker_role_id  == data.orderId){
                     for(var j = 0,len = shopOrderList.length; j < len; j++){
                         if(row.status == shopOrderList[j]){
                             result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
@@ -791,7 +784,7 @@ function initPage(data){
                                 +"</button>"
                         }
                     }
-                }else if( 4 == data.roleId){
+                }else if( center_worker_role_id == data.roleId || center_admin_role_id == data.roleId){
                     for(var j = 0,len = centerOrderList.length; j < len; j++){
                         if(row.status == centerOrderList[j]){
                             result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
@@ -1028,7 +1021,12 @@ function editLaundryShop(data){
     showShopModal(data);
     $('#shop').modal('show');
 }
-
+/**
+ * 选择门店分类发生改变事件
+ */
+function selectShopCate(obj) {
+    $('.js-worker-tab').bootstrapTable('destroy');
+}
 /**
  * 显示添加/修改门店模态框
  * @param data
@@ -1036,7 +1034,6 @@ function editLaundryShop(data){
 function showShopModal(data) {
 
     if("Edit" == action){
-        alert("edit")
         var datas = data.split(',');
         $('.js-title-shop').text('修改门店信息');
         $('.js-shop-no-modal-div').css("display", '');
@@ -1056,10 +1053,8 @@ function showShopModal(data) {
         $('.js-address-modal-shop').val(''); //门店地址
         $('.js-name-modal-shop').val(''); //门店名
     }
-
-
-
 }
+
 
 /**
  * 删除员工信息
@@ -1156,7 +1151,7 @@ function showWorkerModal(data) {
         $('.js-worker-email-lab').css('display','');
         $('.js-worker-email-lab').text(datas[4]);
         $('.js-shop-no-modal-worker').val(datas[0]); //所属门店
-        if( 2 == datas[5] || 3 == datas[5]){
+        if( shop_worker_role_id == datas[5] || shop_admin_role_id == datas[5] || center_admin_role_id == datas[5]){
             $('.js-worker-shop-div').css('display','');
             $('.js-worker-shop-name').val(datas[6]); //所属门店名
         }else{
@@ -1179,6 +1174,7 @@ function showWorkerModal(data) {
         $('.js-worker-email-lab').css('display','none');
         //所属门店
         $('.js-worker-shop-div').css('display','none');
+
     }
 }
 /**
@@ -1206,70 +1202,71 @@ function clearModal() {
  * 选择员工类型
  * @param obj
  */
-function selectOnchang(obj) {
-    var value = obj.options[obj.selectedIndex].value;
-    showWorkerForShop(value);
-}
+// function selectOnchang(obj) {
+//     var value = obj.options[obj.selectedIndex].value;
+//     showWorkerForShop(value);
+// }
 
 /**
  * 显示员工可选的门店
  * @param value
  */
-function showWorkerForShop(value) {
-    if("Edit" == action && (3 == value || 2 == value) ){
-        showSelectShopForWorker();
-    }else if("Add" == action && 3 == value) {
-        showSelectShopForWorker();
-    }else{
-        $('.js-worker-shop-div').css('display','none');
-    }
-}
+// function showWorkerForShop(value) {
+//     if("Edit" == action && ( center_admin_role_id == value ||shop_worker_role_id == value || shop_admin_role_id == value) ){
+//         showSelectShopForWorker(value);
+//     }else if("Add" == action && shop_worker_role_id == value) {
+//         showSelectShopForWorker(value);
+//     }else{
+//         $('.js-worker-shop-div').css('display','none');
+//     }
+// }
 
 /**
  * 显示员工可选所属门店
  */
-function showSelectShopForWorker() {
-    $('.js-worker-shop-div').css('display','');
-    $('.js-shop-tab').bootstrapTable({
-        url: 'shop/getLaundryShopList',
-        height: 200,
-        columns: [{
-            checkbox: true
-        }, {
-            field: 'shop_no',
-            title: '门店编号'
-        },{
-            field: 'shop_area',
-            title: '所属区域'
-        }, {
-            field: 'shop_name',
-            title: '门店名',
-        },{
-            field: 'admin_name',
-            title: '门店负责人姓名'
-        },{
-            field: 'admin_tel_num',
-            title: '门店负责人手机号'
-        }],
-        singleSelect : true, // 单选checkbox
-        cache: false,
-        sidePagination: "server",
-        pagination: true,
-        queryParamsType:'',
-        queryParams:function (params) {
-            var param = {
-                pageSize:params.pageSize,
-                pageNumber:params.pageNumber,
-                roleIds:roleIDs
-            }
-            return param
-        },
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 3,                     //每页的记录行数（*）
-        pageList: [2, 5],  //可供选择的每页的行数（*）
-        showHeader: true
-    });
-}
+// function showSelectShopForWorker(val) {
+//     $('.js-worker-shop-div').css('display','');
+//     $('.js-shop-tab').bootstrapTable({
+//         url: 'shop/getLaundryShopList',
+//         height: 200,
+//         columns: [{
+//             checkbox: true
+//         }, {
+//             field: 'shop_no',
+//             title: '门店编号'
+//         },{
+//             field: 'shop_area',
+//             title: '所属区域'
+//         }, {
+//             field: 'shop_name',
+//             title: '门店名',
+//         },{
+//             field: 'admin_name',
+//             title: '门店负责人姓名'
+//         },{
+//             field: 'admin_tel_num',
+//             title: '门店负责人手机号'
+//         }],
+//         singleSelect : true, // 单选checkbox
+//         cache: false,
+//         sidePagination: "server",
+//         pagination: true,
+//         queryParamsType:'',
+//         queryParams:function (params) {
+//             var param = {
+//                 pageSize:params.pageSize,
+//                 pageNumber:params.pageNumber,
+//                 roleIds:val
+//             }
+//             return param;
+//
+//         },
+//         pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+//         pageSize: 3,                     //每页的记录行数（*）
+//         pageList: [2, 5],  //可供选择的每页的行数（*）
+//         showHeader: true
+//     });
+// }
 /**
  * 处理订单
  */

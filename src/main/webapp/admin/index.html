@@ -205,7 +205,7 @@
                 </div>
             </div>
             <!--订单管理结束-->
-            <!--物品管理开始-->
+            <!--分类管理开始-->
             <div class="panel panel-default js-laundry-category" style="display: none;">
                 <div class="panel-heading clearfix">
                     <span class="pull-left">分类管理</span>
@@ -340,6 +340,17 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">门店类别</label>
+                        <div class="input-group input-group-sm col-sm-6" >
+                            <select class="combobox form-control js-shop-cate-sel" onchange="selectShopCate(this)">
+                                <option value="5">连锁中心</option>
+                                <option value="2">门店</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">所属区域</label>
                         <div class="input-group input-group-sm col-sm-6">
                             <input class="form-control js-area-modal-shop">
@@ -435,7 +446,7 @@
                         <label class="col-sm-5 control-label">所属分类</label>
                         <label class="col-sm-5 control-label js-worker-cate-sel-lab" style="display: none"></label>
                         <div class="input-group input-group-sm col-sm-6 js-worker-cate-sel-div" >
-                            <select class="combobox form-control js-worker-cate-sel" onchange="selectOnchang(this)">
+                            <select class="combobox form-control js-worker-cate-sel">  <!--onchange="selectOnchang(this)"-->
                                 <option value="5" class="js-center-admin">干洗中心管理员</option>
                                 <option value="4" class="js-center-worker">干洗中心员工</option>
                                 <option value="2" class="js-shop-admin">门店管理员</option>
@@ -452,18 +463,18 @@
                             <input class="form-control js-email-modal-shop">
                         </div>
                     </div>
-                    <div class="form-group col-sm-6 js-worker-shop-div" style="display:none;">
-                        <label class="col-sm-5 control-label">所属门店</label>
-                        <label class="col-sm-7 control-label js-worker-shop-lab" style="display: none"></label>
-                        <div class="input-group input-group-sm col-sm-6 js-worker-shop-divs" >
-                            <input class="form-control js-worker-shop-name">
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary js-username-modal-worker" data-toggle="modal" data-target="#selectShop" type="button">
-                                    <i class="glyphicon glyphicon-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
+                    <!--<div class="form-group col-sm-6 js-worker-shop-div" style="display:none;">-->
+                        <!--<label class="col-sm-5 control-label">所属门店</label>-->
+                        <!--<label class="col-sm-7 control-label js-worker-shop-lab" style="display: none"></label>-->
+                        <!--<div class="input-group input-group-sm col-sm-6 js-worker-shop-divs" >-->
+                            <!--<input class="form-control js-worker-shop-name">-->
+                            <!--<span class="input-group-btn">-->
+                                <!--<button class="btn btn-primary js-username-modal-worker" data-toggle="modal" data-target="#selectShop" type="button">-->
+                                    <!--<i class="glyphicon glyphicon-search"></i>-->
+                                <!--</button>-->
+                            <!--</span>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="row js-shop-no-worker-modal-div" style="display: none">
                         <div class="form-group">
                             <div class="input-group input-group-sm col-sm-6" >
@@ -529,46 +540,46 @@
 </div>
 <!--选择员工模态框结束-->
 <!--选择门店模态框开始-->
-<div class="modal fade" id="selectShop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title js-title-shop">选择门店</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="form-group">
-                            <label class="col-sm-5 control-label">门店所属区域</label>
-                            <div class="input-group input-group-sm col-sm-6">
-                                <input class="form-control js-area-shop-worker-modal" autocomplete="off">
-                            </div>
-                        </div>
-                    </div>
+<!--<div class="modal fade" id="selectShop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+    <!--<div class="modal-dialog">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>-->
+                <!--<h4 class="modal-title js-title-shop">选择门店</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<div class="row">-->
+                    <!--<div class="col-sm-8">-->
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-5 control-label">门店所属区域</label>-->
+                            <!--<div class="input-group input-group-sm col-sm-6">-->
+                                <!--<input class="form-control js-area-shop-worker-modal" autocomplete="off">-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
 
-                    <div class="col-sm-4">
-                        <button class="btn btn-primary btn-min-width js-select-shop-search-btn" type="button">
-                            <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
-                        </button>
-                    </div>
-                </div>
-                <table class="js-shop-tab"></table>
-            </div>
-            <div class="modal-footer text-center">
-                <div class="row text-center">
-                    <button class="btn btn-primary btn-min-width js-select-shop-ok-btn" type="button">
-                        <i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;确定
-                    </button>
-                    <button class="btn btn-primary btn-min-width js-cancel-btn" data-dismiss="modal" type="button">
-                        <i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;取消
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--选择员工模态框结束-->
+                    <!--<div class="col-sm-4">-->
+                        <!--<button class="btn btn-primary btn-min-width js-select-shop-search-btn" type="button">-->
+                            <!--<i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询-->
+                        <!--</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<table class="js-shop-tab"></table>-->
+            <!--</div>-->
+            <!--<div class="modal-footer text-center">-->
+                <!--<div class="row text-center">-->
+                    <!--<button class="btn btn-primary btn-min-width js-select-shop-ok-btn" type="button">-->
+                        <!--<i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;确定-->
+                    <!--</button>-->
+                    <!--<button class="btn btn-primary btn-min-width js-cancel-btn" data-dismiss="modal" type="button">-->
+                        <!--<i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;取消-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+<!--选择门店模态框结束-->
 <!-- model end -->
 
 <script src="../static/jquery/jquery.min.js"></script>
@@ -579,6 +590,7 @@
 <script src="../static/bootstrap/js/i18n/bootstrap-table-zh-CN.js" type="text/javascript"></script>
 <script src="../static/js/app.js" type="text/javascript"></script>
 <script src="../static/bootstrap/js/bootstrap-dialog.min.js" type="text/javascript"></script>
+<script src="../static/js/const/indexConst.js" type="text/javascript"></script>
 <script src="../static/js/index.js" type="text/javascript"></script>
 
 </body>

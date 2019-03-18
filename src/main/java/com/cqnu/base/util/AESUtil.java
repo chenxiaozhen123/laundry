@@ -1,5 +1,6 @@
 package com.cqnu.base.util;
 
+import com.cqnu.base.common.consts.LaundryConsts;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.codec.binary.Base64;
 
@@ -17,16 +18,16 @@ import java.security.MessageDigest;
  **/
 public class AESUtil {
     public static void main(String[] args) throws Exception {
-        String content = "1234112123";
+        String content = "123456";
         System.out.println("加密前：" + content);
 
         String key = "category";
         System.out.println("加密密钥和解密密钥：" + key);
 
-        String encrypt = aesEncrypt(content, key);
+        String encrypt = aesEncrypt(content, LaundryConsts.WORKER_KEY);
         System.out.println("加密后：" + encrypt);
 
-        String decrypt = aesDecrypt(encrypt, key);
+        String decrypt = aesDecrypt(encrypt, LaundryConsts.WORKER_KEY);
         System.out.println("解密后：" + decrypt);
     }
 

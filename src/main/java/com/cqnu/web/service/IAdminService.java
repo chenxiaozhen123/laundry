@@ -48,4 +48,11 @@ public interface IAdminService {
      * @return
      */
     int updateAdminRoleAndShopInfo(Map<String, Object> param);
+
+    /**
+     * 根据工号选择所属的门店分类
+     * @param param
+     * @return
+     */
+    Map<String, Object> getShopCategory(Map<String, Object> param);
 }

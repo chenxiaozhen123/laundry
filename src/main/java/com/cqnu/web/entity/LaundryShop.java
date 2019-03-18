@@ -17,6 +17,9 @@ public class LaundryShop {
     @Column(name = "shop_no")
     private Integer shopNo;
 
+    @Column(name = "shop_category")
+    private String shopCategory;
+
     /**
      * 门店名称
      */
@@ -80,6 +83,20 @@ public class LaundryShop {
      */
     public void setShopNo(Integer shopNo) {
         this.shopNo = shopNo;
+    }
+
+    /**
+     * @return shop_category
+     */
+    public String getShopCategory() {
+        return shopCategory;
+    }
+
+    /**
+     * @param shopCategory
+     */
+    public void setShopCategory(String shopCategory) {
+        this.shopCategory = shopCategory;
     }
 
     /**
