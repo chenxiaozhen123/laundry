@@ -15,28 +15,29 @@ import java.util.Map;
  **/
 @Service("laundryShopService")
 public class LaundryShopServiceImpl extends BaseServiceImpl implements ILaundryShopService{
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.LaundryShopMapper.";
     @Override
     public int addLaundryShop(Map<String, Object> params) {
-        return session.insert("com.cqnu.web.mapper.LaundryShopMapper.addLaundryShop",params);
+        return session.insert(MAPPER_URL+"addLaundryShop",params);
     }
 
     @Override
     public Map<String, Object> getShopNO() {
-        return session.selectOne("com.cqnu.web.mapper.LaundryShopMapper.getShopNo");
+        return session.selectOne(MAPPER_URL+"getShopNo");
     }
 
     @Override
     public int deleteLaundryShop(Map<String, Object> params) {
-        return session.update("com.cqnu.web.mapper.LaundryShopMapper.deleteLaundryShop",params);
+        return session.update(MAPPER_URL+"deleteLaundryShop",params);
     }
 
     @Override
     public int updateLaundryShop(Map<String, Object> params) {
-        return session.update("com.cqnu.web.mapper.LaundryShopMapper.updateLaundryShop",params);
+        return session.update(MAPPER_URL+"updateLaundryShop",params);
     }
 
     @Override
     public Map<String, Object> getShopByShopNo(Map<String, Object> params) {
-        return session.selectOne("com.cqnu.web.mapper.LaundryShopMapper.getShopByShopNo",params);
+        return session.selectOne(MAPPER_URL+"getShopByShopNo",params);
     }
 }

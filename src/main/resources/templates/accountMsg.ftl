@@ -15,15 +15,14 @@
     </div>
     <div class="row">
          <span>
-            1、连锁干洗中心后台管理系统
+            <a>请访问：连锁干洗中心后台管理系统<a>
         </span>
     </div>
     <div class="row">
          <span>
-             登录名为工号，初始密码为${params.initalPassword}（工作证会尽快以快递形式邮寄至您手中，请您耐心等待）。
+             登录名为工号，初始密码为${params.initalPassword}，请及时修改初始密码（工作证会尽快以快递形式邮寄至您手中，请您耐心等待）。
          </span>
     </div>
-
 </div>
 </body>
 </html>

@@ -24,8 +24,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/shop")
 public class LaundryShopController {
-    private final int roleId = 2;
-    private String adminNo ;
     @Autowired
     IAdminService adminService;
     @Autowired
@@ -110,9 +108,17 @@ public class LaundryShopController {
         int result = 0;
         try{
             String shopNo =  request.getParameter("shopNo");
+            String principalNo = request.getParameter("principalNo");
             Map<String, Object> reqMap = new HashMap<>();
+            Map<String, Object> reqAdminMap = new HashMap<>();
+            reqAdminMap.put("admin_no",principalNo);
+            reqAdminMap.put("shop_no","-1");
             reqMap.put("shopNo",shopNo);
             result= laundryShopService.deleteLaundryShop(reqMap);
+            if( 0 < result){
+                //门店删除成功则将该门店负责人重置为未分配门店
+                result = adminService.updateShopIdByAdminNo(reqAdminMap);
+            }
         }catch (Exception e){
             throw new LaundryException(e.getMessage());
         }

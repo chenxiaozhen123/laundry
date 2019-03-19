@@ -96,5 +96,13 @@ public interface LaundryConsts {
     String TAKE_BACK_STATUS="取回";
     String WAIT_CONFIRM_STATUS="待确认收衣";
     String WAIT_REVIEW_STATUS="待评价";
+    /**
+     * 初始分类编号
+     */
+    String CAT_NO="10000";
+    /**
+     * 初始商品编号
+     */
+    String GOODS_NO = "1000000";
 
 }

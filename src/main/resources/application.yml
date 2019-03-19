@@ -2,12 +2,18 @@ server:
   #项目访问端口
   port: 8080
   #项目访问地址
-  servlet:
-    context-path: /laundry
+#  servlet:
+#    context-path: /laundry
 spring:
   profiles:
   #多环境配置 dev：开发环境 pro：生产环境
-      active: dev
+    active: dev
+  #要打开的网址
+  web:
+    loginurl : http://localhost:${server.port}/index.html
+    #是否要启动时打开浏览器
+    isopenurl : true
+    googleexcute : explorer
   mvc:
     view:
       suffix: .html
@@ -46,12 +52,18 @@ spring:
     properties.mail.smtp.ssl.enable: true
     default-encoding: utf-8
 
-
+  #设置文件上传大小的限制
+  servlet:
+      multipart:
+        enabled: true
+        max-file-size: 2MB  #单个文件大小
+        max-request-size: 10MB #总上传的数据大小
 ## 该配置节点为独立的节点
 mybatis:
   config-location: classpath:mybatis-config.xml
   mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
   #type-aliases-package: com.cqnu.web.entity  # 注意：对应实体类的路径
+
 mapper:
   mappers: com.cqnu.web.util.WebMapper
   not-empty: false
@@ -67,6 +79,13 @@ log:
     corePoolSize: 4
     maxPoolSize: 8
     queueSize: 10000
+aliyun:
+  oss:
+    access-id:  LTAIb0dwIzyyChig
+    access-key: CenlCKwD71gRv8p33kxlfR61XuZcjn
+    bucket:  laundry-oss
+    endpoint:  oss-cn-beijing.aliyuncs.com
+    dir: imgaes
 
 
 

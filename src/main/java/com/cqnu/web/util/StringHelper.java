@@ -1,5 +1,6 @@
 package com.cqnu.web.util;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -61,6 +62,23 @@ public class StringHelper {
         String dataStr = delRepeatData(data);
         String str[] = dataStr.split(",");
         return Arrays.asList(str);
+    }
 
+    /**
+     * 获取订单编号
+     * @param str
+     * @return
+     */
+    public static String getOrderIdStr(String str){
+        Date now = new Date();
+        String reqTime = new SimpleDateFormat("yyyyMMddHHmmss").format(now);
+        UUID uuid = UUID.randomUUID();
+        int num = uuid.toString().hashCode();
+        if (num < 0) {
+            num = -num;
+        }
+        String serialNum = String.format("%09d", num).substring(0,5);
+        String orderId = reqTime+serialNum;
+        return  orderId;
     }
 }

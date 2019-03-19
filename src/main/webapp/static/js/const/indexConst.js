@@ -4,6 +4,7 @@
  */
 var action = "Edit";
 var roleIDs = '2,3,4,5';
+var shopNo = '';
 //角色id
 var center_admin_role_id = '5'; // 干洗中心管理员的角色id
 var center_worker_role_id = '4'; // 干洗中心员工的角色id
@@ -25,3 +26,13 @@ shopOrderList[4] = '取回';
 var centerOrderList = new Array();
 centerOrderList[0] = '正在送洗';
 centerOrderList[1] = '正在清洗';
+
+//提示信息
+var SUCCESS_ADD_MSG = "添加成功";
+var FAIL_ADD_MSG = "添加失败";
+var SUCCESS_UPDATE_MSG = "修改成功";
+var FAIL_UPDAGE_MSG = "修改失败";
+var SUCCESS_DELETE_MSG = "删除成功";
+var FAIL_DELETE_MSG = "删除失败";
+var SUCCESS_ACTION_MSG = "操作成功";
+var FAIL_ACTION_MSG = "操作失败";

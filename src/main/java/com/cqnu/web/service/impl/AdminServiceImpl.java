@@ -14,38 +14,39 @@ import java.util.Map;
  **/
 @Service("adminService")
 public class AdminServiceImpl extends BaseServiceImpl implements IAdminService{
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.AdminMapper.";
     @Override
     public int addAdmin(Map<String, Object> params) {
-        return session.insert("com.cqnu.web.mapper.AdminMapper.addAdmin",params);
+        return session.insert(MAPPER_URL+"addAdmin",params);
     }
 
     @Override
     public Map<String, Object> getAdminNO(Map<String, Object> param) {
-        return session.selectOne("com.cqnu.web.mapper.AdminMapper.getAdminNoByRoleID",param);
+        return session.selectOne(MAPPER_URL+"getAdminNoByRoleID",param);
     }
 
     @Override
     public int updateShopIdByAdminNo(Map<String, Object> param) {
-        return session.update("com.cqnu.web.mapper.AdminMapper.updateShopIdByAdminNo",param);
+        return session.update(MAPPER_URL+"updateShopIdByAdminNo",param);
     }
 
     @Override
     public int deleteAdminByAdminNo(Map<String, Object> param) {
-        return session.update("com.cqnu.web.mapper.AdminMapper.deleteAdminByAdminNo",param);
+        return session.update(MAPPER_URL+"deleteAdminByAdminNo",param);
     }
 
     @Override
     public int updateAdminInfo(Map<String, Object> param) {
-        return session.update("com.cqnu.web.mapper.AdminMapper.updateAdminInfo",param);
+        return session.update(MAPPER_URL+"updateAdminInfo",param);
     }
 
     @Override
     public int updateAdminRoleAndShopInfo(Map<String, Object> param) {
-        return session.update("com.cqnu.web.mapper.AdminMapper.updateAdminRoleAndShopInfo",param);
+        return session.update(MAPPER_URL+"updateAdminRoleAndShopInfo",param);
     }
 
     @Override
     public Map<String, Object> getShopCategory(Map<String, Object> param) {
-        return session.selectOne("com.cqnu.web.mapper.AdminMapper.getShopCategory",param);
+        return session.selectOne(MAPPER_URL+"getShopCategory",param);
     }
 }

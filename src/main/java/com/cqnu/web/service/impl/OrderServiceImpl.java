@@ -14,18 +14,19 @@ import java.util.Map;
  **/
 @Service("orderService")
 public class OrderServiceImpl extends BaseServiceImpl implements IOrderService{
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.OrderMapper.";
     @Override
     public int addOrder(Map<String, Object> params) {
-        return session.insert("",params);
+        return session.insert(MAPPER_URL+"",params);
     }
 
     @Override
     public Map<String, Object> getOrderList(Map<String, Object> params) {
-        return session.selectOne("",params);
+        return session.selectOne(MAPPER_URL+"",params);
     }
 
     @Override
     public int handleOrder(Map<String, Object> params) {
-        return session.update("com.cqnu.web.mapper.OrderMapper.handleOrder",params);
+        return session.update(MAPPER_URL+"handleOrder",params);
     }
 }

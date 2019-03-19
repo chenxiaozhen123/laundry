@@ -36,6 +36,7 @@ function initPage(data){
         $('.js-laundry-worker').css("display", '');
         $('.js-center-admin').css("display", 'none');//不显示 员工类型为干洗中心管理员
         $('.js-shop-admin').css("display", 'none');//不显示 员工类型为门店管理员
+        shopNo = data.shopNo;
         if(shop_admin_role_id == data.roleId){
             //登录用户为门店管理员的时候，员工类型只能是门店员工
             $('.js-center-worker').css("display", 'none');
@@ -48,6 +49,7 @@ function initPage(data){
             roleIDs = center_worker_role_id;
         }
     }else if( worker_priority == data.rolePriority ){ //门店/干洗中心员工
+        shopNo = data.shopNo;
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
         $('.js-worker-panel').css("display", 'none');
@@ -64,6 +66,7 @@ function initPage(data){
         $('.js-laundry-worker').css("display", 'none');
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
+        $('.js-laundry-category').css("display",'none');
     });
     var name = $('.js-principal-name').val();// 门店负责人
     var area = $('.js-shop-area').val();// 门店所属区域
@@ -121,7 +124,7 @@ function initPage(data){
                 obj[5] = row.shop_name;
                 obj.join(",")
                 result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editLaundryShop('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
-                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteLaundryShop('" + row.shop_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteLaundryShop('" + obj + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
                 return result;
             }
         }],
@@ -252,87 +255,21 @@ function initPage(data){
                 "address":address,
                 "shopNo":shopNo
             };
+            var url = "";
+            var msg = "";
+            var errorMsg = "";
             if("Add" == action){
-                $.ajax({
-                    url:"shop/add",
-                    data:datas,
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '添加成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '添加失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '添加失败！'+data,
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定'
-                        });
-                    }
-                });
-
+                url = "shop/add";
+                msg = SUCCESS_ADD_MSG;
+                errorMsg = FAIL_ADD_MSG;
             }else if("Edit" == action){
-                $.ajax({
-                    url:"shop/update",
-                    data:datas,
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '修改失败！'+data,
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定'
-                        });
-                    }
-                });
+                url = "shop/update";
+                msg = SUCCESS_UPDATE_MSG;
+                errorMsg = FAIL_UPDAGE_MSG ;
             }
+            callRemoteFunction(url,datas,msg,errorMsg);
             $('#shop').modal('hide');
             clearModal();
-
         });
     /**
      * 选择员工
@@ -372,6 +309,7 @@ function initPage(data){
             $('.js-laundry-worker').css("display", '');
             $('.js-laundry-shop').css("display", 'none');
             $('.js-laundry-order').css("display", 'none');
+            $('.js-laundry-category').css("display",'none');
         }
     );
     var name = $('.js-worker-name').val();
@@ -435,6 +373,7 @@ function initPage(data){
                 obj[5] = row.role_id;
                 obj[6] = row.shop_name;
                 obj[7] = row.admin_sex;
+                obj[8] = data.shopNo;
                 obj.join(",")
                 result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editAdmin('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
                 result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteAdmin('" + row.admin_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
@@ -455,6 +394,7 @@ function initPage(data){
                 pageNumber:params.pageNumber,
                 roleIds:roleIDs,
                 shopName:shopName,
+                shopNo:shopNo,
                 roleName:roleName
             }
             return param
@@ -491,34 +431,33 @@ function initPage(data){
             action = 'Add';
             $('.js-shop-no-modal-worker').val(data.shopNo);
             showWorkerModal();
-            alert($('.js-shop-no-modal-worker').val());
         }
     );
-    /**
-     * 选择门店
-     */
-    $('.js-select-shop-ok-btn').on(
-        "click",function () {
-            var user= $('.js-shop-tab').bootstrapTable('getSelections');
-            if( 0 == user.length){
-                BootstrapDialog.alert({
-                    title: '提示',
-                    message: '请选择门店',
-                    type: BootstrapDialog.TYPE_WARNING,
-                    closable: true,
-                    draggable: true,
-                    buttonLabel: '确定'
-                });
-            }else{
-                $('.js-shop-no-modal-worker').val(user[0].shop_no);
-                $('.js-worker-shop-name').val(user[0].shop_name);
-                $('#selectShop').modal('hide');
-                $('.js-shop-tab').bootstrapTable('destroy');
-                //清空选择员工模态框的数据
-                $('.js-worker-shop').val(''); //员工名
-            }
-        }
-    );
+    // /**
+    //  * 选择门店
+    //  */
+    // $('.js-select-shop-ok-btn').on(
+    //     "click",function () {
+    //         var user= $('.js-shop-tab').bootstrapTable('getSelections');
+    //         if( 0 == user.length){
+    //             BootstrapDialog.alert({
+    //                 title: '提示',
+    //                 message: '请选择门店',
+    //                 type: BootstrapDialog.TYPE_WARNING,
+    //                 closable: true,
+    //                 draggable: true,
+    //                 buttonLabel: '确定'
+    //             });
+    //         }else{
+    //             $('.js-shop-no-modal-worker').val(user[0].shop_no);
+    //             $('.js-worker-shop-name').val(user[0].shop_name);
+    //             $('#selectShop').modal('hide');
+    //             $('.js-shop-tab').bootstrapTable('destroy');
+    //             //清空选择员工模态框的数据
+    //             $('.js-worker-shop').val(''); //员工名
+    //         }
+    //     }
+    // );
     // /**
     //  * 根据门店所属区域查询门店
     //  */
@@ -558,122 +497,34 @@ function initPage(data){
                 "email":email,
                 "adminNo":adminNo
             };
+            var url = "";
+            var msg = "";
+            var errorMsg = ""
             if("Add" == action){
-                $.ajax({
-                    url:"admin/add",
-                    data:datas,
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '添加成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '添加失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '添加失败！',
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定'
-                        });
-                    }
-                });
+                url = "admin/add";
+                msg = SUCCESS_ADD_MSG;
+                errorMsg = FAIL_ADD_MSG;
             }else if("Edit" == action){
-                $.ajax({
-                    url:"admin/updateAdminInfo",
-                    data:datas,
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '修改失败！'+JSON.stringify(data),
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定'
-                        });
-                    }
-                });
+                url = "admin/updateAdminInfo";
+                msg = SUCCESS_UPDATE_MSG ;
+                errorMsg = FAIL_UPDAGE_MSG;
             }else if("personEdit" == action){
-                $.ajax({
-                    url:"admin/updateAdminPersonInfo",
-                    data:datas,
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改成功!重新登录即可看到更新后的信息',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '修改失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '修改失败！'+JSON.stringify(data),
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定'
-                        });
-                    }
-                });
+                url = "admin/updateAdminPersonInfo";
+                msg = SUCCESS_UPDATE_MSG +"!重新登录即可看到更新后的信息";
+                errorMsg =FAIL_UPDAGE_MSG;
             }
+            callRemoteFunction(url,datas,msg,errorMsg);
             $('#worker').modal('hide');
+            //刷新数据
+            var opt = {
+                url: "admin/getAdminInfoList",
+                silent: true,
+                query:{
+                    roleIds:roleIDs
+                }
+            };
+            //带参数 刷新
+            $(".js-laundry-worker-tab").bootstrapTable('refresh', opt);
             clearModal();
         }
     );
@@ -699,6 +550,7 @@ function initPage(data){
         "click",function () {
             $('.js-laundry-worker').css("display", 'none');
             $('.js-laundry-shop').css("display", 'none');
+            $('.js-laundry-category').css("display",'none');
             $('.js-laundry-order').css("display", '');
         }
     )
@@ -776,7 +628,7 @@ function initPage(data){
                 obj[1] = row.action;
                 obj[2] = data.roleId;
                 obj.join(",");
-                if(shop_admin_role_id == data.roleId || shop_worker_role_id  == data.orderId){
+                if(shop_admin_role_id == data.roleId || shop_worker_role_id  == data.roleId){
                     for(var j = 0,len = shopOrderList.length; j < len; j++){
                         if(row.status == shopOrderList[j]){
                             result += "<button class='btn btn-info btn-min-width js-action-order-btn' onclick=\"handleOrder('"+obj+"')\" type='button'>"+
@@ -869,32 +721,42 @@ function initPage(data){
      * 分类管理表格初始化
      */
     $('.js-laundry-category-tab').bootstrapTable({
-        // url: 'order/getOrderList',
-        data: {},
+        url: 'cat/getCategoryList',
         height: 300,
         columns: [{
-            field: 'category_id',
+            field: 'cat_no',
             title: '分类编号',
             width: 120
         }, {
-            field: 'category_name',
+            field: 'cat_name',
             title: '分类名称',
             width: 120
         }, {
             field: 'goods_manage',
             title: '物品管理',
-            width: 120
+            width: 120,
+            formatter: function (value, row, index) {
+                var result = "";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"showGoodsPanel('" + row.cat_no + "')\" title='物品管理'><span class='glyphicon glyphicon-th'></span></a>";
+                return result;
+            }
         }, {
             field: 'act',
             title: '操作',
             width: 120,
             formatter: function (value, row, index) {
                 var result = "";
+                var obj = new Array();
+                obj[0] = row.cat_no;
+                obj[1] = row.cat_name;
+                obj.join(",")
+                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editCategory('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteCategory('" + row.admin_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
                 return result;
             }
         }],
         cache: false,
-        // sidePagination: "server",
+        sidePagination: "server",
         pagination: true,
         queryParamsType: '',
         pageNumber: 1,//初始化加载第一页，默认第一页,并记录
@@ -909,8 +771,164 @@ function initPage(data){
             return param
         }
     });
+    /**
+     * 添加分类
+     */
+    $('.js-category-add-btn').on(
+      "click",function () {
+            action = 'Add';
+            $('.js-cat-title').text('新增分类');
+        }
+    );
+    /**
+     * 提交添加/修改分类事件
+     */
+    $('.js-category-ok').on(
+        "click",function () {
+            var url = "";
+            var msg = "";
+            var errorMsg = "";
+            var catName = $('.js-cat-name').val();
+            var datas = {"catName":catName};
+            if(action == 'Add'){
+                url = "cat/add";
+                msg = SUCCESS_ADD_MSG;
+                errorMsg = FAIL_ADD_MSG;
+            }else{
+                url = "cat/update";
+                msg = SUCCESS_UPDATE_MSG;
+                errorMsg = FAIL_UPDAGE_MSG;
+            }
+            callRemoteFunction(url,datas,msg,errorMsg);
+            $('#category').modal('hide');
+        }
+    )
     ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////物品管理结束////////////////////////////////////////////////////
+    ////////////////////////////////////////分类管理结束////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////商品管理开始////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    /**
+     * 商品表格初始化
+     */
+    $('.js-laundry-goods-tab').bootstrapTable({
+        // url: 'shop/getLaundryShopList',
+        data:[{goods_no:"2",img_path:"http://laundry-oss.oss-cn-beijing.aliyuncs.com/images/20193/1553025885302.png?Expires=1868385881&OSSAccessKeyId=LTAIb0dwIzyyChig&Signature=Rs9EA%2BiqDCbvUx8gPu6X6LnXsqM%3D"}],
+        height: 300,
+        columns: [{
+            field: 'cat_no',
+            title: '分类编号',
+            visible: false,
+            width:100
+        },{
+            field: 'goods_no',
+            title: '商品编号',
+            width:100
+        }, {
+            field: 'cat_name',
+            title: '所属分类',
+            width:100
+        },{
+            field: 'goods_name',
+            title: '商品名称',
+            width:100
+        },{
+            field: 'price',
+            title: '价格',
+            width:100
+        },{
+            field: 'img_path',
+            title: '图片',
+            width:100,
+            formatter:function(value,row,index){
+                var s = '<a class = "view"  href="javascript:void(0)"><img style="width:70px;height:40px;"  src="'+row.img_path+'" /></a>';
+                return s;
+            },
+            // events: 'operateEvents'
+        },{
+            field: 'action',
+            title: '操作',
+            width:70,
+            formatter:function(value,row,index){
+                var result = "";
+                var obj = new Array();
+                obj[0] = row.goods_no;
+                obj[1] = row.goods_name;
+                obj[2] = row.cat_name;
+                obj[3] = row.price;
+                obj[4] = row.img_path;
+                obj.join(",")
+                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editGoods('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteGoods('" + obj + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+                return result;
+            }
+        }],
+        cache: false,
+        sidePagination: 'server',
+        pagination: true,
+        queryParamsType:'',
+        queryParams:function (params) {
+            var param = {
+                pageSize:params.pageSize,
+                pageNumber:params.pageNumber,
+                roleIds:roleIDs,
+                name:name,
+                area:area
+            }
+            return param
+        },
+        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+        pageSize: 3,                     //每页的记录行数（*）
+        pageList: [2,5,10],  //可供选择的每页的行数（*）
+        showHeader: true
+    });
+    /**
+     * 点击添加商品
+     */
+    $('.js-goods-add-btn').on(
+        "click",function () {
+            /**
+             * 上传文件框初始化
+             */
+            $('.js-goods-img').fileinput({
+                language: 'zh', //设置语言
+                uploadUrl: "upload/img", //上传的地址
+                allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+                showUpload: true, //是否显示上传按钮
+                showCaption: true,//是否显示标题
+                browseClass: "btn btn-primary", //按钮样式
+                enctype: 'multipart/form-data',
+                validateInitialCount:true,
+                overwriteInitial: false,
+                autoReplace:true,//再选择会替换当前文件
+                dropZoneEnabled: false,//是否显示拖拽区域
+            });
+            //导入文件上传完成之后的事件
+            $(".js-goods-img").on("fileuploaded", function (event, data, previewId, index) {
+                var data = data.response;
+                alert(JSON.stringify(data))
+                if (data == undefined) {
+                    return;
+                }
+
+            });
+        }
+
+    );
+    /**
+     * 返回分类管理
+     */
+    $('.js-goBack-category').on(
+        "click",function () {
+            $('.js-laundry-goods').css('display','none');
+            $('.js-laundry-category').css('display','');
+        }
+    );
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////商品管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -956,9 +974,59 @@ function initPage(data){
 }
 
 /**
+ * ajax调用后台
+ */
+function callRemoteFunction(url,data,msg,errorMsg) {
+    $.ajax({
+        url:url,
+        data:data,
+        dataType:"json",
+        type:"post",
+        success:function(data){
+            if( 0 < data  || data == true){
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message: msg,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    buttonLabel: '确定'
+                });
+            }else{
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message: errorMsg+'!'+data.responseJSON.message,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    buttonLabel: '确定'
+                });
+            }
+        },
+        error:function (data) {
+            BootstrapDialog.alert({
+                title: '提示',
+                message: errorMsg+'!  '+data.responseJSON.message,
+                type: BootstrapDialog.TYPE_WARNING,
+                closable: true,
+                draggable: true,
+                buttonLabel: '确定'
+            });
+        }
+    });
+}
+/**
  * 删除门店
  */
-function deleteLaundryShop(datas) {
+function deleteLaundryShop(data) {
+    var url = "shop/delete";
+    var msg = SUCCESS_DELETE_MSG;
+    var errorMsg = FAIL_DELETE_MSG;
+    var datas = data.split(',');
+    var dataToObj = {
+        "principalNo":datas[0],
+        "shopNo":datas[1]
+    }
     BootstrapDialog.confirm({
         title: '提示',
         message: '确定删除门店编号为'+datas+'的门店信息吗?',
@@ -970,43 +1038,7 @@ function deleteLaundryShop(datas) {
         btnOKClass: 'btn-warning',
         callback: function(result) {
             if(result) {
-                $.ajax({
-                    url:"shop/delete",
-                    data:{"shopNo":datas},
-                    dataType:"json",
-                    type:"post",
-                    success:function(data){
-                        if( 0 < data){
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '删除成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }else{
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '删除失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error:function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '删除失败'+data,
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定',
-                        });
-                    }
-                })
+                callRemoteFunction(url,dataToObj,msg,errorMsg);
             }
         }
     });
@@ -1059,7 +1091,13 @@ function showShopModal(data) {
 /**
  * 删除员工信息
  */
-function deleteAdmin(datas) {
+function deleteAdmin(data) {
+    var url = "admin/delete";
+    var msg = SUCCESS_DELETE_MSG;
+    var errorMsg=FAIL_DELETE_MSG;
+    var datas = {
+        "adminNo": data
+    }
     BootstrapDialog.confirm({
         title: '提示',
         message: '确定删除该员工的信息吗?',
@@ -1071,43 +1109,7 @@ function deleteAdmin(datas) {
         btnOKClass: 'btn-warning',
         callback: function (result) {
             if (result) {
-                $.ajax({
-                    url: "admin/delete",
-                    data: {"adminNo": datas},
-                    dataType: "json",
-                    type: "post",
-                    success: function (data) {
-                        if (0 < data) {
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '删除成功',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        } else {
-                            BootstrapDialog.alert({
-                                title: '提示',
-                                message: '删除失败',
-                                type: BootstrapDialog.TYPE_WARNING,
-                                closable: true,
-                                draggable: true,
-                                buttonLabel: '确定'
-                            });
-                        }
-                    },
-                    error: function (data) {
-                        BootstrapDialog.alert({
-                            title: '提示',
-                            message: '删除失败' + data,
-                            type: BootstrapDialog.TYPE_WARNING,
-                            closable: true,
-                            draggable: true,
-                            buttonLabel: '确定',
-                        });
-                    }
-                })
+                callRemoteFunction(url,datas,msg,errorMsg);
             }
         }
     });
@@ -1150,13 +1152,13 @@ function showWorkerModal(data) {
         $('.js-worker-email-div').css('display','none');
         $('.js-worker-email-lab').css('display','');
         $('.js-worker-email-lab').text(datas[4]);
-        $('.js-shop-no-modal-worker').val(datas[0]); //所属门店
-        if( shop_worker_role_id == datas[5] || shop_admin_role_id == datas[5] || center_admin_role_id == datas[5]){
-            $('.js-worker-shop-div').css('display','');
-            $('.js-worker-shop-name').val(datas[6]); //所属门店名
-        }else{
-            $('.js-worker-shop-div').css('display','none');
-        }
+        $('.js-shop-no-modal-worker').val(datas[8]); //所属门店
+        // if( shop_worker_role_id == datas[5] || shop_admin_role_id == datas[5] || center_admin_role_id == datas[5]){
+        //     $('.js-worker-shop-div').css('display','');
+        //     $('.js-worker-shop-name').val(datas[6]); //所属门店名
+        // }else{
+        //     $('.js-worker-shop-div').css('display','none');
+        // }
     }else {
         $('.js-title-worker').text('添加员工');
         $('.js-worker-no-modal-div').css("display", 'none');
@@ -1274,28 +1276,58 @@ function handleOrder(data) {
     var datas = data.split(',');
     var orderId = datas[0];
     var action = datas[1];
-    $.ajax({
-        url:"order/handle",
-        data:{"orderId":orderId, "action":action},
-        dataType:"json",
-        type:"post",
-        success:function(data){
-            if( 0 <data){
-                alert('操作成功');
-                var opt = {
-                    url: "order/getOrderList",
-                    silent: true
-                };
-                //带参数 刷新
-                $(".js-laundry-order-tab").bootstrapTable('refresh', opt);
-            }
-        },
-        error:function (data) {
-            alert("操作失败");
-        }
-    })
+    var dataToObj = {
+        "orderId":orderId,
+        "action":action
+    }
+    var url = "order/handle";
+    var msg = SUCCESS_ACTION_MSG;
+    var errorMsg = FAIL_ACTION_MSG;
+    callRemoteFunction(url,dataToObj,msg,errorMsg);
+    var opt = {
+        url: "order/getOrderList",
+        silent: true
+    };
+    //带参数 刷新
+    $(".js-laundry-order-tab").bootstrapTable('refresh', opt);
 
 };
+/**
+ * 修改分类
+ */
+function  editCategory(data) {
+
+}
+
+/**
+ * 删除分类
+ */
+function deleteCategory(data) {
+
+}
+
+/**
+ * 商品管理
+ */
+function showGoodsPanel(data) {
+    $('.js-laundry-goods').css("display",'');
+    $('.js-laundry-category').css("display",'none');
+}
+
+
+/**
+ * 编辑商品
+ */
+function editGoods() {
+
+}
+
+/**
+ * 删除商品
+ */
+function deleteGoods() {
+
+}
 /**
  * 退出登录
  */
