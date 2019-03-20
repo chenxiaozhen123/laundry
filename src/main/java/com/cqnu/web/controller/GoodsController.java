@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,7 +54,8 @@ public class GoodsController {
             String imgPath = request.getParameter("imgPath");
             resMap = goodsService.getMaxGoodsNo();
             if( null != resMap){
-                goodsNO = resMap.get("goods_no").toString();
+                BigDecimal bigDecimal = new BigDecimal((Double) resMap.get("goods_no"));
+                goodsNO = bigDecimal.toString();
             }else{
                 goodsNO = LaundryConsts.GOODS_NO;
             }

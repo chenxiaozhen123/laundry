@@ -3,6 +3,7 @@ package com.cqnu.web.service.impl;
 import com.cqnu.base.service.impl.BaseServiceImpl;
 import com.cqnu.web.service.ICategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -26,6 +27,7 @@ public class CategoryServiceImpl extends BaseServiceImpl implements ICategorySer
     }
 
     @Override
+    @Transactional
     public int deleteCategory(Map<String, Object> param) {
         return session.update(MAPPER_URL+"deleteCategory",param);
     }

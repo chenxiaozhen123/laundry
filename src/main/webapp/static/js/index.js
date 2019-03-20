@@ -8,12 +8,10 @@ $(function() {
             initPage(data);
         },
         error:function (data) {
-
+            alert("初始化出错");
         }
     })
 });
-
-
 
 /**
  * 初始化页面
@@ -32,7 +30,6 @@ function initPage(data){
         //显示菜单
         $('.js-shop-panel').css("display", 'none');
         $('.js-laundry-shop').css("display", 'none');
-        $('.js-category-panel').css("display", 'none');
         $('.js-laundry-worker').css("display", '');
         $('.js-center-admin').css("display", 'none');//不显示 员工类型为干洗中心管理员
         $('.js-shop-admin').css("display", 'none');//不显示 员工类型为门店管理员
@@ -40,6 +37,7 @@ function initPage(data){
         if(shop_admin_role_id == data.roleId){
             //登录用户为门店管理员的时候，员工类型只能是门店员工
             $('.js-center-worker').css("display", 'none');
+            $('.js-category-panel').css("display", 'none');
             roleIDs = shop_worker_role_id;
             $('.js-worker-cate-sel').val(shop_worker_role_id);
         }else {
@@ -57,8 +55,6 @@ function initPage(data){
         $('.js-laundry-order').css("display", '');
     }
 
-
-
      ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////门店管理////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -67,6 +63,7 @@ function initPage(data){
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
         $('.js-laundry-category').css("display",'none');
+        $('.js-laundry-goods').css("display",'none');
     });
     var name = $('.js-principal-name').val();// 门店负责人
     var area = $('.js-shop-area').val();// 门店所属区域
@@ -80,39 +77,48 @@ function initPage(data){
             field: 'principal_no',
             title: '门店负责工号',
             visible: false,
-            width:100
+            width:100,
+            align:'center'
         }, {
             field: 'shop_no',
             title: '门店编号',
-            width:100
+            width:100,
+            align:'center'
         }, {
             field: 'shop_category',
             title: '门店分类',
-            width:100
+            width:100,
+            align:'center'
         },{
             field: 'shop_area',
             title: '所属区域',
-            width:100
+            width:100,
+            align:'center'
         }, {
             field: 'shop_name',
             title: '门店名',
-            width:100
+            width:100,
+            align:'center'
         },{
             field: 'admin_name',
             title: '负责人姓名',
-            width:100
+            width:100,
+            align:'center'
         }, {
             field: 'admin_tel_num',
             title: '手机号码',
-            width:100
+            width:100,
+            align:'center'
         },{
             field: 'shop_address',
             title: '门店地址',
-            width:220
+            width:220,
+            align:'center'
         },{
             field: 'action',
             title: '操作',
             width:70,
+            align:'center',
             formatter:function(value,row,index){
                 var result = "";
                 var obj = new Array();
@@ -269,6 +275,7 @@ function initPage(data){
             }
             callRemoteFunction(url,datas,msg,errorMsg);
             $('#shop').modal('hide');
+
             clearModal();
         });
     /**
@@ -310,6 +317,7 @@ function initPage(data){
             $('.js-laundry-shop').css("display", 'none');
             $('.js-laundry-order').css("display", 'none');
             $('.js-laundry-category').css("display",'none');
+            $('.js-laundry-goods').css("display",'none');
         }
     );
     var name = $('.js-worker-name').val();
@@ -384,8 +392,8 @@ function initPage(data){
         sidePagination: "server",
         pagination: true,
         queryParamsType:'',
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 5,                     //每页的记录行数（*）
+        pageNumber: 1,   //初始化加载第一页，默认第一页,并记录
+        pageSize: 5, //每页的记录行数（*）
         pageList: [5, 10,20],  //可供选择的每页的行数（*）
         showHeader: true,
         queryParams:function (params) {
@@ -433,6 +441,11 @@ function initPage(data){
             showWorkerModal();
         }
     );
+    /***************************************************************************************************
+     *     超级管理员添加干洗中心/门店管理员的时候不选择门店，此时添加的干洗中心/门店管理员为未分配门店
+     *     则在添加门店或者修改门店负责人的是再选择刚刚添加的干洗中心/门店管理员
+     *     因此超级管理员添加员工的时候不需要显示选择门店模态框，所以将涉及到的方法和html注释掉
+     ***************************************************************************************************/
     // /**
     //  * 选择门店
     //  */
@@ -474,6 +487,15 @@ function initPage(data){
     //         };
     //         //带参数 刷新
     //         $(".js-shop-tab").bootstrapTable('refresh', opt);
+    //     }
+    // )
+    // /**
+    //  * 门店管理员/门店员工选择门店
+    //  */
+    // $('.js-username-modal-worker').on(
+    //     "click",function () {
+    //         var val = $('.js-worker-cate-sel').val();
+    //         showWorkerForShop(val);
     //     }
     // )
     /**
@@ -528,15 +550,7 @@ function initPage(data){
             clearModal();
         }
     );
-    // /**
-    //  * 门店管理员/门店员工选择门店
-    //  */
-    // $('.js-username-modal-worker').on(
-    //     "click",function () {
-    //         var val = $('.js-worker-cate-sel').val();
-    //         showWorkerForShop(val);
-    //     }
-    // )
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////员工管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -551,6 +565,7 @@ function initPage(data){
             $('.js-laundry-worker').css("display", 'none');
             $('.js-laundry-shop').css("display", 'none');
             $('.js-laundry-category').css("display",'none');
+            $('.js-laundry-goods').css("display",'none');
             $('.js-laundry-order').css("display", '');
         }
     )
@@ -709,12 +724,14 @@ function initPage(data){
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////分类管理开始////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    var catName = $('.js-cat-name').val();
     $('.js-category-panel').on(
         "click",function () {
             $('.js-laundry-shop').css("display",'none');
             $('.js-laundry-worker').css("display",'none');
             $('.js-laundry-order').css("display",'none');
             $('.js-laundry-category').css("display",'');
+            $('.js-laundry-goods').css("display",'none');
         }
     );
     /**
@@ -726,14 +743,17 @@ function initPage(data){
         columns: [{
             field: 'cat_no',
             title: '分类编号',
-            width: 120
+            width: 120,
+            align:'center'
         }, {
             field: 'cat_name',
             title: '分类名称',
+            align:'center',
             width: 120
         }, {
             field: 'goods_manage',
             title: '物品管理',
+            align:'center',
             width: 120,
             formatter: function (value, row, index) {
                 var result = "";
@@ -744,6 +764,7 @@ function initPage(data){
             field: 'act',
             title: '操作',
             width: 120,
+            align:'center',
             formatter: function (value, row, index) {
                 var result = "";
                 var obj = new Array();
@@ -751,7 +772,7 @@ function initPage(data){
                 obj[1] = row.cat_name;
                 obj.join(",")
                 result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editCategory('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
-                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteCategory('" + row.admin_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteCategory('" + row.cat_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
                 return result;
             }
         }],
@@ -760,175 +781,20 @@ function initPage(data){
         pagination: true,
         queryParamsType: '',
         pageNumber: 1,//初始化加载第一页，默认第一页,并记录
-        pageSize: 5, //每页的记录行数（*）
-        pageList: [5, 10, 20], //可供选择的每页的行数（*）
+        pageSize: 3, //每页的记录行数（*）
+        pageList: [3, 5, 10], //可供选择的每页的行数（*）
         showHeader: true,
         queryParams: function (params) {
             var param = {
                 pageSize: params.pageSize,
-                pageNumber: params.pageNumber
+                pageNumber: params.pageNumber,
+                catName:catName
             }
             return param
         }
     });
-    /**
-     * 添加分类
-     */
-    $('.js-category-add-btn').on(
-      "click",function () {
-            action = 'Add';
-            $('.js-cat-title').text('新增分类');
-        }
-    );
-    /**
-     * 提交添加/修改分类事件
-     */
-    $('.js-category-ok').on(
-        "click",function () {
-            var url = "";
-            var msg = "";
-            var errorMsg = "";
-            var catName = $('.js-cat-name').val();
-            var datas = {"catName":catName};
-            if(action == 'Add'){
-                url = "cat/add";
-                msg = SUCCESS_ADD_MSG;
-                errorMsg = FAIL_ADD_MSG;
-            }else{
-                url = "cat/update";
-                msg = SUCCESS_UPDATE_MSG;
-                errorMsg = FAIL_UPDAGE_MSG;
-            }
-            callRemoteFunction(url,datas,msg,errorMsg);
-            $('#category').modal('hide');
-        }
-    )
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////分类管理结束////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////商品管理开始////////////////////////////////////////////////////
-    /////////////////////////////////////////////////////////////////////////////////////////////////////
-    /**
-     * 商品表格初始化
-     */
-    $('.js-laundry-goods-tab').bootstrapTable({
-        // url: 'shop/getLaundryShopList',
-        data:[{goods_no:"2",img_path:"http://laundry-oss.oss-cn-beijing.aliyuncs.com/images/20193/1553025885302.png?Expires=1868385881&OSSAccessKeyId=LTAIb0dwIzyyChig&Signature=Rs9EA%2BiqDCbvUx8gPu6X6LnXsqM%3D"}],
-        height: 300,
-        columns: [{
-            field: 'cat_no',
-            title: '分类编号',
-            visible: false,
-            width:100
-        },{
-            field: 'goods_no',
-            title: '商品编号',
-            width:100
-        }, {
-            field: 'cat_name',
-            title: '所属分类',
-            width:100
-        },{
-            field: 'goods_name',
-            title: '商品名称',
-            width:100
-        },{
-            field: 'price',
-            title: '价格',
-            width:100
-        },{
-            field: 'img_path',
-            title: '图片',
-            width:100,
-            formatter:function(value,row,index){
-                var s = '<a class = "view"  href="javascript:void(0)"><img style="width:70px;height:40px;"  src="'+row.img_path+'" /></a>';
-                return s;
-            },
-            // events: 'operateEvents'
-        },{
-            field: 'action',
-            title: '操作',
-            width:70,
-            formatter:function(value,row,index){
-                var result = "";
-                var obj = new Array();
-                obj[0] = row.goods_no;
-                obj[1] = row.goods_name;
-                obj[2] = row.cat_name;
-                obj[3] = row.price;
-                obj[4] = row.img_path;
-                obj.join(",")
-                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editGoods('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
-                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteGoods('" + obj + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
-                return result;
-            }
-        }],
-        cache: false,
-        sidePagination: 'server',
-        pagination: true,
-        queryParamsType:'',
-        queryParams:function (params) {
-            var param = {
-                pageSize:params.pageSize,
-                pageNumber:params.pageNumber,
-                roleIds:roleIDs,
-                name:name,
-                area:area
-            }
-            return param
-        },
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 3,                     //每页的记录行数（*）
-        pageList: [2,5,10],  //可供选择的每页的行数（*）
-        showHeader: true
-    });
-    /**
-     * 点击添加商品
-     */
-    $('.js-goods-add-btn').on(
-        "click",function () {
-            /**
-             * 上传文件框初始化
-             */
-            $('.js-goods-img').fileinput({
-                language: 'zh', //设置语言
-                uploadUrl: "upload/img", //上传的地址
-                allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
-                showUpload: true, //是否显示上传按钮
-                showCaption: true,//是否显示标题
-                browseClass: "btn btn-primary", //按钮样式
-                enctype: 'multipart/form-data',
-                validateInitialCount:true,
-                overwriteInitial: false,
-                autoReplace:true,//再选择会替换当前文件
-                dropZoneEnabled: false,//是否显示拖拽区域
-            });
-            //导入文件上传完成之后的事件
-            $(".js-goods-img").on("fileuploaded", function (event, data, previewId, index) {
-                var data = data.response;
-                alert(JSON.stringify(data))
-                if (data == undefined) {
-                    return;
-                }
-
-            });
-        }
-
-    );
-    /**
-     * 返回分类管理
-     */
-    $('.js-goBack-category').on(
-        "click",function () {
-            $('.js-laundry-goods').css('display','none');
-            $('.js-laundry-category').css('display','');
-        }
-    );
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////商品管理结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -940,6 +806,7 @@ function initPage(data){
             $('.js-laundry-worker').css("display", 'none');
             $('.js-laundry-shop').css("display", 'none');
             $('.js-laundry-order').css("display", 'none');
+            $('.js-laundry-goods').css("display",'none');
             $('.js-account-lab').text(data.adminNo);
             $('.js-name-lab').text(data.name); //姓名
             $('.js-sex-lab').text(data.sex);//性别
@@ -949,7 +816,9 @@ function initPage(data){
             $('.js-shop-lab').text(data.shopName);
         }
     );
-
+    /**
+     * 点击修改个人信息
+     */
     $('.js-person-update-btn').on(
         "click",function () {
             $('.js-title-worker').text('修改个人信息');
@@ -970,51 +839,12 @@ function initPage(data){
             $('.js-worker-shop-lab').text(data.shopName);
             action = "personEdit";
         }
-    )
-}
+    );
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////个人信息结束////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+};
 
-/**
- * ajax调用后台
- */
-function callRemoteFunction(url,data,msg,errorMsg) {
-    $.ajax({
-        url:url,
-        data:data,
-        dataType:"json",
-        type:"post",
-        success:function(data){
-            if( 0 < data  || data == true){
-                BootstrapDialog.alert({
-                    title: '提示',
-                    message: msg,
-                    type: BootstrapDialog.TYPE_WARNING,
-                    closable: true,
-                    draggable: true,
-                    buttonLabel: '确定'
-                });
-            }else{
-                BootstrapDialog.alert({
-                    title: '提示',
-                    message: errorMsg+'!'+data.responseJSON.message,
-                    type: BootstrapDialog.TYPE_WARNING,
-                    closable: true,
-                    draggable: true,
-                    buttonLabel: '确定'
-                });
-            }
-        },
-        error:function (data) {
-            BootstrapDialog.alert({
-                title: '提示',
-                message: errorMsg+'!  '+data.responseJSON.message,
-                type: BootstrapDialog.TYPE_WARNING,
-                closable: true,
-                draggable: true,
-                buttonLabel: '确定'
-            });
-        }
-    });
-}
 /**
  * 删除门店
  */
@@ -1059,12 +889,21 @@ function editLaundryShop(data){
 function selectShopCate(obj) {
     $('.js-worker-tab').bootstrapTable('destroy');
 }
+
+/**
+ * 重置输入框
+ */
+$('.js-shop-reset-btn').on(
+    "click",function () {
+        $('.js-principal-name').val();
+        $('.js-shop-area').val();
+    }
+)
 /**
  * 显示添加/修改门店模态框
  * @param data
  */
 function showShopModal(data) {
-
     if("Edit" == action){
         var datas = data.split(',');
         $('.js-title-shop').text('修改门店信息');
@@ -1087,7 +926,16 @@ function showShopModal(data) {
     }
 }
 
-
+/*************************************************************************************************
+ *                                   员工管理
+ *************************************************************************************************/
+$('.js-worker-reset-btn').on(
+    "click",function () {
+        $('.js-worker-name').val('');
+        $('.js-worker-shop').val('');
+        $('.js-worker-role').val('');
+    }
+)
 /**
  * 删除员工信息
  */
@@ -1179,26 +1027,6 @@ function showWorkerModal(data) {
 
     }
 }
-/**
- * 清空模态框信息
- */
-function clearModal() {
-    //添加门店模态框的数据
-    $('.js-user-account-modal-shop').val(''); //负责人工号
-    $('.js-shop-no-modal').text(''); //门店编号
-    $('.js-area-modal-shop').val(''); //门店所属区域
-    $('.js-user-modal-shop').val(''); //门店负责人姓名
-    $('.js-address-modal-shop').val(''); //门店地址
-    $('.js-name-modal-shop').val(''); //门店名
-    //添加/修改员工
-    $('.js-name-modal-worker').val(''); // 姓名
-    $('.js-tel-num-modal-worker').val(''); //手机号码
-    $('.js-worker-sex-sel').val(''); //性别
-    $('.js-worker-cate-sel').val('');//分类
-    $('.js-email-modal-shop').val('');//邮箱
-    $('.js-worker-shop-name').val(''); //所属门店名
-
-}
 
 /**
  * 选择员工类型
@@ -1269,6 +1097,18 @@ function clearModal() {
 //         showHeader: true
 //     });
 // }
+/*******************************************************************************************************
+ *                                        订单模块
+ ********************************************************************************************************/
+/**
+ * 清空订单编号/订单状态输入框
+ */
+$('.js-order-reset-btn').on(
+    "click",function () {
+        $('.js-order-status').val('');
+        $('.js-order-id').val('');
+    }
+)
 /**
  * 处理订单
  */
@@ -1292,42 +1132,450 @@ function handleOrder(data) {
     $(".js-laundry-order-tab").bootstrapTable('refresh', opt);
 
 };
+/*******************************************************************************************************
+ *                                           分类模块
+ ********************************************************************************************************/
+/**
+ * 根据分类名称查询分类
+ */
+$('.js-category-search-btn').on(
+    "click",function () {
+        var catName = $('.js-category-name').val();
+        var queryParam = {
+            "catName":catName
+        }
+        refreshCategoty(queryParam);
+    }
+);
+/**
+ * 添加分类
+ */
+$('.js-category-add-btn').on(
+    "click",function () {
+        action = 'Add';
+        showCategoryModal();
+    }
+);
+/**
+ * 清空分类名称输入框
+ */
+$('.js-category-reset-btn').on(
+    "click",function () {
+        $('.js-category-name').val('');
+    }
+);
 /**
  * 修改分类
  */
-function  editCategory(data) {
-
+function editCategory(data) {
+    action = 'Edit';
+    $('.js-cat-title').text('修改分类');
+    var datas = data.split(',');
+    showCategoryModal(datas);
+    $('#category').modal('show');
 }
+
+/**
+ * 显示添加修改分类模态框
+ * @param data
+ */
+function  showCategoryModal(data) {
+    if('Add' == action){
+        $('.js-cat-title').text('新增分类');
+        $('.js-cat-no-div').css("display",'none');
+        $('.js-cat-no').text('');
+        $('.js-cat-name').val('');
+    }else{
+        $('.js-cat-title').text('修改分类');
+        $('.js-cat-no-div').css("display",'');
+        $('.js-cat-no').text(data[0]);
+        $('.js-cat-name').val(data[1]);
+    }
+}
+/**
+ * 提交添加/修改分类事件
+ */
+$('.js-category-ok').on(
+    "click",function () {
+        var url = "";
+        var msg = "";
+        var errorMsg = "";
+        var catName = $('.js-cat-name').val();
+        var catNo = $('.js-cat-no').text();
+        var datas = {
+            "catName":catName,
+            "catNo":catNo
+        };
+        if(action == 'Add'){
+            url = "cat/add";
+            msg = SUCCESS_ADD_MSG;
+            errorMsg = FAIL_ADD_MSG;
+        }else{
+            url = "cat/update";
+            msg = SUCCESS_UPDATE_MSG;
+            errorMsg = FAIL_UPDAGE_MSG;
+        }
+        callRemoteFunction(url,datas,msg,errorMsg);
+        $('#category').modal('hide');
+        var queryParam = {
+            "catName":''
+        }
+        refreshCategoty(queryParam);
+    }
+);
 
 /**
  * 删除分类
  */
 function deleteCategory(data) {
-
+    var url = "cat/delete";
+    var msg = SUCCESS_DELETE_MSG;
+    var errorMsg=FAIL_DELETE_MSG;
+    var datas = {
+        "catNo": data
+    }
+    BootstrapDialog.confirm({
+        title: '提示',
+        message: '确定删除该分类的信息吗?',
+        type: BootstrapDialog.TYPE_WARNING,
+        closable: true,
+        draggable: true,
+        btnCancelLabel: '取消',
+        btnOKLabel: '确定',
+        btnOKClass: 'btn-warning',
+        callback: function (result) {
+            if (result) {
+                callRemoteFunction(url,datas,msg,errorMsg);
+            }
+        }
+    });
+    var queryParam = {
+        "catName":''
+    }
+    refreshCategoty(queryParam);
 }
-
+/**
+ * 刷新分类管理表格
+ */
+function refreshCategoty(data) {
+    var opt = {
+        url: "cat/getCategoryList",
+        silent: true,
+        query:data
+    };
+    //带参数 刷新
+    $(".js-laundry-category-tab").bootstrapTable('refresh', opt);
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////商品管理开始////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  * 商品管理
  */
 function showGoodsPanel(data) {
+    $('.js-goods-cat-no').val(data);
     $('.js-laundry-goods').css("display",'');
     $('.js-laundry-category').css("display",'none');
+    $('.js-laundry-goods-tab').bootstrapTable('destroy');
+    initGoodsTab();
+}
+/**
+ * 返回分类管理
+ */
+$('.js-go-back-category').on(
+    "click",function () {
+        $('.js-laundry-goods').css('display','none');
+        $('.js-laundry-category').css('display','');
+    }
+);
+/**
+ * 初始化商品管理表格
+ */
+function initGoodsTab() {
+    var goodsCatNo = $('.js-goods-cat-no').val();
+    var goodsName = $('.js-goods-name').val();
+    /**
+     * 商品表格初始化
+     */
+    $('.js-laundry-goods-tab').bootstrapTable({
+        url: 'goods/getGoodsList',
+        height: 300,
+        columns: [{
+            field: 'cat_no',
+            title: '分类编号',
+            visible: false,
+            width:100,
+            align:'center',
+        },{
+            field: 'goods_no',
+            title: '商品编号',
+            width:100,
+            align:'center',
+        },{
+            field: 'img_path',
+            title: '图片',
+            width:100,
+            align:'center',
+            formatter:function(value,row,index){
+                var s = '<a class = "view"  href="javascript:void(0)"><img style="width:60px;height:50px;"  src="'+row.img_path+'" /></a>';
+                return s;
+            },
+            // events: 'operateEvents'
+        }, {
+            field: 'cat_name',
+            title: '所属分类',
+            width:100,
+            align:'center',
+        },{
+            field: 'goods_name',
+            title: '商品名称',
+            width:100,
+            align:'center',
+        },{
+            field: 'price',
+            title: '价格',
+            width:100,
+            align:'center',
+            formatter:function (value,row,index) {
+                return row.price.toFixed(2);
+            }
+        },{
+            field: 'img-action',
+            title: '图片管理',
+            width:70,
+            align:'center',
+            formatter:function(value,row,index){
+                var result = "";
+                var obj = new Array();
+                obj[0] = row.goods_no;
+                obj[1] = row.cat_no;
+                obj[2] = row.goods_name;
+                obj[3] = row.cat_name;
+                obj[4] = row.price;
+                obj[5] = row.img_path;
+                obj.join(",")
+                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editGoodsImg('" + obj + "')\" title='修改图片'><span class='glyphicon glyphicon-picture'></span></a>";
+                return result;
+            }
+        },{
+            field: 'action',
+            title: '操作',
+            width:70,
+            align:'center',
+            formatter:function(value,row,index){
+                var result = "";
+                var obj = new Array();
+                obj[0] = row.goods_no;
+                obj[1] = row.cat_no;
+                obj[2] = row.goods_name;
+                obj[3] = row.cat_name;
+                obj[4] = row.price;
+                obj[5] = row.img_path;
+                obj.join(",")
+                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editGoods('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteGoods('" + row.goods_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
+                return result;
+            }
+        }],
+        cache: false,
+        sidePagination: 'server',
+        pagination: true,
+        queryParamsType:'',
+        queryParams:function (params) {
+            var param = {
+                pageSize:params.pageSize,
+                pageNumber:params.pageNumber,
+                roleIds:roleIDs,
+                catNo:goodsCatNo,
+                goodsName:goodsName
+            }
+            return param
+        },
+        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+        pageSize: 3,                     //每页的记录行数（*）
+        pageList: [3,5,10],  //可供选择的每页的行数（*）
+        showHeader: true
+    });
 }
 
-
+/**
+ * 查询商品
+ */
+$('.js-goods-search-btn').on(
+    "click",function () {
+        refreshGoods();
+    }
+);
+/**
+ * 点击重置,清空输入框
+ */
+$('.js-goods-reset-btn').on(
+    "click",function () {
+        $('.js-goods-name').val('');
+    }
+);
+/**
+ * 点击添加商品
+ */
+$('.js-goods-add-btn').on(
+    "click",function () {
+        action = 'Add';
+        $('.js-goods-no-div').css('display','none');
+        $('.js-goods-title').text('新增商品');
+        /**
+         * 上传文件框初始化
+         */
+        initFileInput('js-goods-img');
+        //导入文件上传完成之后的事件
+        $(".js-goods-img").on("fileuploaded", function (event, data, previewId, index) {
+            var data = data.response;
+            if (data == undefined) {
+                return;
+            }
+            $('.js-goods-img-url').text(data.fileUrl);//得到图片路径
+        });
+    }
+);
 /**
  * 编辑商品
  */
-function editGoods() {
-
+function editGoods(obj) {
+    action = "Edit";
+    var data = obj.split(',');
+    $('.js-goods-no-div').css('display','');
+    $('.js-goods-title').text('修改商品信息');
+    $('.js-goods-img-div').css('display','none');
+    $('.js-goods-no').text(data[0]);
+    $('.js-goods-name-modal').val(data[2]);
+    $('.js-goods-price').val(data[4]);
+    $('#goods').modal('show');
 }
+/**
+ * 提交添加/修改商品
+ */
+$('.js-goods-ok').on(
+    "click",function () {
+        var goodsNo =  $('.js-goods-no').text();
+        var goodsName = $('.js-goods-name-modal').val();
+        var price = $('.js-goods-price').val();
+        var imgPath = $('.js-goods-img-url').text();
+        var catNo = $('.js-goods-cat-no').val();
+        var datas = {
+            "goodsName":goodsName,
+            "catNo":catNo,
+            "price":price,
+            "imgPath":imgPath,
+            "goodsNO":goodsNo
+        }
+        var url = "";
+        var msg = "";
+        var errorMsg = "";
+        if('Add' == action){
+            url = "goods/add";
+            msg = SUCCESS_ADD_MSG;
+            errorMsg = FAIL_ADD_MSG;
+        }else{
+            url = "goods/update";
+            msg = SUCCESS_UPDATE_MSG;
+            errorMsg = FAIL_UPDAGE_MSG;
+        }
+        callRemoteFunction(url,datas,msg,errorMsg);
+        $('.js-goods-img').val('');
+        $('#goods').modal('hide');
+        refreshGoods();
+        clearModal();
+    }
+)
+
 
 /**
  * 删除商品
  */
-function deleteGoods() {
-
+function deleteGoods(data) {
+    var url = "goods/delete";
+    var msg = SUCCESS_DELETE_MSG;
+    var errorMsg=FAIL_DELETE_MSG;
+    var datas = {
+        "goodsNO": data
+    }
+    BootstrapDialog.confirm({
+        title: '提示',
+        message: '确定删除该商品的信息吗?',
+        type: BootstrapDialog.TYPE_WARNING,
+        closable: true,
+        draggable: true,
+        btnCancelLabel: '取消',
+        btnOKLabel: '确定',
+        btnOKClass: 'btn-warning',
+        callback: function (result) {
+            if (result) {
+                callRemoteFunction(url,datas,msg,errorMsg);
+                refreshGoods();
+            }
+        }
+    });
 }
+
+/**
+ * 修改图片
+ * @param data
+ */
+function editGoodsImg(data) {
+    var datas = data.split(',');
+    $('.js-goods-no-img').text(datas[0]);
+    $('.js-cat-name-modal-img').text(datas[3]);
+    $('.js-goods-name-modal-img').text(datas[2]);
+    $('#goodsImg').modal('show');
+    initFileInput('js-goods-img-modal');
+    //导入文件上传完成之后的事件
+    $(".js-goods-img-modal").on("fileuploaded", function (event, data, previewId, index) {
+        var data = data.response;
+        if (data == undefined) {
+            return;
+        }
+        $('.js-goods-img-url-modal').text(data.fileUrl);//得到图片路径
+    });
+};
+
+/**
+ * 提交修改图片
+ */
+$('.js-goods-edit-img-ok').on(
+    "click",function () {
+        var goodsNo = $('.js-goods-no-img').text();
+        var imgpath = $('.js-goods-img-url-modal').text();
+        var datas = {
+            "goodsNO":goodsNo,
+            "imgPath":imgpath,
+            "goodsName":'',
+            "price":''
+        }
+        var url = "goods/update";
+        var msg = SUCCESS_UPDATE_MSG;
+        var errorMsg = FAIL_UPDAGE_MSG;
+        callRemoteFunction(url,datas,msg,errorMsg);
+        $('#goodsImg').modal('hide');
+        $('.js-goods-img-modal').val('');
+        refreshGoods();
+    }
+);
+/**
+ * 刷新商品管理表格
+ */
+function refreshGoods() {
+    var goodsCatNo = $('.js-goods-cat-no').val();
+    var goodsName = $('.js-goods-name').val();
+    var opt = {
+        url: "goods/getGoodsList",
+        query:{
+            catNo:goodsCatNo,
+            goodsName:goodsName
+        }
+    };
+    //带参数 刷新
+    $(".js-laundry-goods-tab").bootstrapTable('refresh', opt);
+}
+
 /**
  * 退出登录
  */

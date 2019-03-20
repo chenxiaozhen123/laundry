@@ -117,9 +117,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-4 pull-right">
                             <button class="btn btn-primary btn-min-width js-shop-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                            <button class="btn btn-primary btn-min-width js-shop-reset-btn" type="button">
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;&nbsp;重置
                             </button>
                         </div>
                     </div>
@@ -164,8 +167,11 @@
                             </div>
                         </div>
                         <div class="col-sm-3 pull-right">
-                            <button class="btn btn-primary btn-min-width pull-right js-worker-search-btn" type="button">
+                            <button class="btn btn-primary btn-min-width js-worker-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                            <button class="btn btn-primary btn-min-width js-worker-reset-btn" type="button">
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;&nbsp;重置
                             </button>
                         </div>
                     </div>
@@ -200,6 +206,9 @@
                             <button class="btn btn-primary btn-min-width js-order-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
                             </button>
+                            <button class="btn btn-primary btn-min-width js-order-reset-btn" type="button">
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;&nbsp;重置
+                            </button>
                         </div>
                     </div>
                     <table class="js-laundry-order-tab"></table>
@@ -226,9 +235,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-primary btn-min-width pull-right js-category-search-btn" type="button">
+                        <div class="col-sm-6 pull-right">
+                            <button class="btn btn-primary btn-min-width js-category-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
+                            </button>
+                            <button class="btn btn-primary btn-min-width js-category-reset-btn" type="button">
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;&nbsp;重置
                             </button>
                         </div>
                     </div>
@@ -240,12 +252,20 @@
             <div class="panel panel-default js-laundry-goods" style="display: none;">
                 <div class="panel-heading clearfix">
                     <ul class="breadcrumb">
-                        <li><a class="js-goBack-category" href="#">分类管理</a></li>
+                        <li><a class="js-go-back-category" href="#">分类管理</a></li>
                         <li class="active">商品管理</li>
                     </ul>
                 </div>
                 <div class="panel-body">
                     <div class="row">
+                        <div class="col-sm-4" style="display: none">
+                            <div class="form-group">
+                                <label class="col-sm-5 control-label">分类编号</label>
+                                <div class="input-group col-sm-6 input-group-sm" >
+                                    <input class="form-control js-goods-cat-no" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label class="col-sm-5 control-label">商品名称</label>
@@ -254,13 +274,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-primary btn-min-width pull-right js-category-search-btn" type="button">
+                        <div class="col-sm-6 pull-right">
+                            <button class="btn btn-primary btn-min-width  js-goods-search-btn" type="button">
                                 <i class="glyphicon glyphicon-search"></i>&nbsp;&nbsp;查询
                             </button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-primary btn-min-width js-goods-add-btn" data-toggle="modal" data-target="#goods" type="button">
+                            <button class="btn btn-primary btn-min-width  js-goods-reset-btn" type="button">
+                                <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;&nbsp;重置
+                            </button>
+                            <button class="btn btn-primary btn-min-width  js-goods-add-btn" data-toggle="modal" data-target="#goods" type="button">
                                 <i class="glyphicon glyphicon-plus"></i>&nbsp;&nbsp;添加
                             </button>
                         </div>
@@ -575,6 +596,7 @@
     </div>
 </div>
 <!--选择员工模态框结束-->
+
 <!--选择门店模态框开始-->
 <!--<div class="modal fade" id="selectShop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
     <!--<div class="modal-dialog">-->
@@ -625,6 +647,12 @@
                 <h4 class="modal-title js-cat-title">新增分类</h4>
             </div>
             <div class="modal-body">
+                <div class="row js-cat-no-div" style="display: none">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">分类编号</label>
+                        <label class="col-sm-3 control-label js-cat-no"></label>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">分类名称</label>
@@ -654,14 +682,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title js-cat-title">新增商品</h4>
+                <h4 class="modal-title js-goods-title">新增商品</h4>
             </div>
             <div class="modal-body">
+                <div class="row js-goods-no-div" style="display: none">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">商品编号</label>
+                        <label class="col-sm-3 control-label js-goods-no"></label>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">商品名称</label>
                         <div class="input-group col-sm-6 input-group-sm" >
-                            <input class="form-control js-goods-name" autocomplete="off">
+                            <input class="form-control js-goods-name-modal" autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -669,22 +703,23 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">商品价格</label>
                         <div class="input-group col-sm-6 input-group-sm" >
-                            <input class="form-control js-goods-name" autocomplete="off">
+                            <input class="form-control js-goods-price" autocomplete="off">
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row js-goods-img-div">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">商品图片</label>
+                        <label class="col-sm-3 control-label js-goods-img-url" style="display: none"></label>
                         <div class="input-group col-sm-6">
-                            <input type="file" class="file-loading js-goods-img">
+                            <input type="file"  class="file-loading js-goods-img" autocomplete="off">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer text-center">
                 <div class="row text-center">
-                    <button class="btn btn-primary btn-min-width js-category-ok" type="button">
+                    <button class="btn btn-primary btn-min-width js-goods-ok" type="button">
                         <i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;确定
                     </button>
                     <button class="btn btn-primary btn-min-width " data-dismiss="modal" type="button">
@@ -696,6 +731,57 @@
     </div>
 </div>
 <!--添加/修改商品结束-->
+<!--添加/修改商品图片开始-->
+<div class="modal fade" id="goodsImg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title js-goods-title">修改商品图片</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row ">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">商品编号</label>
+                        <label class="col-sm-6 control-label js-goods-no-img"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">所属分类</label>
+                        <label class="col-sm-6 control-label js-cat-name-modal-img"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">商品名称</label>
+                        <label class="col-sm-6 control-label js-goods-name-modal-img"></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">商品图片</label>
+                        <label class="col-sm-3 control-label js-goods-img-url-modal" style="display: none"></label>
+                        <div class="input-group col-sm-6">
+                            <input type="file" class="file-loading js-goods-img-modal" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+                <div class="row text-center">
+                    <button class="btn btn-primary btn-min-width js-goods-edit-img-ok" type="button">
+                        <i class="glyphicon glyphicon-ok"></i>&nbsp;&nbsp;确定
+                    </button>
+                    <button class="btn btn-primary btn-min-width " data-dismiss="modal" type="button">
+                        <i class="glyphicon glyphicon-remove"></i>&nbsp;&nbsp;取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--添加/修改商品图片结束-->
 <!-- model end -->
 
 <script src="../static/jquery/jquery.min.js"></script>
@@ -710,6 +796,7 @@
 <script src="../static/bootstrap/js/bootstrap-dialog.min.js" type="text/javascript"></script>
 
 <script src="../static/js/const/indexConst.js" type="text/javascript"></script>
+<script src="../static/js/common.js" type="text/javascript"></script>
 <script src="../static/js/index.js" type="text/javascript"></script>
 
 </body>

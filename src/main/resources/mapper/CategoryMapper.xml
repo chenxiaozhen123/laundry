@@ -29,5 +29,8 @@
   </select>
   <select id="getCategoryList" parameterType="map" resultType="map">
     select c.cat_no , c.cat_name from category c where c.state = '00A'
+    <if test="null != catName and '' != catName">
+      and c.cat_name like concat(concat('%', #{catName}), '%')
+    </if>
   </select>
 </mapper>

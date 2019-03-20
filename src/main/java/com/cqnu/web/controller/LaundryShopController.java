@@ -7,6 +7,7 @@ import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,11 @@ public class LaundryShopController {
     @Autowired
     BaseService baseService;
     /**
-     * 添加门店
+     * 添加门店 //开启事务
      */
     @ResponseBody
     @RequestMapping(value = "/add")
+    @Transactional
     public int addLaundryShop(HttpServletRequest request) {
         int result = 0;
         try{
@@ -100,10 +102,11 @@ public class LaundryShopController {
         return resMap;
     }
     /**
-     * 删除门店
+     * 删除门店 //需要开启事务
      */
     @ResponseBody
     @RequestMapping(value = "/delete")
+    @Transactional
     public int deleteLaundryShop(HttpServletRequest request){
         int result = 0;
         try{
@@ -125,10 +128,11 @@ public class LaundryShopController {
         return result;
     }
     /**
-     * 修改门店信息
+     * 修改门店信息 开启事务
      */
     @ResponseBody
     @RequestMapping(value = "/update")
+    @Transactional
     public int updateLaundryShop(HttpServletRequest request){
         int result = 0;
         try{

@@ -26,16 +26,27 @@
     </if>
   </select>
   <select id="getMaxGoodsNo" resultType="map" parameterType="map">
-    select max(goods_no)+1 from goods
+    select max(goods_no)+1 as goods_no from goods
   </select>
   <update id="updateGoods">
-    update goods set goods_name = #{goodsName},price = #{price},img_path = #{imgPath}
+    update goods
+    <set>
+      <if test="null != goodsName and '' != goodsName">
+        goods_name = #{goodsName},
+      </if>
+      <if test="null != price and '' != price">
+        price = #{price},
+      </if>
+      <if test="null != imgPath and '' != imgPath">
+        img_path = #{imgPath},
+      </if>
+    </set>
     where goods_no = #{goodsNO} and state = '00A'
   </update>
   <update id="deleteGoods">
     update goods set state = '00X' where goods_no = #{goodsNO}
   </update>
   <update id="deleteGoodsList">
-    update goods set state = '00X' where cat_no = #{catNO}
+    update goods set state = '00X' where cat_no = #{catNo}
   </update>
 </mapper>

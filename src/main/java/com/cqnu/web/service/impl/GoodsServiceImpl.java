@@ -3,6 +3,7 @@ package com.cqnu.web.service.impl;
 import com.cqnu.base.service.impl.BaseServiceImpl;
 import com.cqnu.web.service.IGoodsService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Map;
 
@@ -36,6 +37,7 @@ public class GoodsServiceImpl extends BaseServiceImpl implements IGoodsService{
     }
 
     @Override
+    @Transactional
     public int deleteGoodsList(Map<String, Object> param) {
         return session.update(MAPPER_URL+"deleteGoodsList",param);
     }

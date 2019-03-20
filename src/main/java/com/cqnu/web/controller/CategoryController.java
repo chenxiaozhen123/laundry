@@ -4,13 +4,16 @@ import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.ICategoryService;
+import com.cqnu.web.service.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +30,8 @@ public class CategoryController {
     ICategoryService categoryService;
     @Autowired
     BaseService baseService;
+    @Autowired
+    IGoodsService goodsService;
     /**
      * 添加分类
      */
@@ -41,7 +46,8 @@ public class CategoryController {
             //获取最大+1的分类编号
             Map<String, Object> catNOMap = categoryService.getCatNo();
             if(null != catNOMap){
-                reqMap.put("cat_no",catNOMap.get("cat_no"));
+                BigDecimal bigDecimal = new BigDecimal((Double) catNOMap.get("cat_no"));
+                reqMap.put("cat_no",bigDecimal.toString());
             }else {
                 reqMap.put("cat_no", LaundryConsts.CAT_NO);
             }
@@ -58,6 +64,7 @@ public class CategoryController {
      */
     @ResponseBody
     @RequestMapping(value = "/delete")
+    @Transactional
     public int deleteCategory(HttpServletRequest request){
         int result = 0;
         try{
@@ -65,6 +72,9 @@ public class CategoryController {
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("catNo",catNo);
             result = categoryService.deleteCategory(reqMap);
+            if(0 < result){
+                result = goodsService.deleteGoodsList(reqMap);
+            }
         }catch (DataAccessException e){
             throw new LaundryException("数据库操作异常");
         }catch (Exception e){
@@ -104,8 +114,10 @@ public class CategoryController {
         try{
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
+            String catName = request.getParameter("catName");
             reqMap.put("pageNum",pageNumber);
             reqMap.put("pageSize",pageSize);
+            reqMap.put("catName",catName);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.CategoryMapper.getCategoryList",reqMap);
         }catch (DataAccessException e){
             throw new LaundryException("数据库操作异常");
