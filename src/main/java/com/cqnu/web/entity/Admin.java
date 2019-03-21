@@ -26,8 +26,8 @@ public class Admin {
     /**
      * 密码
      */
-    @Column(name = "amdin_password")
-    private String amdinPassword;
+    @Column(name = "admin_password")
+    private String adminPassword;
 
     /**
      * 手机号
@@ -121,19 +121,19 @@ public class Admin {
     /**
      * 获取密码
      *
-     * @return amdin_password - 密码
+     * @return admin_password - 密码
      */
-    public String getAmdinPassword() {
-        return amdinPassword;
+    public String getAdminPassword() {
+        return adminPassword;
     }
 
     /**
      * 设置密码
      *
-     * @param amdinPassword 密码
+     * @param adminPassword 密码
      */
-    public void setAmdinPassword(String amdinPassword) {
-        this.amdinPassword = amdinPassword;
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
 
     /**

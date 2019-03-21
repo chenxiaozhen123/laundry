@@ -9,15 +9,14 @@ import com.cqnu.base.util.MailUtil;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -155,19 +154,19 @@ public class AdminController {
             String sex =  request.getParameter("sex");
             String email =  request.getParameter("email");
             String telNum =  request.getParameter("telNum");
-            String roleId =  request.getParameter("roleId");
-            String shopNo =  request.getParameter("shopNo");
+            String password =  request.getParameter("password");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("admin_no",adminNo);
-            reqMap.put("role_id",roleId);
             reqMap.put("admin_name",name);
             reqMap.put("admin_sex",sex);
             reqMap.put("admin_email",email);
             reqMap.put("admin_tel_num",telNum);
-            reqMap.put("shop_no",shopNo);
+            reqMap.put("password",AESUtil.aesEncrypt(password,LaundryConsts.WORKER_KEY));
             result= adminService.updateAdminInfo(reqMap);
+        }catch (DataAccessException e){
+            throw new LaundryException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            throw new LaundryException("更改信息异常");
         }
         return result;
     }

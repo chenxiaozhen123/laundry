@@ -3397,3 +3397,14 @@ fieldset[disabled] .btn-vk.active {
 .float-right{
   float: left;
 }
+.js-pwd-panel{
+  padding-right: 0;
+  padding-left: 0;
+
+}
+.js-pwd-panel-div{
+  height: 400px;
+}
+.js-pwd-nav-div{
+  height: 400px;
+}

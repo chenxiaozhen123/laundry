@@ -8,7 +8,7 @@
     <id column="admin_id" jdbcType="INTEGER" property="adminId" />
     <result column="admin_no" jdbcType="VARCHAR" property="adminNo" />
     <result column="admin_name" jdbcType="VARCHAR" property="adminName" />
-    <result column="amdin_password" jdbcType="VARCHAR" property="amdinPassword" />
+    <result column="admin_password" jdbcType="VARCHAR" property="adminPassword" />
     <result column="admin_tel_num" jdbcType="VARCHAR" property="adminTelNum" />
     <result column="admin_email" jdbcType="VARCHAR" property="adminEmail" />
     <result column="admin_sex" jdbcType="VARCHAR" property="adminSex" />
@@ -18,13 +18,13 @@
   </resultMap>
 
   <select id="getAdmin" parameterType="map" resultType="map">
-    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_no,a.admin_sex,a.state from admin a
+    select a.admin_id ,a.admin_no,a.admin_name ,a.admin_password,a.admin_tel_num ,a.admin_email,a.role_id ,a.shop_no,a.admin_sex,a.state from admin a
     where a.state = '00A'
     <if test="null != admin_no and '' != admin_no">
       and a.admin_no = #{admin_no}
     </if>
     <if test="null != password and '' != password">
-      and a.amdin_password = #{password}
+      and a.admin_password = #{password}
     </if>
     <if test="null != roleIds">
       and a.role_id in
@@ -41,7 +41,7 @@
   </select>
 
   <insert id="addAdmin" parameterType="map">
-    insert into admin (admin_no,admin_name,amdin_password,admin_tel_num,admin_email,admin_sex,role_id,shop_no,state)
+    insert into admin (admin_no,admin_name,admin_password,admin_tel_num,admin_email,admin_sex,role_id,shop_no,state)
     VALUES (
       #{admin_no},#{admin_name},#{password},#{admin_tel_num},#{admin_email},#{admin_sex},#{role_id},#{shop_no},'00A'
     )
@@ -54,7 +54,7 @@
     update admin set shop_no = #{shop_no} where admin_no = #{admin_no}
   </update>
   <select id="getAdminList" parameterType="map" resultType="map">
-    select a.admin_id ,a.admin_no,a.admin_name ,a.amdin_password,a.admin_tel_num ,a.admin_email,a.role_id ,
+    select a.admin_id ,a.admin_no,a.admin_name ,a.admin_password,a.admin_tel_num ,a.admin_email,a.role_id ,
     a.shop_no, a.admin_sex,a.state ,r.role_name ,s.shop_name from admin a ,role r,laundry_shop s
     where a.state = '00A' and r.role_id = a.role_id and a.shop_no = s.shop_no
     <if test="null != roleIds">
@@ -81,8 +81,24 @@
     update admin set state = '00X' where admin_no = #{admin_no}
   </update>
   <update id="updateAdminInfo">
-    update admin set admin_name = #{admin_name},admin_tel_num = #{admin_tel_num},
-    admin_email = #{admin_email},admin_sex = #{admin_sex}
+    update admin
+      <set>
+        <if test="null != admin_name and '' != admin_name">
+          admin_name = #{admin_name},
+        </if>
+        <if test="null != admin_tel_num and '' != admin_tel_num">
+          admin_tel_num = #{admin_tel_num},
+        </if>
+        <if test="null != admin_email and '' != admin_email">
+          admin_email = #{admin_email},
+        </if>
+        <if test="null != admin_sex and '' != admin_sex">
+          admin_sex = #{admin_sex}
+        </if>
+        <if test="null != password and '' != password">
+          admin_password = #{password},
+        </if>
+      </set>
     where state = '00A' and admin_no = #{admin_no}
   </update>
   <update id="updateAdminRoleAndShopInfo">

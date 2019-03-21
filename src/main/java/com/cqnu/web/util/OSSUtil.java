@@ -48,7 +48,7 @@ public class OSSUtil {
      * @return
      */
     public String uploadImg2Oss(MultipartFile file) {
-        if (file.getSize() > 1024 * 1024 *10) {
+        if (file.getSize() > 1024 * 1024 *30) {
             return "图片太大";
         }
         String originalFilename = file.getOriginalFilename();

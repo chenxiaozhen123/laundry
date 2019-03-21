@@ -118,7 +118,7 @@ public class SysLoginController extends BaseController{
     private Admin getAdmin(Map<String, Object> map){
         Admin admin = new Admin();
         admin.setAdminNo(map.get("admin_no").toString());
-        admin.setAmdinPassword(map.get("amdin_password").toString());
+        admin.setAdminPassword(map.get("admin_password").toString());
         admin.setAdminId(Integer.valueOf(map.get("admin_id").toString()));
         admin.setAdminEmail(map.get("admin_email").toString());
         admin.setAdminSex(map.get("admin_sex").toString());
