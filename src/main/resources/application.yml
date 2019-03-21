@@ -87,5 +87,11 @@ aliyun:
     endpoint:  oss-cn-beijing.aliyuncs.com
     dir: imgaes
 
+  sms:
+    accessKeyId: LTAIWlEPiQfr35pn
+    accessKeySecret: ogxEogsrfjQOLphdZdpV0C3QgphYBv
+    msgSign: 干洗联盟
+    templateCode: SMS_160861417
+
 
 

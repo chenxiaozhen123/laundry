@@ -1,4 +1,4 @@
-package com.cqnu.base.util;
+package com.cqnu.web.util;
 
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
@@ -7,18 +7,44 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Map;
 
+@Component
 public class AliyunMessageUtil {
+
+    //自动注入
+    public static String accessKeyId;
+    @Value("${aliyun.sms.accessKeyId}")
+    private String accessKeyIdTmp;
+
+    public static String accessKeySecret;
+    @Value("${aliyun.sms.accessKeySecret}")
+    private String accessKeySecretTmp;
+
+    public static String msgSign;
+    @Value("${aliyun.sms.msgSign}")
+    private String msgSignTmp;
+
+    public static String templateCode;
+    @Value("${aliyun.sms.templateCode}")
+    private String templateCodeTmp;
+
+    //使用中间变量注入static
+    @PostConstruct
+    public void init() {
+        accessKeyId = accessKeyIdTmp;
+        accessKeySecret = accessKeySecretTmp;
+        msgSign = msgSignTmp;
+        templateCode = templateCodeTmp;
+    }
 
     private static final String product = "Dysmsapi";
     //产品域名,开发者无需替换
     private static final String domain = "dysmsapi.aliyuncs.com";
-
-    // 此处需要替换成开发者自己的AK(在阿里云访问控制台寻找)
-    private static final String accessKeyId = "LTAIWlEPiQfr35pn";
-    private static final String accessKeySecret = "ogxEogsrfjQOLphdZdpV0C3QgphYBv";
 
     public static SendSmsResponse sendSms(Map<String, String> paramMap) throws ClientException {
 

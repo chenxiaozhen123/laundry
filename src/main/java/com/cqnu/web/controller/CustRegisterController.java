@@ -6,8 +6,8 @@ import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.base.util.AESUtil;
-import com.cqnu.base.util.AliyunMessageUtil;
 import com.cqnu.web.service.ICustService;
+import com.cqnu.web.util.AliyunMessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,6 +24,8 @@ public class CustRegisterController {
     ICustService custService;
     @Autowired
     BaseService baseService;
+    @Autowired
+    AliyunMessageUtil aliyunMessageUtil;
 
     @ResponseBody
     @RequestMapping(value = "/register")
@@ -69,14 +71,12 @@ public class CustRegisterController {
         try {
             //发送验证码
             String phoneNumber = request.getParameter("mobile");
-            String codeSMS = request.getParameter("code");
+            String codeSMS = request.getParameter("codeT");
             String jsonContent = "{\"code\":\"" + codeSMS + "\"}";
             Map<String, String> paramMap = new HashMap<>();
             paramMap.put("phoneNumber", phoneNumber);
-            paramMap.put("msgSign", "干洗联盟");
-            paramMap.put("templateCode", "SMS_160861417");
             paramMap.put("jsonContent", jsonContent);
-            SendSmsResponse sendSmsResponse = AliyunMessageUtil.sendSms(paramMap);
+            SendSmsResponse sendSmsResponse = aliyunMessageUtil.sendSms(paramMap);
             if (null != sendSmsResponse.getCode()) {
                 flag = true;
             }
