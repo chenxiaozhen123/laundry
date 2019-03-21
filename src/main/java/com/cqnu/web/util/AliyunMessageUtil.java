@@ -35,38 +35,6 @@ public class AliyunMessageUtil {
     @Value("${aliyun.sms.templateCode}")
     private String templateCodeTmp;
 
-
-    public String getAccessKeyIdTmp() {
-        return accessKeyIdTmp;
-    }
-
-    public void setAccessKeyIdTmp(String accessKeyIdTmp) {
-        this.accessKeyIdTmp = accessKeyIdTmp;
-    }
-
-    public String getAccessKeySecretTmp() {
-        return accessKeySecretTmp;
-    }
-
-    public void setAccessKeySecretTmp(String accessKeySecretTmp) {
-        this.accessKeySecretTmp = accessKeySecretTmp;
-    }
-
-    public String getSignNameTmp() {
-        return signNameTmp;
-    }
-
-    public void setSignNameTmp(String signNameTmp) {
-        this.signNameTmp = signNameTmp;
-    }
-    public String getTemplateCodeTmp() {
-        return templateCodeTmp;
-    }
-
-    public void setTemplateCodeTmp(String templateCodeTmp) {
-        this.templateCodeTmp = templateCodeTmp;
-    }
-    
     /**
      * 使用中间变量注入static
      */
