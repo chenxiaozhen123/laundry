@@ -108,5 +108,12 @@ public interface LaundryConsts {
      * 初始商品编号
      */
     String GOODS_NO = "1000000";
-
+    /**
+     * 邮箱验证主题
+     */
+    String CAPTCHA_EMAIL_SUBJECT = "邮箱验证";
+    /**
+     * 邮箱验证模板
+     */
+    String CAPTCHA_EMAIL = "emailCaptcha.ftl";
 }

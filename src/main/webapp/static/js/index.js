@@ -1646,8 +1646,7 @@ $('.js-update-pwd-btn').on(
         var username = $('.js-setting-admin-no').text();
         var newPwd = $('.js-new-pwd').val();
         var confirmPwd = $('.js-confirm-pwd').val();
-        var url = "admin/updateAdminPersonInfo";
-        var msg = SUCCESS_UPDATE_MSG;
+        var msg = SUSSESS_UPDATE_PWD;
         var errorMsg = FAIL_UPDAGE_MSG;
         var datas = {
             "adminNo":username,
@@ -1657,7 +1656,37 @@ $('.js-update-pwd-btn').on(
             alert("新密码和确认密码不一样，请重新输入");
             $('.js-new-pwd').focus();
         }else{
-            callRemoteFunction(url,datas,msg,errorMsg);
+            $.ajax({
+                url:"admin/updateAdminPersonInfo",
+                data:datas,
+                dataType:"json",
+                type:"post",
+                success:function(data){
+                    if( 0 < data){
+                        alert(msg);
+                        window.location.href = "/admin/login.html"
+                    }else{
+                        BootstrapDialog.alert({
+                            title: '提示',
+                            message: errorMsg,
+                            type: BootstrapDialog.TYPE_WARNING,
+                            closable: true,
+                            draggable: true,
+                            buttonLabel: '确定'
+                        });
+                    }
+                },
+                error:function (data) {
+                    BootstrapDialog.alert({
+                        title: '提示',
+                        message: errorMsg+'!  '+data.responseJSON.message,
+                        type: BootstrapDialog.TYPE_WARNING,
+                        closable: true,
+                        draggable: true,
+                        buttonLabel: '确定'
+                    });
+                }
+            });
         }
 })
 $('.js-email-li').on(
@@ -1695,7 +1724,7 @@ $('.js-new-email').blur(function () {
     var format=EMAIL_FORMAT;
     var email = $('.js-new-email').val();
     if(format.test(email) == true){
-        $('.js-get-captcha').removeAttr('disabled');
+        $('.js-get-captcha-email').removeAttr('disabled');
     }else{
         BootstrapDialog.alert({
             title: '提示',
@@ -1707,6 +1736,80 @@ $('.js-new-email').blur(function () {
         });
     }
 });
+var captcha = null;
+var newEmail = null;
+/**
+ * 获取邮箱验证码
+ */
+$('.js-get-captcha-email').on(
+    "click",function () {
+        var email = $('.js-new-email').val();
+        var url = "admin/captcha";
+        var msg = "验证码发送成功，请及时查收";
+        var errorMsg = "验证码发送失败";
+        var datas = {
+            "email":email
+        }
+        $.ajax({
+            url:url,
+            data:datas,
+            dataType:"json",
+            type:"post",
+            success:function(data){
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message: msg,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    buttonLabel: '确定'
+                });
+                captcha = data.uuid;
+                newEmail = data.email;
+            },
+            error:function (data) {
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message: errorMsg+'!  '+data.responseJSON.message,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    buttonLabel: '确定'
+                });
+            }
+        });
+
+    }
+);
+/**
+ * 保存修改的邮箱
+ */
+$('.js-update-email-ok-btn').on(
+    "click",function () {
+        var uuid = $('.js-uuid').val();
+        var msg = SUSSESS_UPDATE_EMAIL;
+        var errorMsg = FAIL_UPDAGE_MSG;
+        var url = "admin/updateAdminPersonInfo";
+        var email = $('.js-new-email').val();
+        var username = $('.js-setting-admin-no').text();
+        var datas =  {
+            "email":email,
+            "adminNo":username
+        }
+        if(uuid != captcha && email != newEmail){
+            BootstrapDialog.alert({
+                title: '提示',
+                message: "验证码不正确，请重新输入",
+                type: BootstrapDialog.TYPE_WARNING,
+                closable: true,
+                draggable: true,
+                buttonLabel: '确定'
+            });
+        }else {
+            callRemoteFunction(url,datas,msg,errorMsg);
+        }
+    }
+)
 /**
  * 退出登录
  */
@@ -1721,7 +1824,6 @@ $('.js-login-out').on(
                 window.location.href = "/admin/login.html"
             },
             error:function (data) {
-
             }
         })
     }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -161,7 +162,12 @@ public class AdminController {
             reqMap.put("admin_sex",sex);
             reqMap.put("admin_email",email);
             reqMap.put("admin_tel_num",telNum);
-            reqMap.put("password",AESUtil.aesEncrypt(password,LaundryConsts.WORKER_KEY));
+            if(password != null){
+                password = AESUtil.aesEncrypt(password,LaundryConsts.WORKER_KEY);
+                reqMap.put("password",password);
+            }else{
+                reqMap.put("password","");
+            }
             result= adminService.updateAdminInfo(reqMap);
         }catch (DataAccessException e){
             throw new LaundryException("数据库操作异常");
@@ -190,5 +196,31 @@ public class AdminController {
             throw new LaundryException(e.getMessage());
         }
         return result;
+    }
+    /**
+     * 发送邮箱验证码
+     */
+    @ResponseBody
+    @RequestMapping(value = "/captcha")
+    public Map<String, Object> sendEmailCaptcha(HttpServletRequest request) {
+        String uuidStr = "";
+        Map<String, Object> resMap = new HashMap<>();
+        try{
+            UUID uuid = UUID.randomUUID();
+            int num = uuid.toString().hashCode();
+            if (num < 0) {
+                num = -num;
+            }
+            uuidStr = String.format("%09d", num).substring(0,6);
+            String email = request.getParameter("email");
+            Message message = new Message();
+            message.setCaptcha(uuidStr);
+            mailUtil.sendMailAccountMsg(message,email,LaundryConsts.CAPTCHA_EMAIL_SUBJECT,LaundryConsts.CAPTCHA_EMAIL);
+            resMap.put("uuid",uuidStr);
+            resMap.put("email",email);
+        }catch (Exception e){
+            throw new LaundryException("发送邮件异常");
+        }
+        return resMap;
     }
 }
