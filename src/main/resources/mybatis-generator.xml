@@ -52,6 +52,6 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="order" domainObjectName="Order"></table>
+        <table tableName="admin" domainObjectName="Admin"></table>
     </context>
 </generatorConfiguration>

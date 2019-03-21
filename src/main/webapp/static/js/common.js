@@ -20,7 +20,7 @@ function callRemoteFunction(url,data,msg,errorMsg) {
             }else{
                 BootstrapDialog.alert({
                     title: '提示',
-                    message: errorMsg+'!'+data.responseJSON.message,
+                    message: errorMsg+'!',
                     type: BootstrapDialog.TYPE_WARNING,
                     closable: true,
                     draggable: true,
@@ -61,9 +61,10 @@ function clearModal() {
     //商品
     $('.js-goods-name-modal').val('');
     $('.js-goods-price').val('');
-    var obj = $('.js-goods-img');
-    obj.select();
-    document.selection.clear();
+    $('.js-goods-img').fileinput('clear');
+    $('.js-goods-img').siblings('.fileinput-remove').hide()
+
+
 
 }
 /**
@@ -85,3 +86,48 @@ function initFileInput(clazz) {
         dropZoneEnabled: false//是否显示拖拽区域
     });
 }
+function initWindow() {
+    $("[data-toggle='offcanvas']").click(function(e) {
+        e.preventDefault();
+        //If window is small enough, enable sidebar push menu
+        if ($(window).width() <= 992) {
+            $('.row-offcanvas').toggleClass('active');
+            $('.left-side').removeClass("collapse-left");
+            $(".right-side").removeClass("strech");
+            $('.row-offcanvas').toggleClass("relative");
+        } else {
+            //Else, enable content streching
+            $('.left-side').toggleClass("collapse-left");
+            $(".right-side").toggleClass("strech");
+        }
+    });
+    $(".wrapper").resize(function() {
+        fix();
+        fix_sidebar();
+    });
+    fix();
+}
+function fix() {
+    //Get window height and the wrapper height
+    var height = $(window).height() - $("body > .header").height();
+    $(".wrapper").css("min-height", height + "px");
+    var content = $(".wrapper").height();
+    //If the wrapper height is greater than the window
+    if (content > height)
+    //then set sidebar height to the wrapper
+        $(".left-side, html, body").css("min-height", content + "px");
+
+    else {
+        //Otherwise, set the sidebar to the height of the window
+        $(".left-side, html, body").css("height", height + "px");
+
+    }
+}
+function fix_sidebar() {
+    //Make sure the body tag has the .fixed class
+    if (!$("body").hasClass("fixed")) {
+        return;
+    }
+}
+var TEL_NUM_FORMAT=/^(13[0-9]\d{8}|15[0-35-9]\d{8}|18[0-9]\{8}|14[57]\d{8})$/;
+var EMAIL_FORMAT=/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/

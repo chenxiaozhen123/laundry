@@ -18,6 +18,7 @@ $(function() {
  * @param data
  */
 function initPage(data){
+    initWindow();
     $('.js-admin-name').text(data.name);//登录用户姓名
     $('.js-role-name').text(data.roleName);//登录用户角色名
     //超级管理员
@@ -58,12 +59,16 @@ function initPage(data){
      ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////门店管理////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
-    $('.js-shop-panel').click(function(){
+    $('.js-shop-panel').click(function(e){
         $('.js-laundry-worker').css("display", 'none');
         $('.js-laundry-shop').css("display", '');
         $('.js-laundry-order').css("display", 'none');
         $('.js-laundry-category').css("display",'none');
         $('.js-laundry-goods').css("display",'none');
+        $('.js-person-info').css("display",'none');
+        var $event =$(e.target);
+        $event.addClass('active').siblings('li').removeClass('active');
+
     });
     var name = $('.js-principal-name').val();// 门店负责人
     var area = $('.js-shop-area').val();// 门店所属区域
@@ -318,6 +323,7 @@ function initPage(data){
             $('.js-laundry-order').css("display", 'none');
             $('.js-laundry-category').css("display",'none');
             $('.js-laundry-goods').css("display",'none');
+            $('.js-person-info').css("display",'none');
         }
     );
     var name = $('.js-worker-name').val();
@@ -567,6 +573,7 @@ function initPage(data){
             $('.js-laundry-category').css("display",'none');
             $('.js-laundry-goods').css("display",'none');
             $('.js-laundry-order').css("display", '');
+            $('.js-person-info').css("display",'none');
         }
     )
     /**
@@ -732,6 +739,7 @@ function initPage(data){
             $('.js-laundry-order').css("display",'none');
             $('.js-laundry-category').css("display",'');
             $('.js-laundry-goods').css("display",'none');
+            $('.js-person-info').css("display",'none');
         }
     );
     /**
@@ -807,11 +815,13 @@ function initPage(data){
             $('.js-laundry-shop').css("display", 'none');
             $('.js-laundry-order').css("display", 'none');
             $('.js-laundry-goods').css("display",'none');
+            $('.js-setting').css('display','none');
             $('.js-account-lab').text(data.adminNo);
             $('.js-name-lab').text(data.name); //姓名
             $('.js-sex-lab').text(data.sex);//性别
             $('.js-tel-num-lab').text(data.telNum); //手机号
             $('.js-email-lab').text(data.email);//邮箱
+            $('.js-email-lab').text();//邮箱
             $('.js-role-lab').text(data.roleName);
             $('.js-shop-lab').text(data.shopName);
         }
@@ -825,24 +835,37 @@ function initPage(data){
             $('.js-worker-no-modal-div').css("display", '');
             $('.js-admin-no-modal').text(data.adminNo);
             $('.js-name-modal-worker').val(data.name); //姓名
-            $('.js-tel-num-modal-worker').val(data.telNum); //手机号
+            $('.js-tel-num-modal-worker').css("display", 'none'); //手机号
+            $('.js-modal-tel-num-lab').text('所属分类');
             $('.js-worker-sex-sel').val(data.sex); //性别
-            $('.js-email-modal-shop').val(data.email); //邮箱
-            //员工角色
-            $('.js-worker-cate-sel-div').css('display','none');
-            $('.js-worker-cate-sel-lab').css('display','');
-            $('.js-worker-cate-sel-lab').text(data.roleName);
+            $('.js-email-per-div').css("display", 'none'); //邮箱
+
+            $('.js-tel-num-worker-lab').css("display", '');
+            $('.js-tel-num-worker-lab').text(data.roleName);
             //所属门店
-            $('.js-worker-shop-div').css('display','');
-            $('.js-worker-shop-lab').css('display','');
-            $('.js-worker-shop-divs').css('display','none');
-            $('.js-worker-shop-lab').text(data.shopName);
+            $('.js-role-lab').text('所属门店');
+            $('.js-worker-cate-sel-lab').css("display", '');
+            $('.js-worker-cate-sel-lab').text(data.shopName);
+            $('.js-worker-cate-sel-div').css("display", 'none');
             action = "personEdit";
         }
     );
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////个人信息结束////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////
+    $('.js-setting-panel').on(
+        "click",function () {
+            $('.js-laundry-worker').css("display", 'none');
+            $('.js-laundry-shop').css("display", 'none');
+            $('.js-laundry-order').css("display", 'none');
+            $('.js-laundry-category').css("display",'none');
+            $('.js-laundry-goods').css("display",'none');
+            $('.js-person-info').css("display",'none');
+            $('.js-setting').css('display','');
+            $('.js-setting-admin-no').text(data.adminNo);
+
+        }
+    );
 };
 
 /**
@@ -1276,6 +1299,7 @@ function showGoodsPanel(data) {
     $('.js-goods-cat-no').val(data);
     $('.js-laundry-goods').css("display",'');
     $('.js-laundry-category').css("display",'none');
+    $('.js-person-info').css("display",'none');
     $('.js-laundry-goods-tab').bootstrapTable('destroy');
     initGoodsTab();
 }
@@ -1575,7 +1599,114 @@ function refreshGoods() {
     //带参数 刷新
     $(".js-laundry-goods-tab").bootstrapTable('refresh', opt);
 }
+$('.js-tel-num-li').on(
+    "click",function () {
+        $('.js-tel-num-panel').css('display','');
+        $('.js-update-pwd-panel').css('display','none');
+        $('.js-email-panel').css('display','none');
 
+        $('.js-tel-num-li').addClass('active').siblings('li').removeClass('active');
+        $('.js-setting-title').text('修改手机号码')
+    }
+);
+$('.js-pwd-li').on(
+    "click",function () {
+        $('.js-pwd-li').addClass('active').siblings('li').removeClass('active');
+        $('.js-tel-num-panel').css('display','none');
+        $('.js-email-panel').css('display','none');
+        $('.js-update-pwd-panel').css('display','');
+        $('.js-setting-title').text('修改登录密码')
+    }
+);
+$('.js-old-pwd').blur(function () {
+    var username = $('.js-setting-admin-no').text();
+    var pwd = $('.js-old-pwd').val();
+    var datas = {
+        "username":username,
+        "password":pwd
+    }
+    $.ajax({
+        url:"sys/login",
+        data:datas,
+        dataType:"json",
+        type:"post",
+        success:function(data){
+            if(JSON.stringify(data) == "false"){
+                alert('旧密码不正确,请重新输入');
+                $('.js-old-pwd').focus();
+            }
+        }
+    })
+});
+/**
+ * 保存修改密码
+ */
+$('.js-update-pwd-btn').on(
+    "click",function () {
+        var username = $('.js-setting-admin-no').text();
+        var newPwd = $('.js-new-pwd').val();
+        var confirmPwd = $('.js-confirm-pwd').val();
+        var url = "admin/updateAdminPersonInfo";
+        var msg = SUCCESS_UPDATE_MSG;
+        var errorMsg = FAIL_UPDAGE_MSG;
+        var datas = {
+            "adminNo":username,
+            "password":confirmPwd
+        }
+        if(confirmPwd != newPwd){
+            alert("新密码和确认密码不一样，请重新输入");
+            $('.js-new-pwd').focus();
+        }else{
+            callRemoteFunction(url,datas,msg,errorMsg);
+        }
+})
+$('.js-email-li').on(
+    "click",function () {
+        $('.js-email-li').addClass('active').siblings('li').removeClass('active');
+        $('.js-tel-num-panel').css('display','none');
+        $('.js-email-panel').css('display','');
+        $('.js-update-pwd-panel').css('display','none');
+        $('.js-setting-title').text('修改邮箱')
+    }
+);
+/**
+ * 手机号码input失去焦点
+ */
+$('.js-new-tel-num').blur(function () {
+    var format=TEL_NUM_FORMAT;
+    var telNum = $('.js-new-tel-num').val();
+    if(format.test(telNum) == true){
+        $('.js-get-captcha').removeAttr('disabled');
+    }else{
+        BootstrapDialog.alert({
+            title: '提示',
+            message: '请输入有效的手机号码',
+            type: BootstrapDialog.TYPE_WARNING,
+            closable: true,
+            draggable: true,
+            buttonLabel: '确定'
+        });
+    }
+});
+/**
+ * 邮箱input失去焦点
+ */
+$('.js-new-email').blur(function () {
+    var format=EMAIL_FORMAT;
+    var email = $('.js-new-email').val();
+    if(format.test(email) == true){
+        $('.js-get-captcha').removeAttr('disabled');
+    }else{
+        BootstrapDialog.alert({
+            title: '提示',
+            message: '请输入有效的邮箱',
+            type: BootstrapDialog.TYPE_WARNING,
+            closable: true,
+            draggable: true,
+            buttonLabel: '确定'
+        });
+    }
+});
 /**
  * 退出登录
  */

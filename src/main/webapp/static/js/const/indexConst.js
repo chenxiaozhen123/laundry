@@ -36,3 +36,4 @@ var SUCCESS_DELETE_MSG = "删除成功";
 var FAIL_DELETE_MSG = "删除失败";
 var SUCCESS_ACTION_MSG = "操作成功";
 var FAIL_ACTION_MSG = "操作失败";
+
