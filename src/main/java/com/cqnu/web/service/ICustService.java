@@ -1,10 +1,5 @@
 package com.cqnu.web.service;
 
-import com.cqnu.web.entity.Customer;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
-
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,9 +9,9 @@ import java.util.Map;
  * @Version 1.0
  **/
 public interface ICustService {
-    Map<String, Object> login(Map<String, Object> param);
+    Map<String, Object> custLogin(Map<String, Object> param);
 
 
-//    public List<Customer> find();
-//    public Customer get(Integer id);
+    int custRegister(Map<String, Object> param);
+
 }

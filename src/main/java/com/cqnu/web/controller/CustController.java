@@ -1,21 +1,8 @@
 package com.cqnu.web.controller;
 
-import com.cqnu.base.common.consts.LaundryConsts;
-import com.cqnu.base.model.Message;
-import com.cqnu.base.util.MailUtil;
-import com.cqnu.web.entity.Customer;
-import com.cqnu.web.service.ICustService;
-import com.cqnu.web.service.impl.CustServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Description TODO

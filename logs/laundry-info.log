@@ -1,137 +1,30 @@
-16:49:54.874 laundry [main] INFO  com.cqnu.LaundryApplication - Starting LaundryApplication on LAPTOP-UVQFAMAR with PID 21168 (E:\cqnu\laundry\target\classes started by xzchen in E:\cqnu\laundry)
-16:49:54.875 laundry [main] INFO  com.cqnu.LaundryApplication - The following profiles are active: dev
-16:49:55.081 laundry [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.cqnu.LaundryApplication]; nested exception is java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-16:49:55.127 laundry [main] ERROR o.s.boot.SpringApplication - Application run failed
-org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.cqnu.LaundryApplication]; nested exception is java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:181)
-	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:315)
-	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:232)
-	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:275)
-	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:95)
-	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:691)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:528)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
-	at com.cqnu.LaundryApplication.main(LaundryApplication.java:21)
-Caused by: java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-	at org.springframework.core.type.StandardAnnotationMetadata.getAnnotatedMethods(StandardAnnotationMetadata.java:169)
-	at org.springframework.context.annotation.ConfigurationClassParser.retrieveBeanMethodMetadata(ConfigurationClassParser.java:392)
-	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:317)
-	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:242)
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:199)
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:167)
-	... 12 common frames omitted
-Caused by: java.lang.NoClassDefFoundError: javax/servlet/ServletContext
-	at java.lang.Class.getDeclaredMethods0(Native Method)
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
-	at java.lang.Class.getDeclaredMethods(Class.java:1975)
-	at org.springframework.core.type.StandardAnnotationMetadata.getAnnotatedMethods(StandardAnnotationMetadata.java:158)
-	... 17 common frames omitted
-Caused by: java.lang.ClassNotFoundException: javax.servlet.ServletContext
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:349)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	... 21 common frames omitted
-16:50:28.639 laundry [main] INFO  com.cqnu.LaundryApplication - Starting LaundryApplication on LAPTOP-UVQFAMAR with PID 12308 (E:\cqnu\laundry\target\classes started by xzchen in E:\cqnu\laundry)
-16:50:28.641 laundry [main] INFO  com.cqnu.LaundryApplication - The following profiles are active: dev
-16:50:28.887 laundry [main] WARN  o.s.c.a.AnnotationConfigApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.cqnu.LaundryApplication]; nested exception is java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-16:50:28.900 laundry [main] ERROR o.s.boot.SpringApplication - Application run failed
-org.springframework.beans.factory.BeanDefinitionStoreException: Failed to parse configuration class [com.cqnu.LaundryApplication]; nested exception is java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:181)
-	at org.springframework.context.annotation.ConfigurationClassPostProcessor.processConfigBeanDefinitions(ConfigurationClassPostProcessor.java:315)
-	at org.springframework.context.annotation.ConfigurationClassPostProcessor.postProcessBeanDefinitionRegistry(ConfigurationClassPostProcessor.java:232)
-	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanDefinitionRegistryPostProcessors(PostProcessorRegistrationDelegate.java:275)
-	at org.springframework.context.support.PostProcessorRegistrationDelegate.invokeBeanFactoryPostProcessors(PostProcessorRegistrationDelegate.java:95)
-	at org.springframework.context.support.AbstractApplicationContext.invokeBeanFactoryPostProcessors(AbstractApplicationContext.java:691)
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:528)
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:775)
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:397)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:316)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1260)
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1248)
-	at com.cqnu.LaundryApplication.main(LaundryApplication.java:21)
-Caused by: java.lang.IllegalStateException: Failed to introspect annotated methods on class org.springframework.boot.web.servlet.support.SpringBootServletInitializer
-	at org.springframework.core.type.StandardAnnotationMetadata.getAnnotatedMethods(StandardAnnotationMetadata.java:169)
-	at org.springframework.context.annotation.ConfigurationClassParser.retrieveBeanMethodMetadata(ConfigurationClassParser.java:392)
-	at org.springframework.context.annotation.ConfigurationClassParser.doProcessConfigurationClass(ConfigurationClassParser.java:317)
-	at org.springframework.context.annotation.ConfigurationClassParser.processConfigurationClass(ConfigurationClassParser.java:242)
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:199)
-	at org.springframework.context.annotation.ConfigurationClassParser.parse(ConfigurationClassParser.java:167)
-	... 12 common frames omitted
-Caused by: java.lang.NoClassDefFoundError: javax/servlet/ServletContext
-	at java.lang.Class.getDeclaredMethods0(Native Method)
-	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
-	at java.lang.Class.getDeclaredMethods(Class.java:1975)
-	at org.springframework.core.type.StandardAnnotationMetadata.getAnnotatedMethods(StandardAnnotationMetadata.java:158)
-	... 17 common frames omitted
-Caused by: java.lang.ClassNotFoundException: javax.servlet.ServletContext
-	at java.net.URLClassLoader.findClass(URLClassLoader.java:381)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
-	at sun.misc.Launcher$AppClassLoader.loadClass(Launcher.java:349)
-	at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
-	... 21 common frames omitted
-16:51:09.424 laundry [main] INFO  com.cqnu.LaundryApplication - Starting LaundryApplication on LAPTOP-UVQFAMAR with PID 18400 (E:\cqnu\laundry\target\classes started by xzchen in E:\cqnu\laundry)
-16:51:09.426 laundry [main] INFO  com.cqnu.LaundryApplication - The following profiles are active: dev
-16:51:10.264 laundry [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$eca9e3d0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-16:51:10.284 laundry [main] INFO  o.s.w.s.a.s.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
-16:51:10.535 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-16:51:10.547 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-16:51:10.554 laundry [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-16:51:10.555 laundry [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
-16:51:10.560 laundry [main] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8\jdk\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;D:\Java\jdk1.8\jre\bin;D:\Java\jdk1.8\jdk\bin;D:\tt1122_64\bin;D:\tt1122_64\ttoracle_home\instantclient_11_2;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;D:\TortosiseSVN\bin;%MAVEN_HOME%\bin;"D:\instantclient_12_1\bin;";D:\Git\Git\cmd;C:\Users\xzchen\AppData\Local\Microsoft\WindowsApps;.]
-16:51:10.639 laundry [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-16:51:10.639 laundry [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1163 ms
-16:51:11.063 laundry [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-16:51:11.160 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.util.MsUtil CLASS_CACHE cache.
-16:51:11.161 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.genid.GenIdUtil CACHE cache.
-16:51:11.161 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.version.VersionUtil CACHE cache.
-16:51:11.162 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear EntityHelper entityTableMap cache.
-16:51:11.238 laundry [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
-16:51:11.317 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-16:51:11.341 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-16:51:11.343 laundry [main] INFO  com.cqnu.LaundryApplication - Started LaundryApplication in 2.599 seconds (JVM running for 3.417)
-16:51:19.906 laundry [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-16:51:19.907 laundry [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-16:51:19.915 laundry [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 7 ms
-16:51:21.026 laundry [http-nio-8080-exec-7] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
-17:22:42.629 laundry [main] INFO  com.cqnu.LaundryApplication - Starting LaundryApplication on LAPTOP-UVQFAMAR with PID 15828 (E:\cqnu\laundry\target\classes started by xzchen in E:\cqnu\laundry)
-17:22:42.631 laundry [main] INFO  com.cqnu.LaundryApplication - The following profiles are active: dev
-17:22:43.512 laundry [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$16c7c92b] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-17:22:43.546 laundry [main] INFO  o.s.w.s.a.s.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
-17:22:43.783 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8080 (http)
-17:22:43.794 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8080"]
-17:22:43.800 laundry [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
-17:22:43.800 laundry [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
-17:22:43.805 laundry [main] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [D:\Java\jdk1.8\jdk\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;D:\Java\jdk1.8\jre\bin;D:\Java\jdk1.8\jdk\bin;D:\tt1122_64\bin;D:\tt1122_64\ttoracle_home\instantclient_11_2;C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;D:\TortosiseSVN\bin;E:\maven\apache-maven-3.2.5\bin;"D:\instantclient_12_1\bin;";D:\Git\Git\cmd;C:\Users\xzchen\AppData\Local\Microsoft\WindowsApps;.]
-17:22:43.875 laundry [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
-17:22:43.875 laundry [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1142 ms
-17:22:44.321 laundry [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-17:22:44.418 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.util.MsUtil CLASS_CACHE cache.
-17:22:44.418 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.genid.GenIdUtil CACHE cache.
-17:22:44.419 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.version.VersionUtil CACHE cache.
-17:22:44.420 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear EntityHelper entityTableMap cache.
-17:22:44.499 laundry [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
-17:22:44.583 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8080"]
-17:22:44.604 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8080 (http) with context path ''
-17:22:44.608 laundry [main] INFO  com.cqnu.LaundryApplication - Started LaundryApplication in 2.669 seconds (JVM running for 3.295)
-17:22:47.762 laundry [http-nio-8080-exec-2] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
-17:22:47.762 laundry [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
-17:22:47.769 laundry [http-nio-8080-exec-2] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 7 ms
-17:22:49.263 laundry [http-nio-8080-exec-1] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
-17:27:31.138 laundry [main] INFO  com.cqnu.LaundryApplicationTests - Starting LaundryApplicationTests on LAPTOP-UVQFAMAR with PID 12600 (started by xzchen in E:\cqnu\laundry)
-17:27:31.139 laundry [main] INFO  com.cqnu.LaundryApplicationTests - The following profiles are active: dev
-17:27:32.267 laundry [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$EnhancerBySpringCGLIB$$2382d4be] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
-17:27:32.299 laundry [main] INFO  o.s.w.s.a.s.AnnotationActionEndpointMapping - Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
-17:27:33.270 laundry [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
-17:27:33.489 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.util.MsUtil CLASS_CACHE cache.
-17:27:33.489 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.genid.GenIdUtil CACHE cache.
-17:27:33.490 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.version.VersionUtil CACHE cache.
-17:27:33.491 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear EntityHelper entityTableMap cache.
-17:27:33.627 laundry [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
-17:27:33.842 laundry [main] INFO  com.cqnu.LaundryApplicationTests - Started LaundryApplicationTests in 3.455 seconds (JVM running for 4.201)
-17:27:34.177 laundry [Thread-2] INFO  o.s.s.c.ThreadPoolTaskScheduler - Shutting down ExecutorService 'taskScheduler'
-17:27:34.177 laundry [Thread-2] INFO  o.s.s.c.ThreadPoolTaskExecutor - Shutting down ExecutorService 'applicationTaskExecutor'
+20:26:53.563 laundry [main] INFO  com.cqnu.LaundryApplication - Starting LaundryApplication on BLGBBS-351686GI with PID 5208 (C:\Users\Administrator\Desktop\laundry\target\classes started by Administrator in C:\Users\Administrator\Desktop\laundry)
+20:26:53.644 laundry [main] INFO  com.cqnu.LaundryApplication - The following profiles are active: prod
+20:26:56.212 laundry [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data repositories in DEFAULT mode.
+20:26:56.296 laundry [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 53ms. Found 0 repository interfaces.
+20:26:56.714 laundry [main] INFO  o.s.c.s.PostProcessorRegistrationDelegate$BeanPostProcessorChecker - Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$38443778] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+20:26:57.091 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port(s): 8083 (http)
+20:26:57.128 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-8083"]
+20:26:57.139 laundry [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+20:26:57.140 laundry [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.14]
+20:26:57.147 laundry [main] INFO  o.a.c.core.AprLifecycleListener - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [C:\Program Files\Java\jdk1.8.0_121\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\Java\apache-maven-3.6.0\bin;C:\Program Files\HPE\NV\lib\shunra\vcat;F:\oracle\product\10.2.0\db_1\bin;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Users\Administrator\.dnx\bin;C:\Program Files\Microsoft DNX\Dnvm\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\DTS\Binn\;c:\Program Files (x86)\Microsoft SQL Server\100\Tools\Binn\VSShell\Common7\IDE\;c:\Program Files (x86)\Microsoft Visual Studio 9.0\Common7\IDE\PrivateAssemblies\;C:\Program Files\Java\jdk1.8.0_121\bin;C:\Program Files\Java\jre1.8.0_121\bin;\Program Files\Java\jdk1.8.0_121\bin;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;F:\Program Files (x86)\HPE\Unified Functional Testing\bin;F:\Program Files (x86)\HPE\LoadRunner\strawberry-perl\perl\bin;C:\strawberry\c\bin;C:\strawberry\perl\bin;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Java\apache-maven-3.6.0\bin;C:\Program Files\Git\cmd;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Intel\WiFi\bin\;C:\Program Files\Common Files\Intel\WirelessCommon\;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin;G:\Program Files\JetBrains\IntelliJ IDEA 2018.3.4\bin;;.]
+20:26:57.581 laundry [main] INFO  org.apache.jasper.servlet.TldScanner - At least one JAR was scanned for TLDs yet contained no TLDs. Enable debug logging for this logger for a complete list of JARs that were scanned but no TLDs were found in them. Skipping unneeded JARs during scanning can improve startup time and JSP compilation time.
+20:26:57.594 laundry [main] INFO  o.a.c.c.C.[.[localhost].[/laundry] - Initializing Spring embedded WebApplicationContext
+20:26:57.595 laundry [main] INFO  o.s.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 3843 ms
+20:26:58.073 laundry [main] INFO  c.alibaba.druid.pool.DruidDataSource - {dataSource-1} inited
+20:26:58.963 laundry [main] INFO  org.hibernate.Version - HHH000412: Hibernate Core {5.3.7.Final}
+20:26:58.965 laundry [main] INFO  org.hibernate.cfg.Environment - HHH000206: hibernate.properties not found
+20:26:59.119 laundry [main] INFO  o.h.annotations.common.Version - HCANN000001: Hibernate Commons Annotations {5.0.4.Final}
+20:26:59.359 laundry [main] INFO  org.hibernate.dialect.Dialect - HHH000400: Using dialect: org.hibernate.dialect.MySQL5Dialect
+20:26:59.653 laundry [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+20:27:00.269 laundry [main] INFO  o.s.s.c.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+20:27:00.315 laundry [main] WARN  o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration$JpaWebMvcConfiguration - spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+20:27:00.407 laundry [main] INFO  o.s.b.a.w.s.WelcomePageHandlerMapping - Adding welcome page: ServletContext resource [/index.html]
+20:27:00.420 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.util.MsUtil CLASS_CACHE cache.
+20:27:00.420 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.genid.GenIdUtil CACHE cache.
+20:27:00.421 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear tk.mybatis.mapper.version.VersionUtil CACHE cache.
+20:27:00.422 laundry [main] INFO  t.m.m.a.MapperCacheDisabler - Clear EntityHelper entityTableMap cache.
+20:27:00.559 laundry [main] INFO  o.s.s.c.ThreadPoolTaskScheduler - Initializing ExecutorService 'taskScheduler'
+20:27:00.631 laundry [main] INFO  o.a.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-8083"]
+20:27:00.666 laundry [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port(s): 8083 (http) with context path '/laundry'
+20:27:00.669 laundry [main] INFO  com.cqnu.LaundryApplication - Started LaundryApplication in 8.559 seconds (JVM running for 10.286)
