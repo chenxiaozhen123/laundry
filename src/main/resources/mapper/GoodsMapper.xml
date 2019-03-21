@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.GoodsMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Goods">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="goods_no" jdbcType="VARCHAR" property="goodsNo" />
+    <result column="cat_no" jdbcType="VARCHAR" property="catNo" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+
+  <insert id="addGoods" parameterType="map">
+    insert into goods (goods_no,cat_no,goods_name,price,img_path,state)
+    values(#{goodsNO},#{catNo},#{goodsName},#{price},#{imgPath},'00A')
+  </insert>
+  <select id="getGoodsList" parameterType="map" resultType="map">
+    select g.goods_no,g.cat_no,g.goods_name,g.price,g.img_path,c.cat_name
+    from goods g,category c
+    where g.cat_no = c.cat_no and g.state = '00A' and c.state = '00A' and g.cat_no = #{catNO}
+    <if test="null != goodsName and ''!= goodsName">
+      and g.goods_name like concat(concat('%', #{goodsName}), '%')
+    </if>
+  </select>
+  <select id="getMaxGoodsNo" resultType="map" parameterType="map">
+    select max(goods_no)+1 as goods_no from goods
+  </select>
+  <update id="updateGoods">
+    update goods
+    <set>
+      <if test="null != goodsName and '' != goodsName">
+        goods_name = #{goodsName},
+      </if>
+      <if test="null != price and '' != price">
+        price = #{price},
+      </if>
+      <if test="null != imgPath and '' != imgPath">
+        img_path = #{imgPath},
+      </if>
+    </set>
+    where goods_no = #{goodsNO} and state = '00A'
+  </update>
+  <update id="deleteGoods">
+    update goods set state = '00X' where goods_no = #{goodsNO}
+  </update>
+  <update id="deleteGoodsList">
+    update goods set state = '00X' where cat_no = #{catNo}
+  </update>
+</mapper>

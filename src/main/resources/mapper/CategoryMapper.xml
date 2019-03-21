@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.CategoryMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Category">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="cat_no" jdbcType="VARCHAR" property="catNo" />
+    <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+
+  <insert id="addCategory" parameterType="map">
+    insert into category (cat_no,cat_name,state)
+    VALUES (
+      #{cat_no},#{cat_name},'00A'
+    )
+  </insert>
+  <update id="updateCategory">
+    update category set cat_name = #{catName}
+    where state = '00A' and cat_no = #{catNo}
+  </update>
+  <update id="deleteCategory">
+    update category set state = '00X'
+    where cat_no = #{catNo}
+  </update>
+  <select id="getCatNo" parameterType="map" resultType="map">
+    select max(cat_no)+1 as cat_no from category
+  </select>
+  <select id="getCategoryList" parameterType="map" resultType="map">
+    select c.cat_no , c.cat_name from category c where c.state = '00A'
+    <if test="null != catName and '' != catName">
+      and c.cat_name like concat(concat('%', #{catName}), '%')
+    </if>
+  </select>
+</mapper>

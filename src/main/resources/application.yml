@@ -1,0 +1,72 @@
+server:
+  #项目访问端口
+  port: 8080
+  #项目访问地址
+  servlet:
+    context-path: /laundry
+spring:
+  profiles:
+  #多环境配置 dev：开发环境 pro：生产环境
+      active: dev
+  mvc:
+    view:
+      suffix: .html
+  datasource:
+      url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+      username: root
+      password: 123456
+      # 使用druid数据源
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      filters: stat
+      maxActive: 20
+      initialSize: 1
+      maxWait: 60000 # 配置获取连接等待超时的时间
+      minIdle: 1
+      timeBetweenEvictionRunsMillis: 60000 # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+      minEvictableIdleTimeMillis: 300000 # 配置一个连接在池中最小生存的时间，单位是毫秒
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 20
+  #邮件配置 qq邮箱
+  mail:
+    host: smtp.qq.com
+    username: 1451929954@qq.com
+    password: qnnshbqpedptfgih
+    protocol: smtp #发送邮件协议
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.port: 465 #端口号465或587
+    properties.mail.display.sendmail: Javen #可以任意
+    properties.mail.display.sendname: Spring Boot Guide Email #可以任意
+    properties.mail.smtp.starttls.enable: true
+    properties.mail.smtp.starttls.required: true
+    properties.mail.smtp.ssl.enable: true
+    default-encoding: utf-8
+
+
+## 该配置节点为独立的节点
+mybatis:
+  config-location: classpath:mybatis-config.xml
+  mapper-locations: classpath:mapper/*.xml  #注意：一定要对应mapper映射xml文件的所在路径
+  #type-aliases-package: com.cqnu.web.entity  # 注意：对应实体类的路径
+mapper:
+  mappers: com.cqnu.web.util.WebMapper
+  not-empty: false
+  identity: MYSQL
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql
+log:
+  executror:
+    corePoolSize: 4
+    maxPoolSize: 8
+    queueSize: 10000
+
+
+
