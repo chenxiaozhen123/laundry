@@ -16,7 +16,9 @@ import java.util.Map;
 @Component
 public class AliyunMessageUtil {
 
-    //自动注入
+    /**
+     * 自动注入
+     */
     public static String accessKeyId;
     @Value("${aliyun.sms.accessKeyId}")
     private String accessKeyIdTmp;
@@ -25,26 +27,62 @@ public class AliyunMessageUtil {
     @Value("${aliyun.sms.accessKeySecret}")
     private String accessKeySecretTmp;
 
-    public static String msgSign;
-    @Value("${aliyun.sms.msgSign}")
-    private String msgSignTmp;
+    public static String signName;
+    @Value("${aliyun.sms.signName}")
+    private String signNameTmp;
 
     public static String templateCode;
     @Value("${aliyun.sms.templateCode}")
     private String templateCodeTmp;
 
-    //使用中间变量注入static
+
+    public String getAccessKeyIdTmp() {
+        return accessKeyIdTmp;
+    }
+
+    public void setAccessKeyIdTmp(String accessKeyIdTmp) {
+        this.accessKeyIdTmp = accessKeyIdTmp;
+    }
+
+    public String getAccessKeySecretTmp() {
+        return accessKeySecretTmp;
+    }
+
+    public void setAccessKeySecretTmp(String accessKeySecretTmp) {
+        this.accessKeySecretTmp = accessKeySecretTmp;
+    }
+
+    public String getSignNameTmp() {
+        return signNameTmp;
+    }
+
+    public void setSignNameTmp(String signNameTmp) {
+        this.signNameTmp = signNameTmp;
+    }
+    public String getTemplateCodeTmp() {
+        return templateCodeTmp;
+    }
+
+    public void setTemplateCodeTmp(String templateCodeTmp) {
+        this.templateCodeTmp = templateCodeTmp;
+    }
+    
+    /**
+     * 使用中间变量注入static
+     */
     @PostConstruct
     public void init() {
         accessKeyId = accessKeyIdTmp;
         accessKeySecret = accessKeySecretTmp;
-        msgSign = msgSignTmp;
+        signName = signNameTmp;
         templateCode = templateCodeTmp;
+
     }
 
     private static final String product = "Dysmsapi";
     //产品域名,开发者无需替换
     private static final String domain = "dysmsapi.aliyuncs.com";
+
 
     public static SendSmsResponse sendSms(Map<String, String> paramMap) throws ClientException {
 
@@ -62,9 +100,9 @@ public class AliyunMessageUtil {
         //必填:待发送手机号
         request.setPhoneNumbers(paramMap.get("phoneNumber"));
         //必填:短信签名-可在短信控制台中找到
-        request.setSignName(paramMap.get("msgSign"));
+        request.setSignName(signName);
         //必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode(paramMap.get("templateCode"));
+        request.setTemplateCode(templateCode);
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         request.setTemplateParam(paramMap.get("jsonContent"));
 

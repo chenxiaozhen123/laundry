@@ -90,7 +90,7 @@ aliyun:
   sms:
     accessKeyId: LTAIWlEPiQfr35pn
     accessKeySecret: ogxEogsrfjQOLphdZdpV0C3QgphYBv
-    msgSign: 干洗联盟
+    signName: 干洗联盟
     templateCode: SMS_160861417
 
 
