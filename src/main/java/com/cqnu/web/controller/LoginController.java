@@ -31,7 +31,7 @@ public class LoginController {
             String password =  request.getParameter("password");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("mobile",mobile);
-            reqMap.put("password", AESUtil.aesDecrypt(password, LaundryConsts.CUSTOMER));
+            reqMap.put("password", AESUtil.aesEncrypt(password, LaundryConsts.CUSTOMER));
             Map<String, Object> resMap = custService.custLogin(reqMap);
             if(null != resMap){
                 flag = true;
