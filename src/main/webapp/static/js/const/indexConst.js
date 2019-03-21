@@ -36,4 +36,6 @@ var SUCCESS_DELETE_MSG = "删除成功";
 var FAIL_DELETE_MSG = "删除失败";
 var SUCCESS_ACTION_MSG = "操作成功";
 var FAIL_ACTION_MSG = "操作失败";
+var SUSSESS_UPDATE_PWD="修改成功!请重新登录"
+var SUSSESS_UPDATE_EMAIL="邮箱修改成功!重新登录后可看到更新信息"
 

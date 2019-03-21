@@ -11,7 +11,7 @@ public class Message {
     private String gender;
     private String jobNumber;
     private String initalPassword;
-
+    private String captcha;
     public String getUsername() {
         return username;
     }
@@ -42,5 +42,13 @@ public class Message {
 
     public void setInitalPassword(String initalPassword) {
         this.initalPassword = initalPassword;
+    }
+
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
     }
 }
