@@ -62,8 +62,11 @@ function clearModal() {
     $('.js-goods-name-modal').val('');
     $('.js-goods-price').val('');
     $('.js-goods-img').fileinput('clear');
-    $('.js-goods-img').siblings('.fileinput-remove').hide()
-
+    $('.js-goods-img').siblings('.fileinput-remove').hide();
+    //分类
+    $('.js-cat-img').fileinput('clear');
+    $('.js-cat-img').siblings('.fileinput-remove').hide();
+    $('.js-cat-name').val('');
 
 
 }

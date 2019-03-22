@@ -754,10 +754,14 @@ function initPage(data){
             width: 120,
             align:'center'
         },{
-            field: 'url',
+            field: 'img_path',
             title: '图片',
             width: 120,
-            align:'center'
+            align:'center',
+            formatter:function(value,row,index){
+                var s = '<a class = "view"  href="javascript:void(0)"><img style="width:60px;height:50px;"  src="'+row.img_path+'" /></a>';
+                return s;
+            },
         }, {
             field: 'cat_name',
             title: '分类名称',
@@ -774,6 +778,21 @@ function initPage(data){
                 return result;
             }
         }, {
+            field: 'imgAction',
+            title: '图片管理',
+            align:'center',
+            width: 120,
+            formatter:function(value,row,index){
+                var result = "";
+                var obj = new Array();
+                obj[0] = row.cat_no;
+                obj[1] = row.cat_name;
+                obj[2] = row.img_path;
+                obj.join(",")
+                result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editCatsImg('" + obj + "')\" title='修改图片'><span class='glyphicon glyphicon-picture'></span></a>";
+                return result;
+            }
+        },{
             field: 'act',
             title: '操作',
             width: 120,
@@ -783,6 +802,7 @@ function initPage(data){
                 var obj = new Array();
                 obj[0] = row.cat_no;
                 obj[1] = row.cat_name;
+                obj[2] = row.url;
                 obj.join(",")
                 result += "<a href='javascript:;' class='btn btn-xs blue edit' onclick=\"editCategory('" + obj + "')\" title='编辑'><span class='glyphicon glyphicon-edit'></span></a>";
                 result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"deleteCategory('" + row.cat_no + "')\" title='删除'><span class='glyphicon glyphicon-remove'></span></a>";
@@ -1181,7 +1201,16 @@ $('.js-category-search-btn').on(
 $('.js-category-add-btn').on(
     "click",function () {
         action = 'Add';
+        initFileInput('js-cat-img');
         showCategoryModal();
+        //导入文件上传完成之后的事件
+        $(".js-cat-img").on("fileuploaded", function (event, data, previewId, index) {
+            var data = data.response;
+            if (data == undefined) {
+                return;
+            }
+            $('.js-cat-img-url').text(data.fileUrl);//得到图片路径
+        });
     }
 );
 /**
@@ -1198,6 +1227,7 @@ $('.js-category-reset-btn').on(
 function editCategory(data) {
     action = 'Edit';
     $('.js-cat-title').text('修改分类');
+    $('.js-cat-img-div').css('display','none');
     var datas = data.split(',');
     showCategoryModal(datas);
     $('#category').modal('show');
@@ -1216,6 +1246,9 @@ function  showCategoryModal(data) {
     }else{
         $('.js-cat-title').text('修改分类');
         $('.js-cat-no-div').css("display",'');
+        $('.js-cat-name-lab').css("display",'none');
+        $('.js-cat-name-div').css("display",'');
+
         $('.js-cat-no').text(data[0]);
         $('.js-cat-name').val(data[1]);
     }
@@ -1230,25 +1263,33 @@ $('.js-category-ok').on(
         var errorMsg = "";
         var catName = $('.js-cat-name').val();
         var catNo = $('.js-cat-no').text();
+        var imgUrl = $('.js-cat-img-url').text();
         var datas = {
             "catName":catName,
-            "catNo":catNo
+            "catNo":catNo,
+            "imgPath":imgUrl
         };
-        if(action == 'Add'){
-            url = "cat/add";
-            msg = SUCCESS_ADD_MSG;
-            errorMsg = FAIL_ADD_MSG;
-        }else{
-            url = "cat/update";
-            msg = SUCCESS_UPDATE_MSG;
-            errorMsg = FAIL_UPDAGE_MSG;
+        if(('' == imgUrl || null == imgUrl) && ( action == 'Add' || action == 'EditImg')){
+            alert('请上传图片');
+        } else{
+            if(action == 'Add'){
+                url = "cat/add";
+                msg = SUCCESS_ADD_MSG;
+                errorMsg = FAIL_ADD_MSG;
+            }else{
+                url = "cat/update";
+                msg = SUCCESS_UPDATE_MSG;
+                errorMsg = FAIL_UPDAGE_MSG;
+            }
+            callRemoteFunction(url,datas,msg,errorMsg);
+            clearModal();
+            $('#category').modal('hide');
         }
-        callRemoteFunction(url,datas,msg,errorMsg);
-        $('#category').modal('hide');
         var queryParam = {
             "catName":''
         }
         refreshCategoty(queryParam);
+
     }
 );
 
@@ -1281,6 +1322,33 @@ function deleteCategory(data) {
         "catName":''
     }
     refreshCategoty(queryParam);
+}
+
+/**
+ * 修改分类图片
+ * @param obj
+ */
+function editCatsImg(obj) {
+    var datas = obj.split(',');
+    $('.js-cat-title').text('修改分类图片');
+    $('.js-cat-name-lab').css('display','');
+    $('.js-cat-name-lab').text(datas[1]);
+    $('.js-cat-no-div').css('display','');
+    $('.js-cat-no').text(datas[0]);
+    $('.js-cat-name-div').css('display','none');
+    $('.js-cat-img-div').css('display','');
+    initFileInput('js-cat-img');
+    $('#category').modal('show');
+    //导入文件上传完成之后的事件
+    $(".js-cat-img").on("fileuploaded", function (event, data, previewId, index) {
+        var data = data.response;
+        if (data == undefined) {
+            return;
+        }
+        $('.js-cat-img-url').text(data.fileUrl);//得到图片路径
+    });
+    action='EditImg'
+
 }
 /**
  * 刷新分类管理表格

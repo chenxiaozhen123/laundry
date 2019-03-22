@@ -41,8 +41,11 @@ public class CategoryController {
         int result = 0;
         try{
             String catName =  request.getParameter("catName");
+            String imgPath =  request.getParameter("imgPath");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("cat_name",catName);
+            reqMap.put("img_path",imgPath);
+
             //获取最大+1的分类编号
             Map<String, Object> catNOMap = categoryService.getCatNo();
             if(null != catNOMap){
@@ -92,9 +95,11 @@ public class CategoryController {
         try{
             String catNo =  request.getParameter("catNo");
             String catName =  request.getParameter("catName");
+            String imgPath =  request.getParameter("imgPath");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("catNo",catNo);
             reqMap.put("catName",catName);
+            reqMap.put("imgPath",imgPath);
             result = categoryService.updateCategory(reqMap);
         }catch (DataAccessException e){
             throw new LaundryException("数据库操作异常");

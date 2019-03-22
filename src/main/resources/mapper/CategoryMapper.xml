@@ -7,17 +7,27 @@
     -->
     <result column="cat_no" jdbcType="VARCHAR" property="catNo" />
     <result column="cat_name" jdbcType="VARCHAR" property="catName" />
+    <result column="img_path" jdbcType="VARCHAR" property="imgPath" />
     <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
 
+
   <insert id="addCategory" parameterType="map">
-    insert into category (cat_no,cat_name,state)
+    insert into category (cat_no,cat_name,img_path,state)
     VALUES (
-      #{cat_no},#{cat_name},'00A'
+      #{cat_no},#{cat_name},#{img_path},'00A'
     )
   </insert>
   <update id="updateCategory">
-    update category set cat_name = #{catName}
+    update category
+    <set>
+      <if test="null != catName and '' != catName">
+        cat_name = #{catName},
+      </if>
+      <if test="null != imgPath and '' != imgPath">
+        img_path = #{imgPath},
+      </if>
+    </set>
     where state = '00A' and cat_no = #{catNo}
   </update>
   <update id="deleteCategory">
@@ -28,7 +38,7 @@
     select max(cat_no)+1 as cat_no from category
   </select>
   <select id="getCategoryList" parameterType="map" resultType="map">
-    select c.cat_no , c.cat_name from category c where c.state = '00A'
+    select c.cat_no , c.cat_name,c.img_path from category c where c.state = '00A'
     <if test="null != catName and '' != catName">
       and c.cat_name like concat(concat('%', #{catName}), '%')
     </if>

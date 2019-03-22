@@ -16,6 +16,9 @@ public class Category {
     @Column(name = "cat_name")
     private String catName;
 
+    @Column(name = "img_path")
+    private String imgPath;
+
     /**
      * 状态
      */
@@ -55,6 +58,20 @@ public class Category {
      */
     public void setCatName(String catName) {
         this.catName = catName;
+    }
+
+    /**
+     * @return img_path
+     */
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    /**
+     * @param imgPath
+     */
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 
     /**
