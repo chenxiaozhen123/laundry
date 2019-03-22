@@ -753,6 +753,11 @@ function initPage(data){
             title: '分类编号',
             width: 120,
             align:'center'
+        },{
+            field: 'url',
+            title: '图片',
+            width: 120,
+            align:'center'
         }, {
             field: 'cat_name',
             title: '分类名称',

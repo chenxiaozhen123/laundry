@@ -59,8 +59,10 @@ public class OrderController {
             String pageSize =  request.getParameter("pageSize");
             String status =  request.getParameter("status");
             String orderId =  request.getParameter("orderId");
-            reqMap.put("pageNum",pageNumber);
-            reqMap.put("pageSize",pageSize);
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
             reqMap.put("status",status);
             reqMap.put("orderId",orderId);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderList",reqMap);

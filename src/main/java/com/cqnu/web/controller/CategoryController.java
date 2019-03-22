@@ -115,8 +115,10 @@ public class CategoryController {
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
             String catName = request.getParameter("catName");
-            reqMap.put("pageNum",pageNumber);
-            reqMap.put("pageSize",pageSize);
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
             reqMap.put("catName",catName);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.CategoryMapper.getCategoryList",reqMap);
         }catch (DataAccessException e){

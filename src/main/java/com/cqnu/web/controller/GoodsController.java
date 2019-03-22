@@ -9,6 +9,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -122,7 +123,7 @@ public class GoodsController {
      * 查询分类下的所有商品
      */
     @ResponseBody
-    @RequestMapping(value = "/getGoodsList")
+    @RequestMapping(value = "/getGoodsList" ,method ={RequestMethod.POST,RequestMethod.GET})
     public Map<String, Object> getAdminInfoList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
@@ -131,8 +132,10 @@ public class GoodsController {
             String pageSize =  request.getParameter("pageSize");
             String catNO = request.getParameter("catNo");
             String goodsName =  request.getParameter("goodsName");
-            reqMap.put("pageNum",pageNumber);
-            reqMap.put("pageSize",pageSize);
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
             reqMap.put("catNO", catNO);
             reqMap.put("goodsName",goodsName);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.GoodsMapper.getGoodsList",reqMap);

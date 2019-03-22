@@ -115,8 +115,10 @@ public class AdminController {
         String name = request.getParameter("name");
         String roleName = request.getParameter("roleName");
         String shopName = request.getParameter("shopName");
-        reqMap.put("pageNum",pageNumber);
-        reqMap.put("pageSize",pageSize);
+        if( null != pageNumber && null != pageSize){
+            reqMap.put("pageNum",pageNumber);
+            reqMap.put("pageSize",pageSize);
+        }
         reqMap.put("roleIds", StringHelper.stringToList(roleIds));
         reqMap.put("admin_name",name);
         reqMap.put("role_name",roleName);

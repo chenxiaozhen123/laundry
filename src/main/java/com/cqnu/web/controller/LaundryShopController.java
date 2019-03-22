@@ -90,8 +90,10 @@ public class LaundryShopController {
             String area =  request.getParameter("area");
             String roleIds =  request.getParameter("roleIds");
             reqMap.put("roleIds", StringHelper.stringToList(roleIds));
-            reqMap.put("pageNum",pageNumber);
-            reqMap.put("pageSize",pageSize);
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
             reqMap.put("name",name);
             reqMap.put("area",area);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getLaundryShopList",reqMap);
