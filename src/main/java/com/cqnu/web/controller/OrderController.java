@@ -2,9 +2,11 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,7 @@ public class OrderController {
      */
     @ResponseBody
     @RequestMapping(value = "/handle")
-    public int handleOrder(HttpServletRequest request){
+    public BaseRes handleOrder(HttpServletRequest request){
         int result = 0;
         try{
             Map<String, Object> reqMap = new HashMap<>();
@@ -41,19 +43,23 @@ public class OrderController {
             reqMap = getStatusByAction(action);
             reqMap.put("orderId",orderId);
             result= orderService.handleOrder(reqMap);
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("处理订单失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有订单
      */
     @ResponseBody
     @RequestMapping(value = "/getOrderList")
-    public Map<String, Object> getLaundryShopList(HttpServletRequest request){
+    public BaseRes getLaundryShopList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
         try{
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
@@ -65,12 +71,16 @@ public class OrderController {
             }
             reqMap.put("status",status);
             reqMap.put("orderId",orderId);
+            t1 = System.currentTimeMillis();
             resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderList",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("查询订单失败");
         }
 
-        return getActionByStatus(resMap);
+        return BaseRes.getSuccess(getActionByStatus(resMap),t2-t1);
     }
 
     /**

@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.model.Message;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.base.util.AESUtil;
@@ -40,7 +41,7 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value = "/add")
-    public int addAdmin(HttpServletRequest request) {
+    public BaseRes addAdmin(HttpServletRequest request) {
         int result = 0;
         try{
             String jobNumber = null;
@@ -93,11 +94,12 @@ public class AdminController {
                 message.setJobNumber(jobNumber);
                 mailUtil.sendMailAccountMsg(message,email,LaundryConsts.ENTRY_SUBJECT,LaundryConsts.ENTRY_TEMPLATE);
             }
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("添加员工失败");
         }
-
-        return result;
+        return BaseRes.getSuccess(result);
     }
 
     /**
@@ -105,51 +107,63 @@ public class AdminController {
      */
     @ResponseBody
     @RequestMapping(value = "/getAdminInfoList")
-    public Map<String, Object> getAdminInfoList(HttpServletRequest request){
+    public BaseRes getAdminInfoList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
-        String pageNumber =  request.getParameter("pageNumber");
-        String pageSize =  request.getParameter("pageSize");
-        String shop_no =  request.getParameter("shopNo");
-        String roleIds = request.getParameter("roleIds");
-        String name = request.getParameter("name");
-        String roleName = request.getParameter("roleName");
-        String shopName = request.getParameter("shopName");
-        if( null != pageNumber && null != pageSize){
-            reqMap.put("pageNum",pageNumber);
-            reqMap.put("pageSize",pageSize);
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String pageNumber =  request.getParameter("pageNumber");
+            String pageSize =  request.getParameter("pageSize");
+            String shop_no =  request.getParameter("shopNo");
+            String roleIds = request.getParameter("roleIds");
+            String name = request.getParameter("name");
+            String roleName = request.getParameter("roleName");
+            String shopName = request.getParameter("shopName");
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
+            reqMap.put("roleIds", StringHelper.stringToList(roleIds));
+            reqMap.put("admin_name",name);
+            reqMap.put("role_name",roleName);
+            reqMap.put("shop_name",shopName);
+            reqMap.put("shop_no",shop_no);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.AdminMapper.getAdminList",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
+        }catch (Exception e){
+            return BaseRes.getException("查询员工异常", t2 - t1);
         }
-        reqMap.put("roleIds", StringHelper.stringToList(roleIds));
-        reqMap.put("admin_name",name);
-        reqMap.put("role_name",roleName);
-        reqMap.put("shop_name",shopName);
-        reqMap.put("shop_no",shop_no);
-        resMap = baseService.queryForPage("com.cqnu.web.mapper.AdminMapper.getAdminList",reqMap);
-        return resMap;
+        return BaseRes.getSuccess(resMap, t2 - t1);
     }
     /**
-     * 查询员工详细信息
+     * 删除员工信息
      */
     @ResponseBody
     @RequestMapping(value = "/delete")
-    public int deleteAdminByAdminNo(HttpServletRequest request){
+    public BaseRes deleteAdminByAdminNo(HttpServletRequest request){
         int result = 0;
         try{
             String adminNo =  request.getParameter("adminNo");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("admin_no",adminNo);
             result= adminService.deleteAdminByAdminNo(reqMap);
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("删除员工信息");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 更改员工个人信息
      */
     @ResponseBody
     @RequestMapping(value = "/updateAdminPersonInfo")
-    public int updateAdminInfo(HttpServletRequest request){
+    public BaseRes updateAdminInfo(HttpServletRequest request){
         int result = 0;
         try{
             String adminNo =  request.getParameter("adminNo");
@@ -172,18 +186,18 @@ public class AdminController {
             }
             result= adminService.updateAdminInfo(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException("更改信息异常");
+            return BaseRes.getException("更改信息失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 管理员更改员工信息
      */
     @ResponseBody
     @RequestMapping(value = "/updateAdminInfo")
-    public int updateAdminRoleAndShopInfo(HttpServletRequest request){
+    public BaseRes updateAdminRoleAndShopInfo(HttpServletRequest request){
         int result = 0;
         try{
             String adminNo =  request.getParameter("adminNo");
@@ -194,17 +208,19 @@ public class AdminController {
             reqMap.put("role_id",roleId);
             reqMap.put("shop_no",shopNo);
             result= adminService.updateAdminRoleAndShopInfo(reqMap);
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("更改信息失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 发送邮箱验证码
      */
     @ResponseBody
     @RequestMapping(value = "/captcha")
-    public Map<String, Object> sendEmailCaptcha(HttpServletRequest request) {
+    public BaseRes sendEmailCaptcha(HttpServletRequest request) {
         String uuidStr = "";
         Map<String, Object> resMap = new HashMap<>();
         try{
@@ -221,8 +237,8 @@ public class AdminController {
             resMap.put("uuid",uuidStr);
             resMap.put("email",email);
         }catch (Exception e){
-            throw new LaundryException("发送邮件异常");
+            return BaseRes.getException("发送邮件失败");
         }
-        return resMap;
+        return BaseRes.getSuccess(resMap);
     }
 }

@@ -8,7 +8,7 @@ function callRemoteFunction(url,data,msg,errorMsg) {
         dataType:"json",
         type:"post",
         success:function(data){
-            if( 0 < data  || data == true){
+            if( SUCCESS_CODE == data.code){
                 BootstrapDialog.alert({
                     title: '提示',
                     message: msg,
@@ -31,7 +31,7 @@ function callRemoteFunction(url,data,msg,errorMsg) {
         error:function (data) {
             BootstrapDialog.alert({
                 title: '提示',
-                message: errorMsg+'!  '+data.responseJSON.message,
+                message: errorMsg+'!  '+data.responseJSON.desc,
                 type: BootstrapDialog.TYPE_WARNING,
                 closable: true,
                 draggable: true,

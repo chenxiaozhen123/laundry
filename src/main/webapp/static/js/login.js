@@ -7,15 +7,17 @@ $(function(){
                 dataType:"json",
                 type:"post",
                 success:function(data){
-                    if(JSON.stringify(data) == "true"){
+                    alert(JSON.stringify(data));
+                    if(SUCCESS_CODE== data.code){
                         window.location.href = "/admin/index.html"
                     }else{
-                        alert("用户名或密码错误");
+                        alert(data.desc);
                     }
                 },
                 error:function (data) {
-                    alert("用户名或密码错误");
+                    alert(data.desc);
                 }
             })
+
         });
 })

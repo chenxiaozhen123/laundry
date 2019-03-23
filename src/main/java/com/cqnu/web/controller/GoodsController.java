@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IGoodsService;
 import com.cqnu.web.util.StringHelper;
@@ -43,7 +44,7 @@ public class GoodsController {
      */
     @ResponseBody
     @RequestMapping(value = "/add")
-    public int addGoods(HttpServletRequest request){
+    public BaseRes addGoods(HttpServletRequest request){
         int result = 0;
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
@@ -67,19 +68,19 @@ public class GoodsController {
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.addGoods(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception ex){
-            throw new LaundryException("添加商品失败");
+            return BaseRes.getException("添加商品失败");
         }
 
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 删除商品
      */
     @ResponseBody
     @RequestMapping(value = "/delete")
-    public int deleteGoods(HttpServletRequest request){
+    public BaseRes deleteGoods(HttpServletRequest request){
         int result = 0;
         Map<String, Object> reqMap = new HashMap<>();
         try{
@@ -87,18 +88,18 @@ public class GoodsController {
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.deleteGoods(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception ex){
-            throw new LaundryException("删除商品失败");
+            return BaseRes.getException("删除商品失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 修改商品
      */
     @ResponseBody
     @RequestMapping(value = "/update")
-    public int updateGoods(HttpServletRequest request){
+    public BaseRes updateGoods(HttpServletRequest request){
         int result = 0;
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
@@ -113,20 +114,22 @@ public class GoodsController {
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.updateGoods(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception ex){
-            throw new LaundryException("修改商品失败");
+            return BaseRes.getException("修改商品失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 查询分类下的所有商品
      */
     @ResponseBody
     @RequestMapping(value = "/getGoodsList" ,method ={RequestMethod.POST,RequestMethod.GET})
-    public Map<String, Object> getAdminInfoList(HttpServletRequest request){
+    public BaseRes getAdminInfoList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
         try{
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
@@ -138,12 +141,14 @@ public class GoodsController {
             }
             reqMap.put("catNO", catNO);
             reqMap.put("goodsName",goodsName);
+            t1 = System.currentTimeMillis();
             resMap = baseService.queryForPage("com.cqnu.web.mapper.GoodsMapper.getGoodsList",reqMap);
+            t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception ex){
-            throw new LaundryException("查询商品失败");
+            return BaseRes.getException("查询商品失败");
         }
-        return resMap;
+        return BaseRes.getSuccess(resMap,t2-t1);
     }
 }

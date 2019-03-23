@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.controller.BaseController;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.util.AESUtil;
 import com.cqnu.web.entity.Admin;
 
@@ -10,6 +11,7 @@ import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.service.IRoleService;
 import com.cqnu.web.service.ISysLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,8 +42,7 @@ public class SysLoginController extends BaseController{
      */
     @ResponseBody
     @RequestMapping(value = "/login")
-    public boolean login(HttpServletRequest request) {
-        boolean flag = false;
+    public BaseRes login(HttpServletRequest request) {
         try{
             String username =  request.getParameter("username");
             String password =  request.getParameter("password");
@@ -50,14 +51,16 @@ public class SysLoginController extends BaseController{
             reqMap.put("password",AESUtil.aesEncrypt(password,LaundryConsts.WORKER_KEY));
             Map<String, Object> resMap = sysLoginService.getAdmin(reqMap);
             if(null != resMap){
-                flag = true;
                 request.getSession().setAttribute(LaundryConsts.SESSION_USER_KEY,this.getAdmin(resMap));
+            }else{
+                return BaseRes.getFailure("用户名或密码错误");
             }
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-
+            return BaseRes.getException("登录失败");
         }
-
-        return flag;
+        return BaseRes.getSuccess();
     }
     /**
      * 登录状态

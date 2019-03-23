@@ -143,6 +143,10 @@ function initPage(data){
         sidePagination: 'server',
         pagination: true,
         queryParamsType:'',
+        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+        pageSize: 3,                     //每页的记录行数（*）
+        pageList: [2,5,10],  //可供选择的每页的行数（*）
+        showHeader: true,
         queryParams:function (params) {
             var param = {
                 pageSize:params.pageSize,
@@ -153,10 +157,12 @@ function initPage(data){
             }
             return param
         },
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 3,                     //每页的记录行数（*）
-        pageList: [2,5,10],  //可供选择的每页的行数（*）
-        showHeader: true
+        responseHandler: function(res) {
+            return {
+                "total": res.data.total,//总页数
+                "rows": res.data.rows   //数据
+            };
+        }
     });
     /**
      * 查找门店
@@ -412,6 +418,12 @@ function initPage(data){
                 roleName:roleName
             }
             return param
+        },
+        responseHandler: function(res) {
+            return {
+                "total": res.data.total,//总页数
+                "rows": res.data.rows   //数据
+            };
         }
     });
 
@@ -701,6 +713,12 @@ function initPage(data){
                 status:status
             }
             return param
+        },
+        responseHandler: function(res) {
+            return {
+                "total": res.data.total,//总页数
+                "rows": res.data.rows   //数据
+            };
         }
     });
     /**
@@ -824,6 +842,12 @@ function initPage(data){
                 catName:catName
             }
             return param
+        },
+        responseHandler: function(res) {
+            return {
+                "total": res.data.total,//总页数
+                "rows": res.data.rows   //数据
+            };
         }
     });
     ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -943,8 +967,8 @@ function selectShopCate(obj) {
  */
 $('.js-shop-reset-btn').on(
     "click",function () {
-        $('.js-principal-name').val();
-        $('.js-shop-area').val();
+        $('.js-principal-name').val('');
+        $('.js-shop-area').val('');
     }
 )
 /**
@@ -1205,11 +1229,12 @@ $('.js-category-add-btn').on(
         showCategoryModal();
         //导入文件上传完成之后的事件
         $(".js-cat-img").on("fileuploaded", function (event, data, previewId, index) {
-            var data = data.response;
-            if (data == undefined) {
+            var res = data.response;
+            if (SUCCESS_CODE == res.code) {
+                $('.js-cat-img-url').text(res.data.fileUrl);//得到图片路径
+            }else{
                 return;
             }
-            $('.js-cat-img-url').text(data.fileUrl);//得到图片路径
         });
     }
 );
@@ -1243,6 +1268,8 @@ function  showCategoryModal(data) {
         $('.js-cat-no-div').css("display",'none');
         $('.js-cat-no').text('');
         $('.js-cat-name').val('');
+        $('.js-cat-name-lab').css("display",'none');
+        $('.js-cat-name-div').css("display",'');
     }else{
         $('.js-cat-title').text('修改分类');
         $('.js-cat-no-div').css("display",'');
@@ -1341,11 +1368,12 @@ function editCatsImg(obj) {
     $('#category').modal('show');
     //导入文件上传完成之后的事件
     $(".js-cat-img").on("fileuploaded", function (event, data, previewId, index) {
-        var data = data.response;
-        if (data == undefined) {
+        var res = data.response;
+        if (SUCCESS_CODE == res.code) {
+            $('.js-cat-img-url').text(res.data.fileUrl);//得到图片路径
+        }else{
             return;
         }
-        $('.js-cat-img-url').text(data.fileUrl);//得到图片路径
     });
     action='EditImg'
 
@@ -1478,6 +1506,10 @@ function initGoodsTab() {
         sidePagination: 'server',
         pagination: true,
         queryParamsType:'',
+        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+        pageSize: 3,                     //每页的记录行数（*）
+        pageList: [3,5,10],  //可供选择的每页的行数（*）
+        showHeader: true,
         queryParams:function (params) {
             var param = {
                 pageSize:params.pageSize,
@@ -1488,10 +1520,12 @@ function initGoodsTab() {
             }
             return param
         },
-        pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
-        pageSize: 3,                     //每页的记录行数（*）
-        pageList: [3,5,10],  //可供选择的每页的行数（*）
-        showHeader: true
+        responseHandler: function(res) {
+            return {
+                "total": res.data.total,//总页数
+                "rows": res.data.rows   //数据
+            };
+        }
     });
 }
 
@@ -1525,11 +1559,12 @@ $('.js-goods-add-btn').on(
         initFileInput('js-goods-img');
         //导入文件上传完成之后的事件
         $(".js-goods-img").on("fileuploaded", function (event, data, previewId, index) {
-            var data = data.response;
-            if (data == undefined) {
+            var res = data.response;
+            if (SUCCESS_CODE == res.code) {
+                $('.js-goods-img-url').text(res.data.fileUrl);//得到图片路径
+            }else{
                 return;
             }
-            $('.js-goods-img-url').text(data.fileUrl);//得到图片路径
         });
     }
 );
@@ -1626,11 +1661,12 @@ function editGoodsImg(data) {
     initFileInput('js-goods-img-modal');
     //导入文件上传完成之后的事件
     $(".js-goods-img-modal").on("fileuploaded", function (event, data, previewId, index) {
-        var data = data.response;
-        if (data == undefined) {
+        var res = data.response;
+        if (SUCCESS_CODE == res.code) {
+            $('.js-goods-img-url-modal').text(res.data.fileUrl);//得到图片路径
+        }else{
             return;
         }
-        $('.js-goods-img-url-modal').text(data.fileUrl);//得到图片路径
     });
 };
 

@@ -1,6 +1,7 @@
 package com.cqnu.web.controller;
 
 import com.cqnu.base.config.LaundryConfig;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.web.util.OSSUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,26 +37,30 @@ public class UploadController {
      */
     @ResponseBody
     @RequestMapping(value = "/img" ,method = RequestMethod.POST)
-    public Map<String, Object> uploadApkFile(HttpServletRequest request, HttpServletResponse response){
+    public BaseRes uploadApkFile(HttpServletRequest request, HttpServletResponse response){
         Map<String, Object> resMap = new HashMap<String, Object>();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         /** 页面控件的文件流* */
         MultipartFile multipartFile = null;
         Map map =multipartRequest.getFileMap();
-        for (Iterator i = map.keySet().iterator(); i.hasNext();) {
-            Object obj = i.next();
-            multipartFile=(MultipartFile) map.get(obj);
-        }
+        long t1 = 0;
+        long t2 = 0;
         String fileUrl = "";
         try {
+            for (Iterator i = map.keySet().iterator(); i.hasNext();) {
+                Object obj = i.next();
+                multipartFile=(MultipartFile) map.get(obj);
+            }
+            t1 = System.currentTimeMillis();
             fileUrl = ossUtil.checkImage(multipartFile);
+            t2 = System.currentTimeMillis();
         } catch (Exception e) {
-            e.printStackTrace();
+            return BaseRes.getFailure("上传文件失败",t2-t1);
         }
         resMap.put("fileUrl", fileUrl);
         resMap.put("message", "应用上传成功");
         resMap.put("status", true);
-        return resMap;
+        return BaseRes.getSuccess(resMap);
     }
     
 }

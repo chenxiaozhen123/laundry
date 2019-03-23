@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.ICategoryService;
 import com.cqnu.web.service.IGoodsService;
@@ -37,7 +38,7 @@ public class CategoryController {
      */
     @ResponseBody
     @RequestMapping(value = "/add")
-    public int addCategory(HttpServletRequest request){
+    public BaseRes addCategory(HttpServletRequest request){
         int result = 0;
         try{
             String catName =  request.getParameter("catName");
@@ -56,11 +57,11 @@ public class CategoryController {
             }
             result = categoryService.addCategory(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception ex){
-            throw new LaundryException("新增分类失败");
+            return BaseRes.getException("新增分类失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 删除分类
@@ -68,7 +69,7 @@ public class CategoryController {
     @ResponseBody
     @RequestMapping(value = "/delete")
     @Transactional
-    public int deleteCategory(HttpServletRequest request){
+    public BaseRes deleteCategory(HttpServletRequest request){
         int result = 0;
         try{
             String catNo =  request.getParameter("catNo");
@@ -79,18 +80,18 @@ public class CategoryController {
                 result = goodsService.deleteGoodsList(reqMap);
             }
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException("删除分类异常");
+            return BaseRes.getException("删除分类异常");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 修改分类
      */
     @ResponseBody
     @RequestMapping(value = "/update")
-    public int updateCategory(HttpServletRequest request){
+    public BaseRes updateCategory(HttpServletRequest request){
         int result = 0;
         try{
             String catNo =  request.getParameter("catNo");
@@ -102,20 +103,22 @@ public class CategoryController {
             reqMap.put("imgPath",imgPath);
             result = categoryService.updateCategory(reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException("修改分类异常");
+            return BaseRes.getException("修改分类异常");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有分类
      */
     @ResponseBody
     @RequestMapping(value = "/getCategoryList")
-    public Map<String, Object> getCategoryList(HttpServletRequest request){
+    public BaseRes getCategoryList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
         try{
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
@@ -127,12 +130,11 @@ public class CategoryController {
             reqMap.put("catName",catName);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.CategoryMapper.getCategoryList",reqMap);
         }catch (DataAccessException e){
-            throw new LaundryException("数据库操作异常");
+            return BaseRes.getException("数据库操作异常",t2-t1);
         }catch (Exception e){
-            throw new LaundryException("查询分类异常");
+            return BaseRes.getException("查询分类异常",t2-t1);
         }
-
-        return resMap;
+        return BaseRes.getSuccess(resMap,t2-t1);
     }
 
 }

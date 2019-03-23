@@ -2,11 +2,13 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.common.exception.LaundryException;
+import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,7 +39,7 @@ public class LaundryShopController {
      */
     @ResponseBody
     @RequestMapping(value = "/add")
-    public int addLaundryShop(HttpServletRequest request) {
+    public BaseRes addLaundryShop(HttpServletRequest request) {
         int result = 0;
         try{
             String shopName =  request.getParameter("shopName");
@@ -70,19 +72,23 @@ public class LaundryShopController {
             if( 0 < result){ //门店负责人添加成功则去admin表更改该员工的所属门店
                 result = adminService.updateShopIdByAdminNo(reqAdminMap);
             }
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("添加门店失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有门店
      */
     @ResponseBody
     @RequestMapping(value = "/getLaundryShopList")
-    public Map<String, Object> getLaundryShopList(HttpServletRequest request){
+    public BaseRes getLaundryShopList(HttpServletRequest request){
         Map<String, Object> reqMap = new HashMap<>();
         Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
         try{
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
@@ -96,36 +102,41 @@ public class LaundryShopController {
             }
             reqMap.put("name",name);
             reqMap.put("area",area);
+            t1 = System.currentTimeMillis();
             resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getLaundryShopList",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常", t2 - t1);
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("查询门店信息失败", t2 - t1);
         }
-
-        return resMap;
+        return BaseRes.getSuccess(resMap, t2 - t1);
     }
     /**
      * 删除门店
      */
     @ResponseBody
     @RequestMapping(value = "/delete")
-    public int deleteLaundryShop(HttpServletRequest request){
+    public BaseRes deleteLaundryShop(HttpServletRequest request){
         int result = 0;
         try{
             String shopNo =  request.getParameter("shopNo");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("shopNo",shopNo);
             result= laundryShopService.deleteLaundryShop(reqMap);
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("删除门店失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
     /**
      * 修改门店信息
      */
     @ResponseBody
     @RequestMapping(value = "/update")
-    public int updateLaundryShop(HttpServletRequest request){
+    public BaseRes updateLaundryShop(HttpServletRequest request){
         int result = 0;
         try{
             String shopNo =  request.getParameter("shopNo");
@@ -146,9 +157,11 @@ public class LaundryShopController {
             if( 0 < result){ //门店负责人信息修改成功则去admin表更改该员工的所属门店
                 result = adminService.updateShopIdByAdminNo(reqAdminMap);
             }
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
-            throw new LaundryException(e.getMessage());
+            return BaseRes.getException("修改门店信息失败");
         }
-        return result;
+        return BaseRes.getSuccess(result);
     }
 }
