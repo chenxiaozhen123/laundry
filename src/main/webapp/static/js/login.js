@@ -7,7 +7,6 @@ $(function(){
                 dataType:"json",
                 type:"post",
                 success:function(data){
-                    alert(JSON.stringify(data));
                     if(SUCCESS_CODE== data.code){
                         window.location.href = "/admin/index.html"
                     }else{

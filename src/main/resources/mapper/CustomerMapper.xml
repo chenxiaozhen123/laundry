@@ -15,7 +15,7 @@
   </resultMap>
 
   <select id="getCustomer" resultType="map" parameterType="map">
-    select c.cust_id,c.cname,c.password,c.sex,c.mobile,c.state from customer c
+    select c.cust_id,c.cname,c.password,c.sex,c.mobile,c.eff_date,c.state from customer c
     where c.state = '00A'
     <if test="null != cust_id and '' != cust_id">
       and c.cust_id = #{cust_id}

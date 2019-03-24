@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.AddressMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Address">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="address_id" jdbcType="INTEGER" property="addressId" />
+    <result column="cust_id" jdbcType="INTEGER" property="custId" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="state" jdbcType="VARCHAR" property="state" />
+  </resultMap>
+  <insert id="addAddress">
+    insert into address(cust_id,address,state)
+    values(#{custId},#{address},'00A')
+  </insert>
+  <update id="update">
+    update address a set a.address =#{address}
+    where a.cust_id = #{custId} and a.address_id = #{addressId} and a.state = '00A'
+  </update>
+  <select id="getCustAddress" parameterType="map" resultType="map">
+    select c.mobile,c.cname,a.address,a.address_id from customer c , address a
+    where c.cust_id = a.cust_id and c.state = '00A' and a.state = '00A'
+    and a.cust_id = #{custId}
+  </select>
+</mapper>

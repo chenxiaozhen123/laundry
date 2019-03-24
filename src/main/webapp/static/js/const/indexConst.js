@@ -19,6 +19,7 @@ var cannot_shop_no = '-1';//未分配门店的干洗中心管理员/门店管理
 var shopOrderList = new Array();
 shopOrderList[0] = '待取衣';
 shopOrderList[1] = '已取衣';
+// shopOrderList[2] = '正在送洗';
 shopOrderList[2] = '上挂';
 shopOrderList[3] = '领取';
 shopOrderList[4] = '取回';
@@ -26,6 +27,8 @@ shopOrderList[4] = '取回';
 var centerOrderList = new Array();
 centerOrderList[0] = '正在送洗';
 centerOrderList[1] = '正在清洗';
+
+// 待付款->待取衣->已取衣->正在送洗->正在清洗->上挂->领取->取回->待顾客确认收衣->待评价
 
 //提示信息
 var SUCCESS_ADD_MSG = "添加成功";
