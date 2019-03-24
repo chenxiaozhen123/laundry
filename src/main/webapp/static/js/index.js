@@ -120,6 +120,16 @@ function initPage(data){
             width:220,
             align:'center'
         },{
+            field: 'condition',
+            title: '业务分析',
+            width:80,
+            align:'center',
+            formatter: function (value, row, index) {
+                var result = "";
+                result += "<a href='javascript:;' class='btn btn-xs red' onclick=\"showShopServicePanel('" + row.shop_no + "')\" title='业务查看'><span class='glyphicon glyphicon-th'></span></a>";
+                return result;
+            }
+        },{
             field: 'action',
             title: '操作',
             width:70,
@@ -601,59 +611,81 @@ function initPage(data){
         },{
             field: 'order_id',
             title: '订单编号',
+            align:'center',
             width:120
         },{
             field: 'status',
             title: '洗衣单状态',
+            align:'center',
             width:120
         },{
             field: 'price',
             title: '订单金额',
+            width:120,
+            align:'center',
+            formatter:function (value,row,index) {
+                return row.price.toFixed(2);
+            }
+        },{
+            field: 'shop_name',
+            title: '处理门店',
+            align:'center',
             width:120
         },{
             field: 'createDate',
             title: '创建时间',
+            align:'center',
             width:120
         },{
             field: 'payDate',
             title: '支付时间',
+            align:'center',
             width:120
         }, {
             field: 'takeDate',
             title: '取衣时间',
+            align:'center',
             width:120
         },{
             field: 'sendDate',
             title: '送洗时间',
+            align:'center',
             width:120
         },{
             field: 'washDate',
             title: '清洗时间',
+            align:'center',
             width:120
         },{
             field: 'hangDate',
             title: '上挂时间',
+            align:'center',
             width:120
         },{
             field: 'receiveDate',
             title: '领取时间',
+            align:'center',
             width:120
         },{
             field: 'takeBackDate',
             title: '领回时间',
+            align:'center',
             width:120
         },{
             field: 'deliverDate',
             title: '门店送衣时间',
+            align:'center',
             width:120
         },{
             field: 'confirmDate',
             title: '顾客确认时间',
+            align:'center',
             width:120
         }
         ,{
             field: 'act',
             title: '操作',
+            align:'center',
             width:120,
             formatter:function(value,row,index){
                 var result = "";
@@ -998,6 +1030,12 @@ function showShopModal(data) {
     }
 }
 
+/**
+ * 门店业务分析
+ */
+function showShopServicePanel() {
+
+}
 /*************************************************************************************************
  *                                   员工管理
  *************************************************************************************************/
