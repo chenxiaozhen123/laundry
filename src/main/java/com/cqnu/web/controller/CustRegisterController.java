@@ -27,13 +27,14 @@ public class CustRegisterController {
     @Autowired
     AliyunMessageUtil aliyunMessageUtil;
 
+    /**
+     * 注册控制
+     */
     @ResponseBody
     @RequestMapping(value = "/register")
     public int custRegister(HttpServletRequest request) {
         int result = 0;
 
-//        String code = "1";
-//        String codeT = "1";
         try {
             int usefulTime = Integer.valueOf(request.getParameter("usefulTime"));
             if (usefulTime > 0) {
@@ -64,6 +65,12 @@ public class CustRegisterController {
         return result;
     }
 
+    /**
+     * 发送验证码控制
+     * @param request
+     * @return flag
+     * @throws ClientException
+     */
     @ResponseBody
     @RequestMapping(value = "/sendSMS")
     public boolean sendSMS(HttpServletRequest request) throws ClientException {

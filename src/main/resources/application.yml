@@ -8,12 +8,6 @@ spring:
   profiles:
   #多环境配置 dev：开发环境 pro：生产环境
     active: dev
-  #要打开的网址
-  web:
-    loginurl : http://localhost:${server.port}/index.html
-    #是否要启动时打开浏览器
-    isopenurl : true
-    googleexcute : explorer
   mvc:
     view:
       suffix: .html
