@@ -7,20 +7,22 @@
     -->
     <id column="address_id" jdbcType="INTEGER" property="addressId" />
     <result column="cust_id" jdbcType="INTEGER" property="custId" />
+    <result column="recevier" jdbcType="VARCHAR" property="recevier" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
   <insert id="addAddress">
-    insert into address(cust_id,address,state)
-    values(#{custId},#{address},'00A')
+    insert into address(cust_id,recevier,mobile,address,state)
+    values(#{custId},#{recevier},#{mobile},#{address},'00A')
   </insert>
   <update id="update">
-    update address a set a.address =#{address}
+    update address a set a.address = #{address},a.recevier =#{recevier},a.mobile =#{mobile}
     where a.cust_id = #{custId} and a.address_id = #{addressId} and a.state = '00A'
   </update>
   <select id="getCustAddress" parameterType="map" resultType="map">
-    select c.mobile,c.cname,a.address,a.address_id from customer c , address a
-    where c.cust_id = a.cust_id and c.state = '00A' and a.state = '00A'
+    select a.mobile,a.recevier,a.address,a.address_id from  address a
+    where  a.state = '00A'
     and a.cust_id = #{custId}
   </select>
 </mapper>

@@ -82,6 +82,52 @@ public class OrderController {
 
         return BaseRes.getSuccess(getActionByStatus(resMap),t2-t1);
     }
+       /**
+     * 获取顾客所有订单
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getOrderTotal")
+    public BaseRes getOrderTotal(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String custId =  request.getParameter("custId");
+            reqMap.put("custId",custId);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderTotal",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
+        }catch (Exception e){
+            return BaseRes.getException("查询订单失败");
+        }
+        return BaseRes.getSuccess(resMap,t2-t1);
+    }
+    /**
+     * 获取订单详情
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getOrderDetail")
+    public BaseRes getOrderDetail(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String orderId =  request.getParameter("orderId");
+            reqMap.put("orderId",orderId);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderDetailMapper.getOrderDetail",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常");
+        }catch (Exception e){
+            return BaseRes.getException("查询订单详情失败");
+        }
+        return BaseRes.getSuccess(resMap,t2-t1);
+    }
 
     /**
      * 根据门店/中心员工操作取得订单对应的状态

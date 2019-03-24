@@ -18,6 +18,16 @@ public class Address {
     private Integer custId;
 
     /**
+     * 收货人姓名
+     */
+    private String recevier;
+
+    /**
+     * 收货人手机号码
+     */
+    private String mobile;
+
+    /**
      * 地址
      */
     private String address;
@@ -61,6 +71,42 @@ public class Address {
      */
     public void setCustId(Integer custId) {
         this.custId = custId;
+    }
+
+    /**
+     * 获取收货人姓名
+     *
+     * @return recevier - 收货人姓名
+     */
+    public String getRecevier() {
+        return recevier;
+    }
+
+    /**
+     * 设置收货人姓名
+     *
+     * @param recevier 收货人姓名
+     */
+    public void setRecevier(String recevier) {
+        this.recevier = recevier;
+    }
+
+    /**
+     * 获取收货人手机号码
+     *
+     * @return mobile - 收货人手机号码
+     */
+    public String getMobile() {
+        return mobile;
+    }
+
+    /**
+     * 设置收货人手机号码
+     *
+     * @param mobile 收货人手机号码
+     */
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
     }
 
     /**

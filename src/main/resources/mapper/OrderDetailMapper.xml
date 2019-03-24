@@ -11,7 +11,24 @@
     <result column="goods_no" property="goodsNo" jdbcType="VARCHAR" />
     <result column="number" property="number" jdbcType="INTEGER" />
   </resultMap>
-  <select id="getOrderDetailList">
+  <select id="getOrderDetail" parameterType="map" resultType="map">
+    select g.goods_no, g.goods_name,od.number,o.status,
+        adr.recevier,adr.mobile,adr.address,g.price,
+		DATE_FORMAT(o.createDate,'%Y-%m-%d %H:%i') createDate,
+        DATE_FORMAT(o.payDate,'%Y-%m-%d %H:%i') payDate,
+        DATE_FORMAT(o.takeDate,'%Y-%m-%d %H:%i') takeDate,
+        DATE_FORMAT(o.sendDate,'%Y-%m-%d %H:%i') sendDate,
+        DATE_FORMAT(o.washDate,'%Y-%m-%d %H:%i') washDate,
+        DATE_FORMAT(o.hangDate,'%Y-%m-%d %H:%i') hangDate,
+        DATE_FORMAT(o.receiveDate,'%Y-%m-%d %H:%i') receiveDate,
+        DATE_FORMAT(o.takeBackDate,'%Y-%m-%d %H:%i') takeBackDate,
+        DATE_FORMAT(o.deliverDate,'%Y-%m-%d %H:%i') deliverDate,
+        DATE_FORMAT(o.confirmDate,'%Y-%m-%d %H:%i') confirmDate,
+        DATE_FORMAT(o.reviewDate,'%Y-%m-%d %H:%i') reviewDate
+	from order_detail od ,`order` o, goods g,address adr
+	where
+	od.goods_no = g.goods_no and adr.address_id = o.addressId and od.order_id = o.order_id and
+	od.order_id = #{orderId} GROUP BY g.goods_no
 
   </select>
 </mapper>

@@ -3,6 +3,7 @@ package com.cqnu.web.controller;
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.model.Message;
+import com.cqnu.base.service.BaseService;
 import com.cqnu.base.util.AESUtil;
 import com.cqnu.web.service.IAddressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ import java.util.Map;
 public class AddressController {
     @Autowired
     IAddressService addressService;
+    @Autowired
+    BaseService baseService;
 
     /**
      * 添加顾客地址
@@ -40,9 +43,13 @@ public class AddressController {
         try{
             String custId =  request.getParameter("custId");
             String address =  request.getParameter("address");
+            String mobile =  request.getParameter("mobile");
+            String recevier =  request.getParameter("recevier");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("custId",custId);
             reqMap.put("address",address);
+            reqMap.put("mobile",mobile);
+            reqMap.put("recevier",recevier);
             result = addressService.addAddress(reqMap);
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常");
@@ -57,24 +64,33 @@ public class AddressController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/updare")
+    @RequestMapping(value = "/update")
     public BaseRes updareAddress(HttpServletRequest request){
         int result = 0;
         try{
             String custId =  request.getParameter("custId");
-            String addressId =  request.getParameter("custId");
+            String addressId =  request.getParameter("addressId");
             String address =  request.getParameter("address");
+            String mobile =  request.getParameter("mobile");
+            String recevier =  request.getParameter("recevier");
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("custId",custId);
             reqMap.put("address",address);
+            reqMap.put("mobile",mobile);
             reqMap.put("addressId",addressId);
+            reqMap.put("recevier",recevier);
             result = addressService.updateAddress(reqMap);
+            if( 0 <result){
+                return BaseRes.getSuccess(result);
+            }else{
+                return BaseRes.getFailure("修改失败");
+            }
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
             return BaseRes.getException("修改地址失败");
         }
-        return BaseRes.getSuccess(result);
+
     }
     /**
      * 查询顾客所有地址
@@ -90,7 +106,7 @@ public class AddressController {
             String custId =  request.getParameter("custId");
             reqMap.put("custId",custId);
             t1 = System.currentTimeMillis();
-            resMap = addressService.getCustAddress(reqMap);
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.AddressMapper.getCustAddress",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常",t2-t1);

@@ -15,12 +15,19 @@ public class Order {
     /**
      * 地址
      */
-    private String address;
+    @Column(name = "addressId")
+    private String addressid;
 
     /**
      * 状态
      */
     private String status;
+
+    /**
+     * 所属门店编号
+     */
+    @Column(name = "shopNo")
+    private Integer shopno;
 
     /**
      * 金额
@@ -94,6 +101,11 @@ public class Order {
     private Date reviewdate;
 
     /**
+     * 状态
+     */
+    private String state;
+
+    /**
      * 获取订单编号
      *
      * @return order_id - 订单编号
@@ -114,19 +126,19 @@ public class Order {
     /**
      * 获取地址
      *
-     * @return address - 地址
+     * @return addressId - 地址
      */
-    public String getAddress() {
-        return address;
+    public String getAddressid() {
+        return addressid;
     }
 
     /**
      * 设置地址
      *
-     * @param address 地址
+     * @param addressid 地址
      */
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAddressid(String addressid) {
+        this.addressid = addressid;
     }
 
     /**
@@ -145,6 +157,24 @@ public class Order {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * 获取所属门店编号
+     *
+     * @return shopNo - 所属门店编号
+     */
+    public Integer getShopno() {
+        return shopno;
+    }
+
+    /**
+     * 设置所属门店编号
+     *
+     * @param shopno 所属门店编号
+     */
+    public void setShopno(Integer shopno) {
+        this.shopno = shopno;
     }
 
     /**
@@ -361,5 +391,23 @@ public class Order {
      */
     public void setReviewdate(Date reviewdate) {
         this.reviewdate = reviewdate;
+    }
+
+    /**
+     * 获取状态
+     *
+     * @return state - 状态
+     */
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * 设置状态
+     *
+     * @param state 状态
+     */
+    public void setState(String state) {
+        this.state = state;
     }
 }
