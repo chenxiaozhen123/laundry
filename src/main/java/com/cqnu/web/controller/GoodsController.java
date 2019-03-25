@@ -7,6 +7,8 @@ import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IGoodsService;
 import com.cqnu.web.util.StringHelper;
 import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/goods")
 public class GoodsController {
+    private static Logger logger = LoggerFactory.getLogger(GoodsController.class);
+    private static String calssPath = "com.cqnu.web.controller.GoodsController";
     @Autowired
     IGoodsService goodsService;
     @Autowired
@@ -67,13 +71,21 @@ public class GoodsController {
             reqMap.put("imgPath",imgPath);
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.addGoods(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：添加商品失败");
+                return BaseRes.getFailure("添加商品失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception ex){
+            logger.error(calssPath+"：数据库异常",ex.getMessage());
             return BaseRes.getException("添加商品失败");
         }
 
-        return BaseRes.getSuccess(result);
     }
     /**
      * 删除商品
@@ -87,12 +99,20 @@ public class GoodsController {
             String goodsNO = request.getParameter("goodsNO");
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.deleteGoods(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：删除商品失败");
+                return BaseRes.getFailure("删除商品失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception ex){
+            logger.error(calssPath+"：数据库异常",ex.getMessage());
             return BaseRes.getException("删除商品失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 修改商品
@@ -113,12 +133,20 @@ public class GoodsController {
             reqMap.put("imgPath",imgPath);
             reqMap.put("goodsNO",goodsNO);
             result = goodsService.updateGoods(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：修改商品失败");
+                return BaseRes.getFailure("修改商品失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception ex){
+            logger.error(calssPath+"：数据库异常",ex.getMessage());
             return BaseRes.getException("修改商品失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 查询分类下的所有商品
@@ -145,8 +173,10 @@ public class GoodsController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.GoodsMapper.getGoodsList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception ex){
+            logger.error(calssPath+"：数据库异常",ex.getMessage());
             return BaseRes.getException("查询商品失败");
         }
         return BaseRes.getSuccess(resMap,t2-t1);

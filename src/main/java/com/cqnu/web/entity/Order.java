@@ -30,9 +30,20 @@ public class Order {
     private Integer shopno;
 
     /**
+     * 预约取衣时间
+     */
+    @Column(name = "appointDate")
+    private Date appointdate;
+
+    /**
      * 金额
      */
     private Double price;
+
+    /**
+     * 备注
+     */
+    private String remark;
 
     /**
      * 创建时间
@@ -178,6 +189,24 @@ public class Order {
     }
 
     /**
+     * 获取预约取衣时间
+     *
+     * @return appointDate - 预约取衣时间
+     */
+    public Date getAppointdate() {
+        return appointdate;
+    }
+
+    /**
+     * 设置预约取衣时间
+     *
+     * @param appointdate 预约取衣时间
+     */
+    public void setAppointdate(Date appointdate) {
+        this.appointdate = appointdate;
+    }
+
+    /**
      * 获取金额
      *
      * @return price - 金额
@@ -193,6 +222,24 @@ public class Order {
      */
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    /**
+     * 获取备注
+     *
+     * @return remark - 备注
+     */
+    public String getRemark() {
+        return remark;
+    }
+
+    /**
+     * 设置备注
+     *
+     * @param remark 备注
+     */
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     /**

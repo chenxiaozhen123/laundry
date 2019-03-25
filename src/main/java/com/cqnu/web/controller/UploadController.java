@@ -3,6 +3,8 @@ package com.cqnu.web.controller;
 import com.cqnu.base.config.LaundryConfig;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.web.util.OSSUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/admin/upload")
 public class UploadController {
+    private static Logger logger = LoggerFactory.getLogger(AddressController.class);
+    private static String calssPath = "com.cqnu.web.controller.AddressController";
     @Autowired
     OSSUtil ossUtil;
     @Autowired
@@ -55,6 +59,7 @@ public class UploadController {
             fileUrl = ossUtil.checkImage(multipartFile);
             t2 = System.currentTimeMillis();
         } catch (Exception e) {
+            logger.error(calssPath+"：上传文件失败",t2-t1);
             return BaseRes.getFailure("上传文件失败",t2-t1);
         }
         resMap.put("fileUrl", fileUrl);

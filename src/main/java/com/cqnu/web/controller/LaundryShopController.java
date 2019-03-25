@@ -1,11 +1,14 @@
 package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
+import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +28,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/shop")
 public class LaundryShopController {
+    private static Logger logger = LoggerFactory.getLogger(LaundryShopController.class);
+    private static String calssPath = "com.cqnu.web.controller.LaundryShopController";
     private final int roleId = 2;
     private String adminNo ;
     @Autowired
@@ -69,14 +74,26 @@ public class LaundryShopController {
             }
             result= laundryShopService.addLaundryShop(reqMap);
             if( 0 < result){ //门店负责人添加成功则去admin表更改该员工的所属门店
+                result = 0;
                 result = adminService.updateShopIdByAdminNo(reqAdminMap);
+                if( 0 < result){
+                    return BaseRes.getSuccess();
+                }
+                else{
+                    logger.error(calssPath+"：添加门店失败");
+                    return BaseRes.getFailure("添加门店失败");
+                }
+            }else{
+                logger.error(calssPath+"：添加门店失败");
+                return BaseRes.getFailure("添加门店失败");
             }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
             return BaseRes.getException("添加门店失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有门店
@@ -105,13 +122,13 @@ public class LaundryShopController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getLaundryShopList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常", t2 - t1);
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常", t2 - t1);
         }catch (Exception e){
             return BaseRes.getException("查询门店信息失败", t2 - t1);
         }
         return BaseRes.getSuccess(resMap, t2 - t1);
     }
-
     /**
      * 顾客获取门店地址
      */
@@ -147,12 +164,20 @@ public class LaundryShopController {
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("shopNo",shopNo);
             result= laundryShopService.deleteLaundryShop(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：删除门店失败");
+                return BaseRes.getFailure("删除门店失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
-            return BaseRes.getException("删除门店失败");
+            logger.error(calssPath+"：删除门店异常",e.getMessage());
+            return BaseRes.getException("删除门店异常");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 修改门店信息
@@ -178,13 +203,23 @@ public class LaundryShopController {
             reqAdminMap.put("shop_no",shopNo);
             result= laundryShopService.updateLaundryShop(reqMap);
             if( 0 < result){ //门店负责人信息修改成功则去admin表更改该员工的所属门店
+                result = 0;
                 result = adminService.updateShopIdByAdminNo(reqAdminMap);
+                if( 0 < result){
+                    return BaseRes.getSuccess();
+                }
+                else{
+                    logger.error(calssPath+"：修改门店信息失败");
+                    return BaseRes.getFailure("修改门店信息失败");
+                }
+            }else{
+                logger.error(calssPath+"：修改门店信息失败");
+                return BaseRes.getFailure("修改门店信息失败");
             }
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
             return BaseRes.getException("修改门店信息失败");
         }
-        return BaseRes.getSuccess(result);
     }
 }

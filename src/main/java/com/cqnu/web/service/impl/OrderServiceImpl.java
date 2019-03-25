@@ -17,7 +17,7 @@ public class OrderServiceImpl extends BaseServiceImpl implements IOrderService{
     private static final String MAPPER_URL = "com.cqnu.web.mapper.OrderMapper.";
     @Override
     public int addOrder(Map<String, Object> params) {
-        return session.insert(MAPPER_URL+"",params);
+        return session.insert(MAPPER_URL+"addOrder",params);
     }
 
     @Override

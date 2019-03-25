@@ -6,6 +6,8 @@ import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.ICategoryService;
 import com.cqnu.web.service.IGoodsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +29,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/cat")
 public class CategoryController {
+    private static Logger logger = LoggerFactory.getLogger(CategoryController.class);
+    private static String calssPath = "com.cqnu.web.controller.CategoryController";
     @Autowired
     ICategoryService categoryService;
     @Autowired
@@ -56,12 +60,20 @@ public class CategoryController {
                 reqMap.put("cat_no", LaundryConsts.CAT_NO);
             }
             result = categoryService.addCategory(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：评价订单失败");
+                return BaseRes.getFailure("新增分类失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception ex){
+            logger.error(calssPath+"：数据库异常",ex.getMessage());
             return BaseRes.getException("新增分类失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 删除分类
@@ -77,14 +89,26 @@ public class CategoryController {
             reqMap.put("catNo",catNo);
             result = categoryService.deleteCategory(reqMap);
             if(0 < result){
+                result = 0;
                 result = goodsService.deleteGoodsList(reqMap);
+                if( 0 < result){
+                    return BaseRes.getSuccess();
+                }
+                else{
+                    logger.error(calssPath+"：删除分类异常失败");
+                    return BaseRes.getFailure("删除分类异常失败");
+                }
+            }else{
+                logger.error(calssPath+"：删除分类异常");
+                return BaseRes.getFailure("删除分类异常");
             }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：删除分类异常",e.getMessage());
             return BaseRes.getException("删除分类异常");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 修改分类
@@ -102,12 +126,20 @@ public class CategoryController {
             reqMap.put("catName",catName);
             reqMap.put("imgPath",imgPath);
             result = categoryService.updateCategory(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：评价订单失败");
+                return BaseRes.getFailure("修改分类失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
             return BaseRes.getException("修改分类异常");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有分类
@@ -130,8 +162,10 @@ public class CategoryController {
             reqMap.put("catName",catName);
             resMap = baseService.queryForPage("com.cqnu.web.mapper.CategoryMapper.getCategoryList",reqMap);
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常",t2-t1);
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常",t2-t1);
         }catch (Exception e){
+            logger.error(calssPath+"：查询分类异常",e.getMessage());
             return BaseRes.getException("查询分类异常",t2-t1);
         }
         return BaseRes.getSuccess(resMap,t2-t1);

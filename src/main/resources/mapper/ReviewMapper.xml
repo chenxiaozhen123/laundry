@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cqnu.web.mapper.ReviewMapper">
+  <resultMap id="BaseResultMap" type="com.cqnu.web.entity.Review">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cust_id" jdbcType="INTEGER" property="custId" />
+    <result column="order_id" jdbcType="INTEGER" property="orderId" />
+    <result column="rate" jdbcType="VARCHAR" property="rate" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
+  </resultMap>
+  <insert id="saveReview">
+    insert into review(cust_id,order_id,rate,createDate
+    <if test="null != content and '' != content">
+      ,content
+    </if>
+    )
+    values(#{custId},#{orderId},#{rate},now()
+    <if test="null != content and '' != content">
+      ,#{content}
+    </if>
+    )
+  </insert>
+</mapper>

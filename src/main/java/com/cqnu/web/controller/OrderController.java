@@ -1,17 +1,25 @@
 package com.cqnu.web.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.cqnu.base.common.consts.LaundryConsts;
-import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
+import com.cqnu.web.entity.OrderDetail;
+import com.cqnu.web.service.IOrderDetailService;
 import com.cqnu.web.service.IOrderService;
+import com.cqnu.web.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,10 +33,65 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/order")
 public class OrderController {
+    private static Logger logger = LoggerFactory.getLogger(OrderController.class);
+    private static String calssPath = "com.cqnu.web.controller.OrderController";
     @Autowired
     BaseService baseService;
     @Autowired
     IOrderService orderService;
+    @Autowired
+    IOrderDetailService orderDetailService;
+    /**
+     * 创建订单
+     */
+    @ResponseBody
+    @RequestMapping(value = "/add")
+    @Transactional
+    public BaseRes addOrder(HttpServletRequest request){
+        int result = 0;
+        try{
+            Map<String, Object> reqMap = new HashMap<>();
+            Map<String, Object> resMap = new HashMap<>();
+            String orderId = StringHelper.getOrderIdStr();
+            String shopNO =  request.getParameter("shopNO");
+            String appointDate =  request.getParameter("appointDate"); //预约取衣时间
+            String price =  request.getParameter("price");
+            String remark =  request.getParameter("remark"); //备注
+            String addressId =  request.getParameter("addressId");// 地址id
+            String custId =  request.getParameter("custId"); //顾客编号
+            String goodsStr =  request.getParameter("goodsStr");//订单详情
+            String status =  LaundryConsts.WAIT_PAY_STATUS;
+            reqMap.put("orderId",orderId);
+            reqMap.put("appointDate",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(appointDate));
+            reqMap.put("price",Double.valueOf(price));
+            reqMap.put("remark",remark);
+            reqMap.put("addressId",addressId);
+            reqMap.put("shopNO",shopNO);
+            reqMap.put("status",status);
+            String[] goodsArr = goodsStr.split("}");
+            List<OrderDetail> orderDetails = this.getOrderDetailList(goodsArr,custId,orderId);
+            result = orderService.addOrder(reqMap);
+            if( 0 < result){
+                result= 0;
+                result = orderDetailService.insertOrderDetailBatch(orderDetails);
+                if( 0 < result){
+                    resMap.put("orderId",orderId);
+                    return BaseRes.getSuccess(resMap);
+                } else{
+                    logger.error(calssPath+"：处理订单失败");
+                    return BaseRes.getException("服务器异常");
+                }
+            }else {
+                return BaseRes.getException("服务器异常");
+            }
+        }catch (DataAccessException e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("服务器异常");
+        }catch (Exception e){
+            logger.error(calssPath+"：处理订单失败",e.getMessage());
+            return BaseRes.getException("处理订单失败");
+        }
+    }
     /**
      * 处理订单
      */
@@ -43,12 +106,20 @@ public class OrderController {
             reqMap = getStatusByAction(action);
             reqMap.put("orderId",orderId);
             result= orderService.handleOrder(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：v");
+                return BaseRes.getFailure("处理订单失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
             return BaseRes.getException("处理订单失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 查询所有订单
@@ -75,8 +146,10 @@ public class OrderController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：查询订单失败",e.getMessage());
             return BaseRes.getException("查询订单失败");
         }
 
@@ -99,8 +172,10 @@ public class OrderController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderTotal",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：查询订单失败",e.getMessage());
             return BaseRes.getException("查询订单失败");
         }
         return BaseRes.getSuccess(resMap,t2-t1);
@@ -122,9 +197,11 @@ public class OrderController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderDetailMapper.getOrderDetail",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
-            return BaseRes.getException("查询订单详情失败");
+            logger.error(calssPath+"：获取订单详情失败",e.getMessage());
+            return BaseRes.getException("获取订单详情失败");
         }
         return BaseRes.getSuccess(resMap,t2-t1);
     }
@@ -200,5 +277,22 @@ public class OrderController {
 
         params.put("rows",list);
         return params;
+    }
+    private List<OrderDetail> getOrderDetailList(String[] goodsArr,String custId,String orderId){
+        OrderDetail orderDetail = null;
+        List<OrderDetail> orderDetails = new ArrayList<>();
+        for(int i=0;i<goodsArr.length;i++){
+            if(goodsArr[i].startsWith(",")){
+                goodsArr[i] = goodsArr[i].substring(1);
+            }
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(goodsArr[i]+"}");
+            orderDetail = new OrderDetail();
+            orderDetail.setGoodsNo(jsonObject.get("goods_no").toString());
+            orderDetail.setNumber(Integer.valueOf(jsonObject.get("total").toString()));
+            orderDetail.setCustId(Integer.valueOf(custId));
+            orderDetail.setOrderId(orderId);
+            orderDetails.add(orderDetail);
+        }
+        return orderDetails;
     }
 }

@@ -605,6 +605,10 @@ function initPage(data){
         url: 'order/getOrderList',
         height: 300,
         columns: [{
+            field: 'shopNo',
+            width:120,
+            visible: false
+        },{
             field: 'action',
             width:120,
             visible: false
@@ -616,6 +620,11 @@ function initPage(data){
         },{
             field: 'status',
             title: '洗衣单状态',
+            align:'center',
+            width:120
+        }, {
+            field: 'appointDate',
+            title: '预约取衣时间',
             align:'center',
             width:120
         },{

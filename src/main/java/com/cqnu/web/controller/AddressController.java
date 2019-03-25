@@ -6,6 +6,8 @@ import com.cqnu.base.model.Message;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.base.util.AESUtil;
 import com.cqnu.web.service.IAddressService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +28,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/address")
 public class AddressController {
+    private static Logger logger = LoggerFactory.getLogger(AddressController.class);
+    private static String calssPath = "com.cqnu.web.controller.AddressController";
     @Autowired
     IAddressService addressService;
     @Autowired
@@ -51,12 +55,20 @@ public class AddressController {
             reqMap.put("mobile",mobile);
             reqMap.put("recevier",recevier);
             result = addressService.addAddress(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：添加地址失败");
+                return BaseRes.getFailure("添加地址失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：添加地址失败",e.getMessage());
             return BaseRes.getException("添加地址失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 修改顾客地址
@@ -83,11 +95,14 @@ public class AddressController {
             if( 0 <result){
                 return BaseRes.getSuccess(result);
             }else{
+                logger.error(calssPath+"：添加地址失败");
                 return BaseRes.getFailure("修改失败");
             }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
             return BaseRes.getException("修改地址失败");
         }
 
@@ -109,8 +124,10 @@ public class AddressController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.AddressMapper.getCustAddress",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常",t2-t1);
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常",t2-t1);
         }catch (Exception e){
+            logger.error(calssPath+"：获取地址失败",e.getMessage());
             return BaseRes.getException("获取地址失败",t2-t1);
         }
         return BaseRes.getSuccess(resMap,t2-t1);

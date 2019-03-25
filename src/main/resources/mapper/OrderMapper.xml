@@ -9,7 +9,9 @@
     <result column="addressId" jdbcType="VARCHAR" property="addressid" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="shopNo" jdbcType="INTEGER" property="shopno" />
+    <result column="appointDate" jdbcType="TIMESTAMP" property="appointdate" />
     <result column="price" jdbcType="DOUBLE" property="price" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="createDate" jdbcType="TIMESTAMP" property="createdate" />
     <result column="payDate" jdbcType="TIMESTAMP" property="paydate" />
     <result column="takeDate" jdbcType="TIMESTAMP" property="takedate" />
@@ -23,11 +25,12 @@
     <result column="reviewDate" jdbcType="TIMESTAMP" property="reviewdate" />
     <result column="state" jdbcType="VARCHAR" property="state" />
   </resultMap>
+
   <update id="handleOrder" parameterType="map">
     update `order`
     <set>
-      <if test="null != payDesc and '' != payDesc">
-        `status` = #{payDesc},payDate = now(),
+      <if test="null != pay and '' != pay">
+        `status` = #{pay},payDate = now(),
       </if>
       <if test="null != takeDesc and '' != takeDesc">
         `status` = #{takeDesc},takeDate = now(),
@@ -50,11 +53,16 @@
       <if test="null != deliverDesc and '' != deliverDesc">
         `status` = #{deliverDesc},deliverDate = now(),
       </if>
+      <if test="null != orderOver and '' != orderOver">
+        `status` = #{orderOver},reviewDate = now(),
+      </if>
+
     </set>
     where order_id = #{orderId}
   </update>
   <select id="getOrderList" parameterType="map" resultType="map">
-    select o.order_id,adr.address,o.status,o.price,s.shop_name,
+    select o.order_id,adr.address,o.status,o.price,s.shop_name,s.shop_no,o.remark,
+    DATE_FORMAT(o.appointDate,'%Y-%m-%d %H:%i') appointDate,
     DATE_FORMAT(o.createDate,'%Y-%m-%d %H:%i') createDate,
     DATE_FORMAT(o.payDate,'%Y-%m-%d %H:%i') payDate,
     DATE_FORMAT(o.takeDate,'%Y-%m-%d %H:%i') takeDate,
@@ -80,6 +88,19 @@
     select o.order_id,o.status,o.price,s.shop_name from `order` o ,order_detail od ,customer c ,laundry_shop s
     where c.cust_id = od.cust_id and o.order_id = od.order_id and o.shopNo = s.shop_no
     and c.cust_id = #{custId} and o.state = '00A'
-    GROUP BY o.order_id
+    GROUP BY o.order_id order by o.order_id desc
   </select>
+  <insert id="addOrder" parameterType="map">
+    insert into `order`(
+    order_id,addressId,shopNo,price,appointDate,createDate,status,state
+    <if test="null != remark and '' != remark">
+      ,remark
+    </if>
+    )
+    values(#{orderId},#{addressId},#{shopNO},#{price},#{appointDate},now(),#{status},'00A'
+    <if test="null != remark and '' != remark">
+      ,#{remark}
+    </if>
+    )
+  </insert>
 </mapper>

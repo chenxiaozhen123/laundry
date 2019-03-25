@@ -10,6 +10,8 @@ import com.cqnu.web.model.AdminLoginInfo;
 import com.cqnu.web.service.ILaundryShopService;
 import com.cqnu.web.service.IRoleService;
 import com.cqnu.web.service.ISysLoginService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +33,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/sys")
 public class SysLoginController extends BaseController{
+    private static Logger logger = LoggerFactory.getLogger(SysLoginController.class);
+    private static String calssPath = "com.cqnu.web.controller.SysLoginController";
     @Autowired
     ISysLoginService sysLoginService;
     @Autowired

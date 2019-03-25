@@ -61,4 +61,9 @@
     from laundry_shop s
     where s.state = '00A' and s.shop_category = '门店' and s.shop_address like concat(concat('%', #{shop_address}), '%')
   </select>
+  <select id="getPrincipalShopNo" parameterType="map" resultType="map">
+    select s.shop_name,s.principal_no,a.admin_email,a.admin_tel_num from laundry_shop s ,admin a
+    where s.state = '00A'and a.state = '00A'
+    and s.shop_no = #{shopNo} and a.admin_no = s.principal_no
+  </select>
 </mapper>

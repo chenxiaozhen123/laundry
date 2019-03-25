@@ -66,10 +66,9 @@ public class StringHelper {
 
     /**
      * 获取订单编号
-     * @param str
      * @return
      */
-    public static String getOrderIdStr(String str){
+    public static String getOrderIdStr(){
         Date now = new Date();
         String reqTime = new SimpleDateFormat("yyyyMMddHHmmss").format(now);
         UUID uuid = UUID.randomUUID();

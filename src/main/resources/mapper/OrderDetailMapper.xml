@@ -31,4 +31,14 @@
 	od.order_id = #{orderId} GROUP BY g.goods_no
 
   </select>
+    <insert id ="insertOrderDetailBatch" parameterType="java.util.List" >
+        insert into order_detail (cust_id,order_id,goods_no,`number`)
+        values
+        <foreach collection ="list" item="orderDetail" index= "index" separator =",">
+            (
+            #{orderDetail.custId},#{orderDetail.orderId},#{orderDetail.goodsNo},#{orderDetail.number}
+            )
+        </foreach>
+    </insert>
+
 </mapper>

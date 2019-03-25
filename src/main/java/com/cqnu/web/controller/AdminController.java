@@ -9,6 +9,8 @@ import com.cqnu.base.util.AESUtil;
 import com.cqnu.base.util.MailUtil;
 import com.cqnu.web.service.IAdminService;
 import com.cqnu.web.util.StringHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,6 +32,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/admin/admin")
 public class AdminController {
+    private static Logger logger = LoggerFactory.getLogger(AdminController.class);
+    private static String calssPath = "com.cqnu.web.controller.AdminController";
     @Autowired
     IAdminService adminService;
     @Autowired
@@ -83,23 +87,32 @@ public class AdminController {
             result = adminService.addAdmin(reqAdminMap);
             if( 0 < result){
                 //发送入职通知邮件
-                Message message = new Message();
-                message.setUsername(name);
-                if(LaundryConsts.MAN .equals(sex)){
-                    message.setGender(LaundryConsts.GENTLEMAN);
-                }else{
-                    message.setGender(LaundryConsts.MADAM);
+                try{
+                    Message message = new Message();
+                    message.setUsername(name);
+                    if(LaundryConsts.MAN .equals(sex)){
+                        message.setGender(LaundryConsts.GENTLEMAN);
+                    }else{
+                        message.setGender(LaundryConsts.MADAM);
+                    }
+                    message.setInitalPassword(LaundryConsts.INITIAL_PASSWORD);
+                    message.setJobNumber(jobNumber);
+                    mailUtil.sendMailAccountMsg(message,email,LaundryConsts.ENTRY_SUBJECT,LaundryConsts.ENTRY_TEMPLATE);
+                    return BaseRes.getSuccess(result);
+                }catch (Exception e){
+                    logger.error(calssPath+"：发送邮件失败");
+                    return BaseRes.getFailure("发送邮件失败");
                 }
-                message.setInitalPassword(LaundryConsts.INITIAL_PASSWORD);
-                message.setJobNumber(jobNumber);
-                mailUtil.sendMailAccountMsg(message,email,LaundryConsts.ENTRY_SUBJECT,LaundryConsts.ENTRY_TEMPLATE);
+            }else{
+                logger.error(calssPath+"：添加员工失败");
+                return BaseRes.getFailure("添加员工失败");
             }
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
             return BaseRes.getException("添加员工失败");
         }
-        return BaseRes.getSuccess(result);
+
     }
 
     /**
@@ -133,8 +146,10 @@ public class AdminController {
             resMap = baseService.queryForPage("com.cqnu.web.mapper.AdminMapper.getAdminList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：查询员工异常",e.getMessage());
             return BaseRes.getException("查询员工异常", t2 - t1);
         }
         return BaseRes.getSuccess(resMap, t2 - t1);
@@ -151,12 +166,20 @@ public class AdminController {
             Map<String, Object> reqMap = new HashMap<>();
             reqMap.put("admin_no",adminNo);
             result= adminService.deleteAdminByAdminNo(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：删除员工信息失败");
+                return BaseRes.getFailure("删除员工信息失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
-            return BaseRes.getException("删除员工信息");
+            logger.error(calssPath+"：删除员工信息异常",e.getMessage());
+            return BaseRes.getException("删除员工信息异常");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 更改员工个人信息
@@ -185,12 +208,20 @@ public class AdminController {
                 reqMap.put("password","");
             }
             result= adminService.updateAdminInfo(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：更改信息失败");
+                return BaseRes.getFailure("更改信息失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
-            return BaseRes.getException("更改信息失败");
+            logger.error(calssPath+"：更改信息异常",e.getMessage());
+            return BaseRes.getException("更改信息异常");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 管理员更改员工信息
@@ -208,12 +239,20 @@ public class AdminController {
             reqMap.put("role_id",roleId);
             reqMap.put("shop_no",shopNo);
             result= adminService.updateAdminRoleAndShopInfo(reqMap);
+            if( 0 < result){
+                return BaseRes.getSuccess();
+            }
+            else{
+                logger.error(calssPath+"：更改信息失败");
+                return BaseRes.getFailure("更改信息失败");
+            }
         }catch (DataAccessException e){
-            return BaseRes.getException("数据库操作异常");
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
         }catch (Exception e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
             return BaseRes.getException("更改信息失败");
         }
-        return BaseRes.getSuccess(result);
     }
     /**
      * 发送邮箱验证码
@@ -237,6 +276,7 @@ public class AdminController {
             resMap.put("uuid",uuidStr);
             resMap.put("email",email);
         }catch (Exception e){
+            logger.error(calssPath+"：发送邮件失败",e.getMessage());
             return BaseRes.getException("发送邮件失败");
         }
         return BaseRes.getSuccess(resMap);
