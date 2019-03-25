@@ -55,4 +55,10 @@
     where s.state = '00A'
     and s.shop_no = #{shop_no}
   </select>
+
+  <select id="getCustLaundryShopList" parameterType="map" resultType="map">
+    select s.shop_id,s.shop_no,s.shop_category,s.shop_name ,s.shop_area ,s.shop_address,s.principal_no
+    from laundry_shop s
+    where s.state = '00A' and s.shop_category = '门店' and s.shop_address like concat(concat('%', #{shop_address}), '%')
+  </select>
 </mapper>

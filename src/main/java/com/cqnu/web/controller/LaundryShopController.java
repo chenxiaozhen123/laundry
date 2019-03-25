@@ -1,7 +1,6 @@
 package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
-import com.cqnu.base.common.exception.LaundryException;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IAdminService;
@@ -104,6 +103,30 @@ public class LaundryShopController {
             reqMap.put("area",area);
             t1 = System.currentTimeMillis();
             resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getLaundryShopList",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            return BaseRes.getException("数据库操作异常", t2 - t1);
+        }catch (Exception e){
+            return BaseRes.getException("查询门店信息失败", t2 - t1);
+        }
+        return BaseRes.getSuccess(resMap, t2 - t1);
+    }
+
+    /**
+     * 顾客获取门店地址
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getCustLaundryShopList")
+    public BaseRes getLaundryShopList1(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String shop_address =  request.getParameter("shop_address");
+            reqMap.put("shop_address",shop_address);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.LaundryShopMapper.getCustLaundryShopList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
             return BaseRes.getException("数据库操作异常", t2 - t1);
