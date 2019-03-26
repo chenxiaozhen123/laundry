@@ -110,7 +110,7 @@ public class OrderController {
                 return BaseRes.getSuccess();
             }
             else{
-                logger.error(calssPath+"：v");
+                logger.error(calssPath+"：处理订单失败");
                 return BaseRes.getFailure("处理订单失败");
             }
         }catch (DataAccessException e){

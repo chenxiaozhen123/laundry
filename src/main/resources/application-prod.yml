@@ -6,7 +6,7 @@ spring:
   thymeleaf:
     cache: true
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=CTT
 
 log:
   executror:

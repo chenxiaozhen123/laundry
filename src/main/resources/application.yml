@@ -12,7 +12,7 @@ spring:
     view:
       suffix: .html
   datasource:
-      url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+      url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=CTT
       username: root
       password: 123456
       # 使用druid数据源

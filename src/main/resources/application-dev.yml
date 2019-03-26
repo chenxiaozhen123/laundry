@@ -10,7 +10,7 @@ spring:
       suffix: .html
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=UTC
+    url: jdbc:mysql://127.0.0.1:3306/laundry?serverTimezone=CTT
     username: root
     password: 123456
     initialSize: 1

@@ -93,7 +93,7 @@ public class LaundryConsts {
     public static final String TAKE_BACK_ACTION="取回";
     public static final String DELIVER_ACTION = "门店送衣/顾客取衣";
 
-    public static final String WAIT_PAY_STATUS="待取衣";
+    public static final String WAIT_PAY_STATUS="待付款";
     public static final String WAIT_TAKE_STATUS="待取衣";
     public static final String TAKE_STATUS="已取衣";
     public static final String SEND_STATUS="正在送洗";
