@@ -1,6 +1,8 @@
 package com.cqnu.web.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.internal.util.AlipaySignature;
+import com.cqnu.base.alipay.config.AlipayConfig;
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.service.BaseService;
@@ -18,11 +20,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description 订单业务层
@@ -41,6 +41,7 @@ public class OrderController {
     IOrderService orderService;
     @Autowired
     IOrderDetailService orderDetailService;
+
     /**
      * 创建订单
      */
@@ -143,7 +144,7 @@ public class OrderController {
             reqMap.put("status",status);
             reqMap.put("orderId",orderId);
             t1 = System.currentTimeMillis();
-            resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.getOrderList",reqMap);
+            resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.handleOrder",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
             logger.error(calssPath+"：数据库异常",e.getMessage());
@@ -155,7 +156,7 @@ public class OrderController {
 
         return BaseRes.getSuccess(getActionByStatus(resMap),t2-t1);
     }
-       /**
+    /**
      * 获取顾客所有订单
      */
     @ResponseBody
@@ -205,6 +206,60 @@ public class OrderController {
         }
         return BaseRes.getSuccess(resMap,t2-t1);
     }
+
+    /**
+     * 更新订单状态
+     */
+    @ResponseBody
+    @RequestMapping(value = "/update")
+    public BaseRes updateOrderInfo(HttpServletRequest request,HttpServletResponse response) {
+        //获取支付宝GET过来反馈信息
+        int result = 0;
+        try {
+            Map<String, String> params = new HashMap<>();
+            Map<String, String[]> requestParams = request.getParameterMap();
+            Map<String, Object> reqMap = new HashMap<>();
+            for (Iterator<String> iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
+                String name = iter.next();
+                String[] values = requestParams.get(name);
+                String valueStr = "";
+                for (int i = 0; i < values.length; i++) {
+                    valueStr = (i == values.length - 1) ? valueStr + values[i]
+                            : valueStr + values[i] + ",";
+                }
+                params.put(name, valueStr);
+            }
+            boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
+            if (signVerified) {
+                //商户订单号
+                String out_trade_no = new String(request.getParameter("out_trade_no"));
+                //支付宝交易号
+//                String trade_no = new String(request.getParameter("trade_no"));
+                //付款金额
+//                String total_amount = new String(request.getParameter("total_amount"));
+                reqMap.put("status", LaundryConsts.WAIT_TAKE_STATUS);
+                reqMap.put("orderId", out_trade_no);
+                result = orderService.handleOrder(reqMap);
+                if (0 < result) {
+                    response.sendRedirect(LaundryConsts.RESPONSE_URL);
+                    return BaseRes.getSuccess();
+                } else {
+                    logger.error(calssPath + "：更新状态失败");
+                    return BaseRes.getFailure("更新状态失败");
+                }
+            } else {
+                return BaseRes.getException("验签失败");
+            }
+        } catch (DataAccessException e) {
+            logger.error(calssPath + "：数据库异常", e.getMessage());
+            return BaseRes.getException("数据库异常");
+        } catch (Exception e) {
+            logger.error(calssPath + "：数据库异常", e.getMessage());
+            return BaseRes.getException("处理订单失败");
+        }
+
+    }
+
 
     /**
      * 根据门店/中心员工操作取得订单对应的状态

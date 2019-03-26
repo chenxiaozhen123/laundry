@@ -8,26 +8,25 @@
     <id column="cust_id" property="custId" jdbcType="INTEGER" />
     <result column="cname" property="cname" jdbcType="VARCHAR" />
     <result column="password" property="password" jdbcType="VARCHAR" />
-    <result column="sex" property="sex" jdbcType="CHAR" />
     <result column="mobile" property="mobile" jdbcType="VARCHAR" />
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="eff_date" property="effDate" jdbcType="TIMESTAMP" />
   </resultMap>
 
   <select id="getCustomer" resultType="map" parameterType="map">
-    select c.cust_id,c.cname,c.password,c.sex,c.mobile,c.eff_date,c.state from customer c
+    select c.cust_id,c.cname,c.password,c.mobile,c.eff_date,c.state from customer c
     where c.state = '00A'
     <if test="null != cust_id and '' != cust_id">
       and c.cust_id = #{cust_id}
     </if>
-      and c.mobile = #{mobile}
-      and c.password = #{password}
+    and c.mobile = #{mobile}
+    and c.password = #{password}
   </select>
 
   <insert id="addCustpmer" parameterType="map">
-    insert into customer (cname,password,sex,mobile,state,eff_date)
+    insert into customer (cname,password,mobile,state,eff_date)
     VALUES (
-      #{cname},#{password},#{sex},#{mobile},'00A',now()
-    )
+             #{cname},#{password},#{mobile},'00A',now()
+           )
   </insert>
 </mapper>

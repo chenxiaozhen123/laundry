@@ -127,4 +127,12 @@ public class LaundryConsts {
         REVIEW_RATE_DESC.put("2", "差评");
 
     }
+    /**
+     * 短信验证模板
+     */
+    public static final String CAPTCHA_TEMPLATECODE = "SMS_160861417";
+    /**
+     * 重定向URL
+     */
+    public static final String RESPONSE_URL = "http://localhost:8083/index";
 }

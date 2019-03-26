@@ -29,6 +29,9 @@
   <update id="handleOrder" parameterType="map">
     update `order`
     <set>
+      <if test="null != status and '' != status">
+        status = #{status},
+      </if>
       <if test="null != pay and '' != pay">
         `status` = #{pay},payDate = now(),
       </if>

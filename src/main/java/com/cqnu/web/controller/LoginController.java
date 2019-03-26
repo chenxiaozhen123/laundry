@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -58,7 +57,6 @@ public class LoginController {
         customer.setCustId(Integer.valueOf(map.get("cust_id").toString()));
         customer.setCname(map.get("cname").toString());
         customer.setPassword(map.get("password").toString());
-        customer.setSex(map.get("sex").toString());
         customer.setMobile(map.get("mobile").toString());
         customer.setState(map.get("state").toString());
         customer.setEffDate((java.util.Date) map.get("eff_date"));

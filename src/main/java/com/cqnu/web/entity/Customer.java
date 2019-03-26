@@ -1,7 +1,9 @@
 package com.cqnu.web.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
-import javax.persistence.*;
 
 @Table(name = "customer")
 public class Customer {
@@ -21,11 +23,6 @@ public class Customer {
      * 密码
      */
     private String password;
-
-    /**
-     * 性别
-     */
-    private String sex;
 
     /**
      * 电话号码
@@ -95,24 +92,6 @@ public class Customer {
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * 获取性别
-     *
-     * @return sex - 性别
-     */
-    public String getSex() {
-        return sex;
-    }
-
-    /**
-     * 设置性别
-     *
-     * @param sex 性别
-     */
-    public void setSex(String sex) {
-        this.sex = sex;
     }
 
     /**

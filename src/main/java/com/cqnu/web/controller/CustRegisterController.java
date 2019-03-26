@@ -44,12 +44,10 @@ public class CustRegisterController {
                 if (code == codeT) {
                     String cname = request.getParameter("cname");
                     String password = request.getParameter("password");
-                    String sex = request.getParameter("sex");
                     String mobile = request.getParameter("mobile");
                     Map<String, Object> reqMap = new HashMap<>();
                     reqMap.put("cname", cname);
                     reqMap.put("password", AESUtil.aesEncrypt(password, LaundryConsts.CUSTOMER));
-                    reqMap.put("sex", sex);
                     reqMap.put("mobile", mobile);
                     result = custService.custRegister(reqMap);
                 } else {
