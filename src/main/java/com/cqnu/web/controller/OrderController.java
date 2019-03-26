@@ -135,11 +135,13 @@ public class OrderController {
             String pageNumber =  request.getParameter("pageNumber");
             String pageSize =  request.getParameter("pageSize");
             String status =  request.getParameter("status");
+            String shopNo =  request.getParameter("shopNo");
             String orderId =  request.getParameter("orderId");
             if( null != pageNumber && null != pageSize){
                 reqMap.put("pageNum",pageNumber);
                 reqMap.put("pageSize",pageSize);
             }
+            reqMap.put("shopNo",shopNo);
             reqMap.put("status",status);
             reqMap.put("orderId",orderId);
             t1 = System.currentTimeMillis();
@@ -205,7 +207,53 @@ public class OrderController {
         }
         return BaseRes.getSuccess(resMap,t2-t1);
     }
-
+    @ResponseBody
+    @RequestMapping(value = "cancel")
+    public BaseRes cancelOrder(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        int reslut = 0;
+        try{
+            String orderId =  request.getParameter("orderId");
+            reqMap.put("orderId",orderId);
+            reslut = orderService.cancelOrder(reqMap);
+            if( 0 < reslut){
+                return BaseRes.getSuccess("取消订单成功");
+            }else{
+                return BaseRes.getFailure("取消订单失败");
+            }
+        }catch (DataAccessException e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
+        }catch (Exception e){
+            logger.error(calssPath+"：取消订单异常",e.getMessage());
+            return BaseRes.getException("取消订单异常");
+        }
+    }
+    /**
+     * 查询顾客最新的一条订单信息
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getOrderLastByCust")
+    public BaseRes getOrderLastByCust(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String custId =  request.getParameter("custId");
+            reqMap.put("custId",custId);
+            t1 = System.currentTimeMillis();
+            resMap = orderService.getOrderLastByCust(reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
+        }catch (Exception e){
+            logger.error(calssPath+"：获取订单信息失败",e.getMessage());
+            return BaseRes.getException("获取订单信息失败");
+        }
+        return BaseRes.getSuccess(resMap,t2-t1);
+    }
     /**
      * 根据门店/中心员工操作取得订单对应的状态
      * @return

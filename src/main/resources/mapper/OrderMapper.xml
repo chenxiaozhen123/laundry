@@ -74,7 +74,7 @@
     DATE_FORMAT(o.deliverDate,'%Y-%m-%d %H:%i') deliverDate,
     DATE_FORMAT(o.confirmDate,'%Y-%m-%d %H:%i') confirmDate,
     DATE_FORMAT(o.reviewDate,'%Y-%m-%d %H:%i') reviewDate
-    from `order` o ,address adr ,laundry_shop s where 1 = 1
+    from `order` o ,address adr ,laundry_shop s where 1 = 1 and o.state='00A'
     and  o.addressId = adr.address_id and o.shopNo = s.shop_no
     <if test="null != status and '' != status">
       and o.status like concat(concat('%', #{status}), '%')
@@ -82,7 +82,9 @@
     <if test="null != orderId and '' != orderId">
       and o.order_id like concat(concat('%', #{orderId}), '%')
     </if>
-
+    <if test="null != shopNo and '' != shopNo">
+      and o.shopNo = #{shopNo}
+    </if>
   </select>
   <select id="getOrderTotal" parameterType="map" resultType="map">
     select o.order_id,o.status,o.price,s.shop_name from `order` o ,order_detail od ,customer c ,laundry_shop s
@@ -103,4 +105,23 @@
     </if>
     )
   </insert>
+  <update id="cancelOrder" parameterType="map">
+    update `order` o set state = '00X' where o.order_id = #{orderId}
+  </update>
+  <select id="getOrderLastByCust" parameterType="map" resultType="map">
+    select o.order_id,o.status,
+    DATE_FORMAT(o.createDate,'%Y-%m-%d %H:%i') createDate,
+    DATE_FORMAT(o.payDate,'%Y-%m-%d %H:%i') payDate,
+    DATE_FORMAT(o.takeDate,'%Y-%m-%d %H:%i') takeDate,
+    DATE_FORMAT(o.sendDate,'%Y-%m-%d %H:%i') sendDate,
+    DATE_FORMAT(o.washDate,'%Y-%m-%d %H:%i') washDate,
+    DATE_FORMAT(o.hangDate,'%Y-%m-%d %H:%i') hangDate,
+    DATE_FORMAT(o.receiveDate,'%Y-%m-%d %H:%i') receiveDate,
+    DATE_FORMAT(o.takeBackDate,'%Y-%m-%d %H:%i') takeBackDate,
+    DATE_FORMAT(o.deliverDate,'%Y-%m-%d %H:%i') deliverDate,
+    DATE_FORMAT(o.confirmDate,'%Y-%m-%d %H:%i') confirmDate,
+    DATE_FORMAT(o.reviewDate,'%Y-%m-%d %H:%i') reviewDate
+    from `order` o ,order_detail od where o.state='00A'
+    and o.order_id = od.order_id and od.cust_id = #{custId} order by o.order_id desc limit 0,1;
+  </select>
 </mapper>
