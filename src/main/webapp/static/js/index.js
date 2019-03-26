@@ -747,12 +747,24 @@ function initPage(data){
         pageList: [5, 10,20], //可供选择的每页的行数（*）
         showHeader: true,
         queryParams:function (params) {
-            var param = {
-                pageSize:params.pageSize,
-                pageNumber:params.pageNumber,
-                orderId:orderId,
-                status:status
+            var param = {}
+            if(shop_admin_role_id == data.roleId || shop_worker_role_id  == data.roleId){
+                param = {
+                    pageSize:params.pageSize,
+                    pageNumber:params.pageNumber,
+                    orderId:orderId,
+                    status:status,
+                    shopNo:data.shopNo
+                }
+            }else{
+                param = {
+                    pageSize:params.pageSize,
+                    pageNumber:params.pageNumber,
+                    orderId:orderId,
+                    status:status
+                }
             }
+
             return param
         },
         responseHandler: function(res) {

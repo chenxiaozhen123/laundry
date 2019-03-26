@@ -29,4 +29,14 @@ public class OrderServiceImpl extends BaseServiceImpl implements IOrderService{
     public int handleOrder(Map<String, Object> params) {
         return session.update(MAPPER_URL+"handleOrder",params);
     }
+
+    @Override
+    public int cancelOrder(Map<String, Object> param) {
+        return session.update(MAPPER_URL+"cancelOrder",param);
+    }
+
+    @Override
+    public Map<String, Object> getOrderLastByCust(Map<String, Object> params) {
+        return session.selectOne(MAPPER_URL+"getOrderLastByCust",params);
+    }
 }

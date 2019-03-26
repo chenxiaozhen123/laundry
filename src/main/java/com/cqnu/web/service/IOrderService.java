@@ -29,4 +29,18 @@ public interface IOrderService {
      * @return
      */
     int handleOrder(Map<String, Object> params);
+
+    /**
+     * 取消订单
+     * @param param
+     * @return
+     */
+    int cancelOrder(Map<String,Object> param);
+    /**
+     * 查询顾客最新的一条订单信息
+     * @param params
+     * @return
+     */
+    Map<String, Object> getOrderLastByCust(Map<String, Object> params);
+
 }
