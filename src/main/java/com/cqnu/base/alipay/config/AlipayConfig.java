@@ -27,10 +27,10 @@ public class AlipayConfig {
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8D8UCzPnTSy8DNtl5LyeHJa8XMAha7NDbvHGeCIdxCW8LQ3V5y9s/IGxLBlPoXs1kdtqEt+dO85ltASJLKtQSryrlI2qqxcBOU4ETTzGX5gFLHfTwueUq7rkjvuWfi2nTDo0zMR12ZxRM0PL7sTsRr1kRyp9LAxwZKA2haHYkwFBGI4ssbFGBDJ99ag3OlshVf8FHVS68bAM+JJnMm89hpWScG57lMjJYFZeIS8RMyIwiZ9wichh8jGLvpmr3LtJPzzZYGkcjnkrgePGaMIw7/BVgKoNCFcRzRtkcBmkLyLvSYwIChIQWlhzWNY4Q5lfqZmW4CAiE8WdzJ5ZbBNtEQIDAQAB";
 
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://33v7md.natappfree.cc/laundry/jsp/notify_url.jsp";
+	public static String notify_url = "http://5r9dcm.natappfree.cc/jsp/notify_url.jsp";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://33v7md.natappfree.cc/laundry/jsp/return_url.jsp";
+	public static String return_url = "http://5r9dcm.natappfree.cc/admin/login.html";
 
 	// 签名方式
 	public static String sign_type = "RSA2";
