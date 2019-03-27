@@ -25,7 +25,7 @@ public class AlipayConfig {
 
     // 支付宝公钥,查看地址：https://openhome.alipay.com/platform/keyManage.htm 对应APPID下的支付宝公钥。
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA8D8UCzPnTSy8DNtl5LyeHJa8XMAha7NDbvHGeCIdxCW8LQ3V5y9s/IGxLBlPoXs1kdtqEt+dO85ltASJLKtQSryrlI2qqxcBOU4ETTzGX5gFLHfTwueUq7rkjvuWfi2nTDo0zMR12ZxRM0PL7sTsRr1kRyp9LAxwZKA2haHYkwFBGI4ssbFGBDJ99ag3OlshVf8FHVS68bAM+JJnMm89hpWScG57lMjJYFZeIS8RMyIwiZ9wichh8jGLvpmr3LtJPzzZYGkcjnkrgePGaMIw7/BVgKoNCFcRzRtkcBmkLyLvSYwIChIQWlhzWNY4Q5lfqZmW4CAiE8WdzJ5ZbBNtEQIDAQAB";
-    
+
     // 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
     public static String notify_url = " http://www.lengy.xin/jsp/notify_url.jsp";
 
