@@ -21,25 +21,19 @@ import java.util.Date;
  **/
 public class AESUtil {
     public static void main(String[] args) throws Exception {
-//        String content = "123456";
-//        System.out.println("加密前：" + content);
-//
-//        String key = "category";
-//        System.out.println("加密密钥和解密密钥：" + key);
-//
-//        String encrypt = aesEncrypt(content, LaundryConsts.WORKER_KEY);
-//        System.out.println("加密后：" + encrypt);
-//
-//        String decrypt = aesDecrypt(encrypt, LaundryConsts.WORKER_KEY);
-//        System.out.println("解密后：" + decrypt);
+        String content = "123456";
+        System.out.println("加密前：" + content);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        c.add(Calendar.MONTH, -1);
-        Date m = c.getTime();
-        String mon = format.format(m);
-        System.out.println("过去一个月："+mon);
+        String key = "category";
+        System.out.println("加密密钥和解密密钥：" + key);
+
+        String encrypt = aesEncrypt(content, LaundryConsts.WORKER_KEY);
+        System.out.println("加密后：" + encrypt);
+
+        String decrypt = aesDecrypt(encrypt, LaundryConsts.WORKER_KEY);
+        System.out.println("解密后：" + decrypt);
+
+
     }
 
     /**

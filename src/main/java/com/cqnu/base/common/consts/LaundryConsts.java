@@ -135,4 +135,22 @@ public class LaundryConsts {
      * 重定向URL
      */
     public static final String RESPONSE_URL = "http://localhost:8083/index";
+
+    /**
+     * 新订单通知邮件主题
+     */
+    public static final String NEW_ORDER_SUBJECT = "新订单信息";
+    /**
+     * 新订单通知邮件模板
+     */
+    public static final String NEW_ORDER_TEMPLATE = "newOrderMsg.ftl";
+    /**
+     * 干洗中心通知门店领取衣服邮件主题
+     */
+    public static final String HANDLE_ORDER_SUBJECT = "订单更新消息通知";
+    /**
+     * 干洗中心通知门店领取衣服邮件模板
+     */
+    public static final String HANDLE_ORDER_TEMPLATE = "handleOrderMsg.ftl";
+
 }

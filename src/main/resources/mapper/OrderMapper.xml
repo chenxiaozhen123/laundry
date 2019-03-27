@@ -30,10 +30,7 @@
     update `order`
     <set>
       <if test="null != status and '' != status">
-        status = #{status},
-      </if>
-      <if test="null != pay and '' != pay">
-        `status` = #{pay},payDate = now(),
+        `status` = #{status},payDate = now(),
       </if>
       <if test="null != takeDesc and '' != takeDesc">
         `status` = #{takeDesc},takeDate = now(),
@@ -126,5 +123,18 @@
     DATE_FORMAT(o.reviewDate,'%Y-%m-%d %H:%i') reviewDate
     from `order` o ,order_detail od where o.state='00A'
     and o.order_id = od.order_id and od.cust_id = #{custId} order by o.order_id desc limit 0,1;
+  </select>
+  <select id="shopBusiAnalyse" resultType="map" parameterType="map">
+    SELECT
+    DATE_FORMAT(createDate,'%Y-%m-%d') AS time,
+    IFNULL(count(*),0) as count FROM `order`
+    WHERE state = '00A' and DATE_FORMAT(createDate,'%Y-%m-%d') > DATE_SUB(DATE_FORMAT(NOW(),'%Y-%m-%d'),INTERVAL 30 DAY)
+    and shopNo = #{shopNo}
+    GROUP BY DATE_FORMAT(createDate,'%Y-%m-%d')
+  </select>
+  <select id="getPrincipalEmailByOrderId" resultType="map" parameterType="map">
+    select a.admin_email,s.shop_name from admin a ,laundry_shop s,`order`o
+    where o.state = '00A' and a.admin_no = s.principal_no and s.shop_no = o.shopNo
+    and o.order_id =#{orderId}
   </select>
 </mapper>

@@ -49,7 +49,7 @@ public class MailUtil {
      * @param subject 邮件主题
      * @param templateName 模板名称
      */
-    public void sendMailAccountMsg(Object params, String to ,String subject, String templateName){
+    public void sendMail(Object params, String to ,String subject, String templateName){
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message,true);

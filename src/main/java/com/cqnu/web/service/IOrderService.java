@@ -1,5 +1,6 @@
 package com.cqnu.web.service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,5 +43,12 @@ public interface IOrderService {
      * @return
      */
     Map<String, Object> getOrderLastByCust(Map<String, Object> params);
+
+    /**
+     * 根据订单号获取门店负责人的邮箱
+     * @param params
+     * @return
+     */
+    Map<String,Object> getPrincipalEmailByOrderId(Map<String,Object> params);
 
 }

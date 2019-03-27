@@ -2,6 +2,7 @@ package com.cqnu.web.controller;
 
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.model.BaseRes;
+import com.cqnu.base.service.BaseService;
 import com.cqnu.web.service.IOrderService;
 import com.cqnu.web.service.IReviewService;
 import org.slf4j.Logger;
@@ -24,14 +25,17 @@ import java.util.Map;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/admin/review")
 public class ReviewController {
     private static Logger logger = LoggerFactory.getLogger(ReviewController.class);
     private static String calssPath = "com.cqnu.web.controller.ReviewController";
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.ReviewMapper.";
     @Autowired
     IReviewService reviewService;
     @Autowired
     IOrderService orderService;
+    @Autowired
+    BaseService baseService;
     /**
      * 评价
      */
@@ -77,5 +81,37 @@ public class ReviewController {
             return BaseRes.getException("评价订单失败");
         }
     }
+    /**
+     * 门店业务近一个月的订单情况
+     */
+    @ResponseBody
+    @RequestMapping(value = "/getReviewList")
+    public BaseRes getReviewList(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String rate =  request.getParameter("rate");
+            String pageNumber =  request.getParameter("pageNumber");
+            String pageSize =  request.getParameter("pageSize");
+            if( null != pageNumber && null != pageSize){
+                reqMap.put("pageNum",pageNumber);
+                reqMap.put("pageSize",pageSize);
+            }
+            reqMap.put("rate",rate);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage(MAPPER_URL+"getReviewList",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
+        }catch (Exception e){
+            logger.error(calssPath+"：获取订单信息失败",e.getMessage());
+            return BaseRes.getException("获取订单信息失败");
+        }
+        return BaseRes.getSuccess(resMap,t2-t1);
+    }
+
 
 }

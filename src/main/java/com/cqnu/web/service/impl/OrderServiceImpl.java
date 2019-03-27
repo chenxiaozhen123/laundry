@@ -4,6 +4,7 @@ import com.cqnu.base.service.impl.BaseServiceImpl;
 import com.cqnu.web.service.IOrderService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,5 +39,10 @@ public class OrderServiceImpl extends BaseServiceImpl implements IOrderService{
     @Override
     public Map<String, Object> getOrderLastByCust(Map<String, Object> params) {
         return session.selectOne(MAPPER_URL+"getOrderLastByCust",params);
+    }
+
+    @Override
+    public Map<String, Object> getPrincipalEmailByOrderId(Map<String, Object> params) {
+        return session.selectOne(MAPPER_URL+"getPrincipalEmailByOrderId",params);
     }
 }

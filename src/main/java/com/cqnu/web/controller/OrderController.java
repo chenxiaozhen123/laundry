@@ -5,7 +5,9 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.cqnu.base.alipay.config.AlipayConfig;
 import com.cqnu.base.common.consts.LaundryConsts;
 import com.cqnu.base.model.BaseRes;
+import com.cqnu.base.model.Message;
 import com.cqnu.base.service.BaseService;
+import com.cqnu.base.util.MailUtil;
 import com.cqnu.web.entity.OrderDetail;
 import com.cqnu.web.service.IOrderDetailService;
 import com.cqnu.web.service.IOrderService;
@@ -35,12 +37,15 @@ import java.util.*;
 public class OrderController {
     private static Logger logger = LoggerFactory.getLogger(OrderController.class);
     private static String calssPath = "com.cqnu.web.controller.OrderController";
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.OrderMapper.";
     @Autowired
     BaseService baseService;
     @Autowired
     IOrderService orderService;
     @Autowired
     IOrderDetailService orderDetailService;
+    @Autowired
+    MailUtil mailUtil;
 
     /**
      * 创建订单
@@ -108,6 +113,14 @@ public class OrderController {
             reqMap.put("orderId",orderId);
             result= orderService.handleOrder(reqMap);
             if( 0 < result){
+                if(LaundryConsts.HANG_ACTION.equals(action)){
+                    try{
+                        this.sendEmail(orderId,LaundryConsts.HANDLE_ORDER_SUBJECT,LaundryConsts.HANDLE_ORDER_TEMPLATE);
+                    }catch (Exception e){
+                        logger.error(calssPath+"：发送通知邮件失败");
+                        return BaseRes.getFailure("发送通知邮件失败，请联系管理员");
+                    }
+                }
                 return BaseRes.getSuccess();
             }
             else{
@@ -146,7 +159,7 @@ public class OrderController {
             reqMap.put("status",status);
             reqMap.put("orderId",orderId);
             t1 = System.currentTimeMillis();
-            resMap = baseService.queryForPage("com.cqnu.web.mapper.OrderMapper.handleOrder",reqMap);
+            resMap = baseService.queryForPage(MAPPER_URL+"getOrderList",reqMap);
             t2 = System.currentTimeMillis();
         }catch (DataAccessException e){
             logger.error(calssPath+"：数据库异常",e.getMessage());
@@ -208,6 +221,12 @@ public class OrderController {
         }
         return BaseRes.getSuccess(resMap,t2-t1);
     }
+
+    /**
+     * 取消订单
+     * @param request
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "cancel")
     public BaseRes cancelOrder(HttpServletRequest request){
@@ -289,6 +308,12 @@ public class OrderController {
                 reqMap.put("orderId", out_trade_no);
                 result = orderService.handleOrder(reqMap);
                 if (0 < result) {
+                    try{
+                        this.sendEmail(out_trade_no,LaundryConsts.NEW_ORDER_SUBJECT,LaundryConsts.NEW_ORDER_TEMPLATE);
+                    }catch (Exception e){
+                        logger.error(calssPath+"：发送通知邮件失败");
+                        return BaseRes.getFailure("发送通知邮件失败，请联系管理员");
+                    }
                     response.sendRedirect(LaundryConsts.RESPONSE_URL);
                     return BaseRes.getSuccess();
                 } else {
@@ -307,8 +332,48 @@ public class OrderController {
         }
 
     }
+    /**
+     * 门店业务近一个月的订单情况
+     */
+    @ResponseBody
+    @RequestMapping(value = "/shopBusiAnalyse")
+    public BaseRes shopBusiAnalyse(HttpServletRequest request){
+        Map<String, Object> reqMap = new HashMap<>();
+        Map<String, Object> resMap = new HashMap<>();
+        long t1 = 0;
+        long t2 = 0;
+        try{
+            String shopNo =  request.getParameter("shopNo");
+            reqMap.put("shopNo",shopNo);
+            t1 = System.currentTimeMillis();
+            resMap = baseService.queryForPage(MAPPER_URL+"shopBusiAnalyse",reqMap);
+            t2 = System.currentTimeMillis();
+        }catch (DataAccessException e){
+            logger.error(calssPath+"：数据库异常",e.getMessage());
+            return BaseRes.getException("数据库异常");
+        }catch (Exception e){
+            logger.error(calssPath+"：获取订单信息失败",e.getMessage());
+            return BaseRes.getException("获取订单信息失败");
+        }
+        return BaseRes.getSuccess(resMap,t2-t1);
+    }
 
-
+    /**
+     * 发送邮件通知门店处理订单
+     * @param orderId
+     * @param subject
+     * @param templateName
+     */
+    private void sendEmail(String orderId,String subject, String templateName)throws Exception{
+        Map<String, Object> reqMap = new HashMap<>();
+        reqMap.put("orderId",orderId);
+        Message message = new Message();
+        String email = orderService.getPrincipalEmailByOrderId(reqMap).get("admin_email").toString();
+        String shopName = orderService.getPrincipalEmailByOrderId(reqMap).get("shop_name").toString();
+        message.setOrderId(orderId);
+        message.setShopName(shopName);
+        mailUtil.sendMail(message,email,subject,templateName);
+    }
     /**
      * 根据门店/中心员工操作取得订单对应的状态
      * @return
