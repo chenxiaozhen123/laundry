@@ -12,6 +12,28 @@
     <result column="state" property="state" jdbcType="VARCHAR" />
     <result column="eff_date" property="effDate" jdbcType="TIMESTAMP" />
   </resultMap>
+  <!--更新-->
+  <update id="updateCustomer" parameterType="map">
+    update `customer`
+    <set>
+      <if test="null != custId and '' != custId">
+        custId = #{custId},
+      </if>
+      <if test="null != cname and '' != cname">
+        cname = #{cname},
+      </if>
+      <if test="null != password and '' != password">
+        password = #{password},
+      </if>
+      <if test="null != mobile and '' != mobile">
+        mobile = #{mobile},
+      </if>
+      <if test="null != state and '' != state">
+        state = #{state},
+      </if>
+    </set>
+    where mobile = #{mobile}
+  </update>
 
   <select id="getCustomer" resultType="map" parameterType="map">
     select c.cust_id,c.cname,c.password,c.mobile,c.eff_date,c.state from customer c

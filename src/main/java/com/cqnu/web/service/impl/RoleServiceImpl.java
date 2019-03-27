@@ -14,9 +14,10 @@ import java.util.Map;
  **/
 @Service("roleService")
 public class RoleServiceImpl extends BaseServiceImpl implements IRoleService{
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.RoleMapper.";
     @Override
     public Map<String, Object> getRole(Map<String, Object> param) {
-        Map<String, Object> resMap = session.selectOne("com.cqnu.web.mapper.RoleMapper.getRole",param);
+        Map<String, Object> resMap = session.selectOne(MAPPER_URL + "getRole",param);
         return resMap;
     }
 }

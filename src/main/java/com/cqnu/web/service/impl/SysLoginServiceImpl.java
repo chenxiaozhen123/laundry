@@ -14,9 +14,10 @@ import java.util.Map;
  **/
 @Service("sysLoginService")
 public class SysLoginServiceImpl extends BaseServiceImpl implements ISysLoginService{
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.AdminMapper.";
     @Override
     public Map<String, Object> getAdmin(Map<String, Object> param) {
-        Map<String, Object> resMap = session.selectOne("com.cqnu.web.mapper.AdminMapper.getAdmin",param);
+        Map<String, Object> resMap = session.selectOne(MAPPER_URL + "getAdmin",param);
         return resMap;
     }
 }

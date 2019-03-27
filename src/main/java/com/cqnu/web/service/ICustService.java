@@ -11,7 +11,12 @@ import java.util.Map;
 public interface ICustService {
     Map<String, Object> custLogin(Map<String, Object> param);
 
-
     int custRegister(Map<String, Object> param);
 
+    /**
+     * 更新顾客信息
+     * @param params
+     * @return
+     */
+    int updateCustomer(Map<String, Object> params);
 }

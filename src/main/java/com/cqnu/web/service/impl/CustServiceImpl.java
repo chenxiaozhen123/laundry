@@ -14,15 +14,22 @@ import java.util.Map;
  **/
 @Service
 public class CustServiceImpl extends BaseServiceImpl implements ICustService {
+    private static final String MAPPER_URL = "com.cqnu.web.mapper.CustomerMapper.";
+
     @Override
     public Map<String, Object> custLogin(Map<String, Object> param) {
-        Map<String, Object> resMap = session.selectOne("com.cqnu.web.mapper.CustomerMapper.getCustomer",param);
+        Map<String, Object> resMap = session.selectOne(MAPPER_URL + "getCustomer",param);
         return resMap;
     }
 
     @Override
+    public int updateCustomer(Map<String, Object> params) {
+        int resMap = session.update(MAPPER_URL+"updateCustomer",params);
+        return resMap;
+    }
+    @Override
     public int custRegister(Map<String, Object> param) {
-        int resMap = session.insert("com.cqnu.web.mapper.CustomerMapper.addCustpmer",param);
+        int resMap = session.insert(MAPPER_URL + "addCustpmer",param);
         return resMap;
     }
 }
