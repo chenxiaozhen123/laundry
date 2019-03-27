@@ -24,4 +24,9 @@
     </if>
     )
   </insert>
+  <select id="getReviewList" parameterType="map" resultType="map">
+    select rw.content,rw.order_id,c.cname,DATE_FORMAT(rw.createDate,'%Y-%m-%d %H:%i') createDate from review rw ,customer c where
+    c.cust_id = rw.cust_id
+    and rw.rate = #{rate}
+  </select>
 </mapper>

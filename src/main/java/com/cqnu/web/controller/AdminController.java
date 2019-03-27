@@ -97,7 +97,7 @@ public class AdminController {
                     }
                     message.setInitalPassword(LaundryConsts.INITIAL_PASSWORD);
                     message.setJobNumber(jobNumber);
-                    mailUtil.sendMailAccountMsg(message,email,LaundryConsts.ENTRY_SUBJECT,LaundryConsts.ENTRY_TEMPLATE);
+                    mailUtil.sendMail(message,email,LaundryConsts.ENTRY_SUBJECT,LaundryConsts.ENTRY_TEMPLATE);
                     return BaseRes.getSuccess(result);
                 }catch (Exception e){
                     logger.error(calssPath+"：发送邮件失败");
@@ -272,7 +272,7 @@ public class AdminController {
             String email = request.getParameter("email");
             Message message = new Message();
             message.setCaptcha(uuidStr);
-            mailUtil.sendMailAccountMsg(message,email,LaundryConsts.CAPTCHA_EMAIL_SUBJECT,LaundryConsts.CAPTCHA_EMAIL);
+            mailUtil.sendMail(message,email,LaundryConsts.CAPTCHA_EMAIL_SUBJECT,LaundryConsts.CAPTCHA_EMAIL);
             resMap.put("uuid",uuidStr);
             resMap.put("email",email);
         }catch (Exception e){

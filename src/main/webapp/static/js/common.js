@@ -104,33 +104,16 @@ function initWindow() {
             $(".right-side").toggleClass("strech");
         }
     });
-    $(".wrapper").resize(function() {
-        fix();
-        fix_sidebar();
-    });
-    fix();
 }
-function fix() {
-    //Get window height and the wrapper height
-    var height = $(window).height() - $("body > .header").height();
-    $(".wrapper").css("min-height", height + "px");
-    var content = $(".wrapper").height();
-    //If the wrapper height is greater than the window
-    if (content > height)
-    //then set sidebar height to the wrapper
-        $(".left-side, html, body").css("min-height", content + "px");
 
-    else {
-        //Otherwise, set the sidebar to the height of the window
-        $(".left-side, html, body").css("height", height + "px");
-
-    }
-}
-function fix_sidebar() {
-    //Make sure the body tag has the .fixed class
-    if (!$("body").hasClass("fixed")) {
-        return;
-    }
+function formatDate (val) {
+    // 格式化时间
+    var start = new Date(val)
+    var y = start.getFullYear()
+    var m = (start.getMonth() + 1) >= 10 ? (start.getMonth() + 1) : '0' + (start.getMonth() + 1)
+    var d = start.getDate() >= 10 ? start.getDate() : '0' + start.getDate()
+    return y + '-' + m + '-' + d
 }
 var TEL_NUM_FORMAT=/^(13[0-9]\d{8}|15[0-35-9]\d{8}|18[0-9]\{8}|14[57]\d{8})$/;
 var EMAIL_FORMAT=/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+

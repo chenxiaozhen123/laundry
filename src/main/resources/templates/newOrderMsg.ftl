@@ -8,7 +8,7 @@
 <body>
 <div>
     <div class="row">
-        <span>&nbsp;&nbsp;您所在的${params.shopname},有新的订单信息，订单编号为：${params.orderId},请及时登录<a>连锁干洗中心后台管理系统</a> 进行处理</span>
+        <span>&nbsp;&nbsp;您所在的${params.shopName},有新的订单信息，订单编号为：${params.orderId},请及时登录 <a style="text-decoration: underline">连锁干洗中心后台管理系统</a> 进行处理</span>
     </div>
     <div class="row">
          <span>

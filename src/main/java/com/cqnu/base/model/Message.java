@@ -12,6 +12,8 @@ public class Message {
     private String jobNumber;
     private String initalPassword;
     private String captcha;
+    private String orderId;
+    private String shopName;
     public String getUsername() {
         return username;
     }
@@ -50,5 +52,21 @@ public class Message {
 
     public void setCaptcha(String captcha) {
         this.captcha = captcha;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getShopName() {
+        return shopName;
+    }
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
     }
 }
