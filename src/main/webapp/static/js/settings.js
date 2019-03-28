@@ -16,14 +16,14 @@ function initSettings(data) {
 }
 
 
-
-
+/**
+ * 手机号码
+ */
 $('.js-tel-num-li').on(
     "click",function () {
         $('.js-tel-num-panel').css('display','');
         $('.js-update-pwd-panel').css('display','none');
         $('.js-email-panel').css('display','none');
-
         $('.js-tel-num-li').addClass('active').siblings('li').removeClass('active');
         $('.js-setting-title').text('修改手机号码')
     }
@@ -124,7 +124,7 @@ $('.js-new-tel-num').blur(function () {
     var format=TEL_NUM_FORMAT;
     var telNum = $('.js-new-tel-num').val();
     if(format.test(telNum) == true){
-        $('.js-get-captcha').removeAttr('disabled');
+        $('.js-get-captcha-tel').removeAttr('disabled');
     }else{
         BootstrapDialog.alert({
             title: '提示',
@@ -136,6 +136,81 @@ $('.js-new-tel-num').blur(function () {
         });
     }
 });
+
+var randomNumStr = "";
+$('.js-get-captcha-tel').on(
+    "click",function () {
+        var randomNum = ""
+        for(var i = 0; i < 5;i++){
+            randomNum = Math.floor(Math.random() * 10);
+            randomNumStr += randomNum;
+        }
+        var data ={
+            "mobile":$('.js-new-tel-num').val(),
+            "codeT":randomNumStr
+        }
+        var url = "/sendSMS"
+        var msg = "发送验证码成功,请及时查收"
+        var errorMsg = "发送验证码失败"
+        $.ajax({
+            url:url,
+            data:data,
+            dataType:"json",
+            type:"post",
+            success:function(data){
+                if( data == true){
+                    BootstrapDialog.alert({
+                        title: '提示',
+                        message: msg,
+                        type: BootstrapDialog.TYPE_WARNING,
+                        closable: true,
+                        draggable: true,
+                        buttonLabel: '确定'
+                    });
+                }else{
+                    BootstrapDialog.alert({
+                        title: '提示',
+                        message: errorMsg+'!',
+                        type: BootstrapDialog.TYPE_WARNING,
+                        closable: true,
+                        draggable: true,
+                        buttonLabel: '确定'
+                    });
+                }
+            },
+            error:function (data) {
+                BootstrapDialog.alert({
+                    title: '提示',
+                    message: errorMsg+'!  '+data.responseJSON.desc,
+                    type: BootstrapDialog.TYPE_WARNING,
+                    closable: true,
+                    draggable: true,
+                    buttonLabel: '确定'
+                });
+            }
+        });
+    }
+)
+$('.js-update-tel').on(
+    "click",function () {
+        var captcha = $('.js-get-captcha-tel-val').val();
+        var telNum = $('.js-new-tel-num').val()
+        if(randomNumStr != captcha){
+            alert("验证码不正确")
+        }else{
+            var username = $('.js-setting-admin-no').text();
+            var datas =  {
+                "telNum":telNum,
+                "adminNo":username
+            }
+            var msg = SUSSESS_UPDATE_TEL;
+            var errorMsg = FAIL_UPDAGE_MSG;
+            var url = "admin/updateAdminPersonInfo";
+            callRemoteFunction(url,datas,msg,errorMsg);
+        }
+        randomNumStr = "";
+    }
+)
 /**
  * 邮箱input失去焦点
  */
