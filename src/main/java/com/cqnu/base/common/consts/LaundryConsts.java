@@ -96,12 +96,12 @@ public class LaundryConsts {
     public static final String WAIT_PAY_STATUS="待付款";
     public static final String WAIT_TAKE_STATUS="待取衣";
     public static final String TAKE_STATUS="已取衣";
-    public static final String SEND_STATUS="正在送洗";
-    public static final String WASH_STATUS="正在清洗";
-    public static final String HANG_STATUS="上挂";
-    public static final String RECEIVE_STATUS="领取";
-    public static final String TAKE_BACK_STATUS="取回";
-    public static final String WAIT_CONFIRM_STATUS="待确认收衣";
+    public static final String SEND_STATUS="送洗中";
+    public static final String WASH_STATUS="清洗中";
+    public static final String HANG_STATUS="已上挂";
+    public static final String RECEIVE_STATUS="已领取";
+    public static final String TAKE_BACK_STATUS="取回中";
+    public static final String WAIT_CONFIRM_STATUS="待确认";
     public static final String WAIT_REVIEW_STATUS="待评价";
     public static final String ORDER_OVER = "已完成";
     /**

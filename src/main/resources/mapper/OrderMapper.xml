@@ -87,7 +87,8 @@
     </if>
   </select>
   <select id="getOrderTotal" parameterType="map" resultType="map">
-    select o.order_id,o.status,o.price,s.shop_name from `order` o ,order_detail od ,customer c ,laundry_shop s
+    select o.order_id,o.status,o.price,s.shop_name,DATE_FORMAT(o.takeDate,'%Y-%m-%d %H:%i') takeDate
+    from `order` o ,order_detail od ,customer c ,laundry_shop s
     where c.cust_id = od.cust_id and o.order_id = od.order_id and o.shopNo = s.shop_no
     and c.cust_id = #{custId} and o.state = '00A'
     GROUP BY o.order_id order by o.order_id desc
