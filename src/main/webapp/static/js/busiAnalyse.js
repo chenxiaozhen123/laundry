@@ -1,5 +1,4 @@
-var counts =new Array();
-var dataChart = [];
+
 function showBusiAnalyse(data){
     var height = $(".js-business-analyse").height()+$('.header').height();
     $(".left-side").css("min-height", height + "px");
@@ -26,6 +25,8 @@ function showBusiAnalyse(data){
     for(var j = 0;j<thrityMonth.length;j++){
         thrityMonth[j] =formatDate(thrityMonth[j])
     }
+    var counts =new Array();
+    var dataChart = [];
     $.ajax({
         url:'order/shopBusiAnalyse',
         data:param,
@@ -224,4 +225,17 @@ function refreshReview(data) {
     //带参数 刷新
     $(".js-review-tab").bootstrapTable('refresh', opt);
 }
+$('.js-go-back-shop').click(function(e){
+    $('.js-laundry-worker').css("display", 'none');
+    $('.js-laundry-shop').css("display", '');
+    $('.js-laundry-order').css("display", 'none');
+    $('.js-laundry-category').css("display",'none');
+    $('.js-laundry-goods').css("display",'none');
+    $('.js-person-info').css("display",'none');
+    $('.js-business-analyse').css("display",'none');
+    $('.js-shop-panel').addClass('active').siblings('li').removeClass('active');
+    var height = $(window).height() - $("body > .header").height();
+    $(".left-side").css("min-height", height + "px");
+
+});
 

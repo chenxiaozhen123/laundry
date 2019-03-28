@@ -41,6 +41,7 @@ var SUCCESS_ACTION_MSG = "操作成功";
 var FAIL_ACTION_MSG = "操作失败";
 var SUSSESS_UPDATE_PWD="修改成功!请重新登录"
 var SUSSESS_UPDATE_EMAIL="邮箱修改成功!重新登录后可看到更新信息"
+var SUSSESS_UPDATE_TEL="手机号码修改成功!重新登录后可看到更新信息"
 
 var SUSSESS_BUSI_ANALYSE = "获取门店业务信息成功";
 var FAIL_BUSI_ANALYSE = "获取门店业务信息失败";
