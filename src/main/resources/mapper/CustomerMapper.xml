@@ -45,6 +45,15 @@
     and c.password = #{password}
   </select>
 
+  <select id="selectMobile" resultType="map" parameterType="map">
+    select c.cust_id,c.cname,c.password,c.mobile,c.eff_date,c.state from customer c
+    where c.state = '00A'
+    <if test="null != cust_id and '' != cust_id">
+      and c.cust_id = #{cust_id}
+    </if>
+    and c.mobile = #{mobile}
+  </select>
+
   <insert id="addCustpmer" parameterType="map">
     insert into customer (cname,password,mobile,state,eff_date)
     VALUES (

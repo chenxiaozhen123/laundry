@@ -152,5 +152,10 @@ public class LaundryConsts {
      * 干洗中心通知门店领取衣服邮件模板
      */
     public static final String HANDLE_ORDER_TEMPLATE = "handleOrderMsg.ftl";
+    /**
+     *连锁干洗联盟mapper类
+     */
+    public static final String REVIEWMAPPER_URL = "com.cqnu.web.mapper.ReviewMapper.";
+    public static final String CUSTOMERMAPPER_URL = "com.cqnu.web.mapper.CustomerMapper.";
 
 }

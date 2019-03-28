@@ -53,10 +53,12 @@ public class CustomerController {
                     reqMap.put("mobile", mobile);
                     result = custService.updateCustomer(reqMap);
                 } else {
-                    result = 0;
+                    logger.error(calssPath + "：验证失败");
+                    return BaseRes.getFailure("验证失败");
                 }
             } else {
-                result = 0;
+                logger.error(calssPath + "：验证超时");
+                return BaseRes.getFailure("验证超时");
             }
             if (0 < result) {
                 return BaseRes.getSuccess();

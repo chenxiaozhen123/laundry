@@ -5,6 +5,8 @@ import com.cqnu.base.model.BaseRes;
 import com.cqnu.base.util.AESUtil;
 import com.cqnu.web.entity.Customer;
 import com.cqnu.web.service.ICustService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import java.util.Map;
 
 @RestController
 public class LoginController {
+    private static Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static String calssPath = "com.cqnu.web.controller.LoginController";
     @Autowired
     ICustService custService;
 
@@ -38,11 +42,14 @@ public class LoginController {
                 request.getSession().setAttribute(LaundryConsts.SESSION_USER_KEY,this.custLogin(resMap));
                 return BaseRes.getSuccess(resMap);
             }else{
+                logger.error(calssPath + "：用户名或密码错误");
                 return BaseRes.getFailure("用户名或密码错误");
             }
         }catch (DataAccessException e){
+            logger.error(calssPath + "：数据库操作异常");
             return BaseRes.getException("数据库操作异常");
         }catch (Exception e){
+            logger.error(calssPath + "：登录失败");
             return BaseRes.getException("登录失败");
         }
     }
