@@ -109,7 +109,11 @@ public class OrderController {
             Map<String, Object> reqMap = new HashMap<>();
             String orderId =  request.getParameter("orderId");
             String action =  request.getParameter("action");
-            reqMap = getStatusByAction(action);
+            String confirm =  request.getParameter("confirm");
+            if(null != action){
+                reqMap = getStatusByAction(action);
+            }
+            reqMap.put("confirm",confirm);
             reqMap.put("orderId",orderId);
             result= orderService.handleOrder(reqMap);
             if( 0 < result){
