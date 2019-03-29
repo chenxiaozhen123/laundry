@@ -56,6 +56,12 @@ public class CustRegisterController {
                         reqMap.put("password", AESUtil.aesEncrypt(password, LaundryConsts.CUSTOMER));
                         reqMap.put("mobile", mobile);
                         result = custService.custRegister(reqMap);
+                        if (0 < result) {
+                            return BaseRes.getSuccess();
+                        } else {
+                            logger.error(calssPath + "：注册失败");
+                            return BaseRes.getFailure("注册失败");
+                        }
                     }else {
                         logger.error(calssPath + "：号码已存在");
                         return BaseRes.getFailure("号码已存在");
@@ -68,18 +74,12 @@ public class CustRegisterController {
                 logger.error(calssPath + "：验证超时");
                 return BaseRes.getFailure("验证超时");
             }
-            if (0 < result) {
-                return BaseRes.getSuccess();
-            } else {
-                logger.error(calssPath + "：修改信息失败");
-                return BaseRes.getFailure("修改信息失败");
-            }
         } catch (DataAccessException e) {
             logger.error(calssPath + "：数据库异常", e.getMessage());
             return BaseRes.getException("数据库异常");
         } catch (Exception e) {
             logger.error(calssPath + "：数据库异常", e.getMessage());
-            return BaseRes.getException("修改信息失败");
+            return BaseRes.getException("注册失败");
         }
     }
 
