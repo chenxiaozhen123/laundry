@@ -53,6 +53,9 @@
       <if test="null != deliverDesc and '' != deliverDesc">
         `status` = #{deliverDesc},deliverDate = now(),
       </if>
+      <if test="null != confirm and '' != confirm">
+        `status` = #{confirm},confirmDate = now(),
+      </if>
       <if test="null != orderOver and '' != orderOver">
         `status` = #{orderOver},reviewDate = now(),
       </if>

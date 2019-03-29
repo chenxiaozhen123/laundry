@@ -20,13 +20,13 @@ var shopOrderList = new Array();
 shopOrderList[0] = '待取衣';
 shopOrderList[1] = '已取衣';
 // shopOrderList[2] = '正在送洗';
-shopOrderList[2] = '上挂';
-shopOrderList[3] = '领取';
-shopOrderList[4] = '取回';
+shopOrderList[2] = '已上挂';
+shopOrderList[3] = '已领取';
+shopOrderList[4] = '已取回';
 //干洗中心能操作的订单的状态
 var centerOrderList = new Array();
-centerOrderList[0] = '正在送洗';
-centerOrderList[1] = '正在清洗';
+centerOrderList[0] = '送洗中';
+centerOrderList[1] = '清洗中';
 
 // 待付款->待取衣->已取衣->正在送洗->正在清洗->上挂->领取->取回->待顾客确认收衣->待评价
 
