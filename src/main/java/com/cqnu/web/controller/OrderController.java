@@ -300,8 +300,8 @@ public class OrderController {
                 }
                 params.put(name, valueStr);
             }
-            boolean signVerified = AlipaySignature.rsaCheckV1(params, AlipayConfig.alipay_public_key, AlipayConfig.charset, AlipayConfig.sign_type); //调用SDK验证签名
-            if (signVerified) {
+            boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
+            if (verify_result) {
                 //商户订单号
                 String out_trade_no = new String(request.getParameter("out_trade_no"));
                 //支付宝交易号
