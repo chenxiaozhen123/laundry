@@ -19,6 +19,7 @@
      */
 %>
 <%
+
 	if(request.getParameter("WIDout_trade_no")!=null){
 		// 商户订单号，商户网站订单系统中唯一订单号，必填
 		String out_trade_no = new String(request.getParameter("WIDout_trade_no").getBytes("ISO-8859-1"),"UTF-8");
