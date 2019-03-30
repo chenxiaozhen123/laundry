@@ -200,8 +200,9 @@ function initOrder(data) {
                 url: "order/getOrderList",
                 silent: true,
                 query:{
-                    orderId:orderId,
-                    status:status
+                    "orderId":orderId,
+                    "status":status,
+                    "shopNo":data.shopNo
                 }
             };
             //带参数 刷新
@@ -236,6 +237,9 @@ function handleOrder(data) {
     callRemoteFunction(url,dataToObj,msg,errorMsg);
     var opt = {
         url: "order/getOrderList",
+        query:{
+            "shopNo":data.shopNo
+        },
         silent: true
     };
     //带参数 刷新
